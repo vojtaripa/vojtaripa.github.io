@@ -670,7 +670,8 @@ $CurrentYear=$todaysDate;
 if($StartYear=="")
 	$StartYear=$CurrentYear;
 
-//echo "Start year: $StartYear. End Year: $CurrentYear";
+$StartYear2=$StartYear;
+//echo "<br><br>Start year: $StartYear. End Year: $CurrentYear";
 //****************************************************************************** 
 
 if($YearSet==FALSE or $Year=='All')
@@ -920,7 +921,7 @@ function PrintArray($myarray)
 	for($i=0; $i < $arr_length ; $i++)
 	{	
 		if($i==0)
-		echo "<td style='background-color:#E6594D; color:white'>" .  array_shift($myarray)  . "</td>";	
+		echo "<td style='background-color:#E6594D; color:black'>" .  array_shift($myarray)  . "</td>";	
 		else
 		echo "<td >" .  array_shift($myarray)  . "</td>";
 	}

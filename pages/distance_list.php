@@ -22,58 +22,70 @@ $statement->closeCursor();
 
 ?>
 
+
+
+
+<?php
+    //require_once('../util/secure_conn.php');  // require a secure connection
+	
+	//https://www.w3schools.com/howto/howto_css_coming_soon.asp
+	require_once('../captcha/appvars.php');
+	require_once('../captcha/connectvars.php');
+?>
+
+	
 <!DOCTYPE html>
-
 <html>
-
-
-
-<!-- the head section -->
-
-<head>
-
-    <title>Race Distance Translations</title>
-
-    <link rel="stylesheet" type="text/css" href="../main.css" />
-
-</head>
-
-
-
-<!-- the body section -->
-
-<body>
-
-
-<main>
-
-<center>
-   <span class="myButtons" style="display: inline;">
+   <head>
+      <title>Race Distance Translations</title>
+	  <meta charset="utf-8" />
+	  <meta name="viewport" content="width=device-width, initial-scale=1" />
+	  
+      <!--OLD STYLE: <link rel="stylesheet" type="text/css" href="../main.css"/>-->
+      <link rel="stylesheet" href="../assets/css/main.css" />
+	  
+	  	<!-- IMPORTING HEADER AND FOOTER: -->
+		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+		<script> 
+		$(function(){
+		  $("#header").load("header.html"); 
+		  $("#footer").load("footer.html"); 
+		});
+		</script> 
+   </head>
    
-   <h2> Links: </h2>
    
-   <a class="button" href="login.php" >Admin</a> <!--indexAdmin.php -->
-   <a class="button" href="../index.php" >View All Users</a>
-   <a class="button" href="functions.php">Other Functions / Conversions</a>
-   <a class="button" href="distance_list.php" style="background-color:red;" >List distances</a> 
-   <a class="button" href="points.php">Points</a>   
-   <a class="button" href="signup.php" >Sign up for updates</a>
    
-   <a class="button" href="http://vojta.users.sonic.net/blog/"> Vojta's Main Page </a>
-   <a class="button" href="about.html">Vojta's Bio</a>
-   
-   </span>
-   
-    <br>
-   <hr  >
-   <br>
-<header><h1>Race Distance Translations</h1></header>
+   <body class="landing" onload="Init ()">
 
+		<!-- Page Wrapper -->
+			<div id="page-wrapper">
 
+				<div id="header"></div>
+					
+					
+<!-- END LINKS / PERL BASESCRIPTS.Please -->
+					
+	
 
-    <h1>Here are the different distance I chose to translate to the common name</h1>
+	
+					
+<!-- MAIN PAGE -->
+<article id="main">	
+	
+		<header>
+				<h2>Race Distance Translations</h2>
+				<p>This page will show you conversions of numeric values to distance names.</p>
+		</header>
+		
+		
+		<section class="wrapper style5">
+							<div class="inner">
 
-    <table>
+								<section>
+
+<!-- INSERT PAGE CODE HERE -->
+		<table>
 
         <tr>
             <th>Distance</th>
@@ -92,18 +104,33 @@ $statement->closeCursor();
 
     <br>
 
-    <p><a href="../index.php">Home</a></p>
+    <p><a href="../index.php" class="button fit special">Home</a></p>
 
-    </main>
+           </section>
+		 </div>
+	</section>
+</article> 
 
 
 
-    <footer>
 
-        <p>&copy; <?php echo date("Y"); ?> Vojta Ripa, Inc.</p>
 
-    </footer>
 
-</body>
 
+	
+<!-- Footer -------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<div id="footer"></div>				
+
+			
+           </div>	
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/jquery.scrollex.min.js"></script>
+			<script src="../assets/js/jquery.scrolly.min.js"></script>
+			<script src="../assets/js/skel.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="../assets/js/main.js"></script>
+        
+	</body>
 </html>

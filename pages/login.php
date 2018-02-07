@@ -5,7 +5,7 @@
 	require_once('../captcha/appvars.php');
 	require_once('../captcha/connectvars.php');
 ?>
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html>
     <style>
 		body, html {
@@ -49,93 +49,110 @@
 			margin: auto;
 			width: 40%;
 		}
-	</style>
-			
-	<head>
-        <title>Login Page</title>
-        <link rel="stylesheet" type="text/css" href="../main.css"/>
-    </head>
-    <body>
+	</style>-->
 	
-	
-	<center>
-   <span class="myButtons" style="display: inline;">
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Log In</title>
+	  <meta charset="utf-8" />
+	  <meta name="viewport" content="width=device-width, initial-scale=1" />
+	  
+      <!--OLD STYLE: <link rel="stylesheet" type="text/css" href="../main.css"/>-->
+      <link rel="stylesheet" href="../assets/css/main.css" />
+	  
+	  	<!-- IMPORTING HEADER AND FOOTER: -->
+		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+		<script> 
+		$(function(){
+		  $("#header").load("header.html"); 
+		  $("#footer").load("footer.html"); 
+		});
+		</script> 
+   </head>
    
-   <h2> Links: </h2>
    
-   <a class="button" href="login.php" style="background-color:red;">Admin</a> <!--indexAdmin.php -->
-   <a class="button" href="../index.php" >View All Users</a>
-   <a class="button" href="functions.php">Other Functions / Conversions</a>
-   <a class="button" href="distance_list.php">List distances</a>     
-   <a class="button" href="points.php">Points</a>     
-   <a class="button" href="signup.php" >Sign up for updates</a>
    
-   <a class="button" href="http://vojta.users.sonic.net/blog/"> Vojta's Main Page </a>
-   <a class="button" href="about.html">Vojta's Bio</a>
    
-   </span>
-   
-    <br>
-   <hr  >
-   <br>
-   </center>
-	
-	<div class="bgimg">
-  <div class="topleft">
-    <!--<p>Logo</p>-->
-  </div>
-  <div class="middle" style="background-color: rgba(96, 96, 96, 0.5);">
-    <h2><b>LOG IN<b></h2>
-    <hr>
-    <!--<p id="demo" style="font-size:30px"></p>-->
-	<h2>Please Login</h2>
 
+		<div id="header"></div>		
+<!-- END LINKS / PERL BASESCRIPTS.Please -->
+					
+					
+					
+<!-- INTRO -->
+		<article id="main">	
+				<header>
+					<h2>Login Page</h2>
+					<p>Please Sign in to your existing account <br>(username and password was emailed to you).</p>
+				</header>
+	     
+		 <section class="wrapper style5">
+			<div class="inner">
+		
+		
+		
+         <h4>Log In:</h4>
+         
+            
+	
 
 	
-	<center>
             <form action="process_login.php" method="post" id="login_form" class="aligned" >
                 <input class="button" type="hidden" name="action" value="login">
 
-               <table>
-                <tr>
-				<td width="20%" scope="row"><label>Username        :</label></td>
-                <td><input type="text" class="text" name="myusername" placeholder="username"></td>
-                <br>
-				</tr>
+               
+                <div class="6u 12u$(xsmall)">
+					<label>Username        :</label>
+					<input type="text" class="text" name="myusername" placeholder="username">
+					<br>
+				</div>
 				
-				<tr>
-				<td width="20%" scope="row">
-                <label>Password        :</label></td>
-                <td><input type="password" class="text" name="password1" placeholder="password"></td>
-                <br>
-				</tr>
+				<div class="6u 12u$(xsmall)">
+					<label>Password        :</label>
+					<input type="password" class="text" name="password1" placeholder="password">
+					<br>
+				</div>
 				
-				
-				</table>
-				<br><br>
-                <label>&nbsp;</label>
+				<br>
+              
                 <input class="button" type="submit" value="Login">
 				<br><br>
-            </form>			
-			
-			<p style="display: inline;"><a class="button" href="../index.php" >Back Home to Users</a></p>
-			
-			<h1>Dont have an Account?</h1>
-			<br>
-			<a class="button" href="create_account.php" >Create Account</a>
-			<a class="button" href="../index.php" >View All Users</a>
-			
+				
+            </form>		
+		</div>
+    </div>
 
-            <p><?php echo $login_message;?></p>
-			</center>
-	
-	
-	
-  </div>
-  <div class="bottomleft">
-    <center><p>&copy; <?php echo date("Y"); ?> Vojta Ripa, Inc.</p></center>
-  </div>
-</div>
+
+
+			<!-- Already a user? -->
+					<section id="video" class="wrapper style4">
+						<div class="inner">
+							<header>
+							    <p><?php echo $login_message;?></p>
+								<h2>Dont have an Account?</h2>
+								<p>Please create one.</p>
+					
+							</header>
+							
+							<!--buttons-->
+							<ul class="actions vertical">
+								<li><a href="create_account.php" class="button fit">Create Account</a></li>
+								<li><a href="../index.php" class="button fit special">Back Home</a></li>
+								<p><?php echo $login_message;?></p>								
+							</ul>
+							
+							
+						</div>
+					</section>	
+						
+
+	 </div>
+	</section>
+</article> 
+
+
+
 
 <!-- JAVASCRIPT -->
 <script>
@@ -170,6 +187,21 @@
 </script>
 
 
-        </main>
-    </body>
+	 
+	
+<!-- Footer -------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<div id="footer"></div>					
+
+			
+           </div>	
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/jquery.scrollex.min.js"></script>
+			<script src="../assets/js/jquery.scrolly.min.js"></script>
+			<script src="../assets/js/skel.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="../assets/js/main.js"></script>
+        
+	</body>
 </html>

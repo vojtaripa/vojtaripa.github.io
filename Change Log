@@ -21,8 +21,32 @@ version 3
 
 Change LOG:
 ****************************************************************************** 
+
+-BIG CHANGE to DESIGN!!!
 -Changing front end webpage display to HTML 5 (still needs work)...
 -removed other wallpaper for now
 -added flashy buttons
 -allowed SLOW results 
 -added lot more CSS and JS files that need to go with it for it to function
+
+
+
+
+FUTURE CHANGES:
+****************************************************************************** 
+
+-add new filter: race type, place finished, pace.. ect.
+-add more distances? 
+-go between menues as admin!
+-convert DOB (from age?)
+-Get project to GITHUB somehow?
+-IMPORT FROM OTHER DBs! 
+ -Strava
+ -DirectAthletics
+ -Athelinks
+ 
+- Fix my javascript file.
+- slight changes on formatting..
+- redo sign up form and make it more tow down 
+- get rid of confusion stuff.
+- make icons fo my website

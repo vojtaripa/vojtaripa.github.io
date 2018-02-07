@@ -204,15 +204,18 @@ if ($PlayerID != false  && $category_id != false) {
 
 
 ?>
-
 <!DOCTYPE html>
-
 <html>
-
-<!-- the head section -->
-<head>
-    <title>Modify Race</title>
-    <link rel="stylesheet" type="text/css" href="../main.css">
+   <head>
+     
+	  <meta charset="utf-8" />
+	  <meta name="viewport" content="width=device-width, initial-scale=1" />
+	  
+      <!--OLD STYLE: <link rel="stylesheet" type="text/css" href="../main.css"/>-->
+      <link rel="stylesheet" href="../assets/css/main.css" />
+	  
+	  <title>Modify Race</title>
+    
 	<style>
 		* {
 			padding: 1px;
@@ -238,20 +241,23 @@ if ($PlayerID != false  && $category_id != false) {
 		}
 	</style>
 	
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-			<script src="../jquery.geocomplete.js"></script>
+	<!-- FOR LIVE GEOCODING -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+			<script src="jquery.geocomplete.js"></script>
 			<script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
 		
 
 	<script>
-	
+	    //FOR LIVE GEOCODING
+		//LINK: http://www.jqueryscript.net/other/jQuery-Geocoding-Places-Autocomplete-with-Google-Maps-API-geocomplete.html
 		$(function()
 		{
 
 			$("#geocomplete").geocomplete()
 
 		});
-        
+	
+	        
 		//GETS SECONDS AND CONVERTS BACK TO TIME FORMAT
 		function SecondsToTime(inputTime) 
 		{	
@@ -292,9 +298,11 @@ if ($PlayerID != false  && $category_id != false) {
 			return (Hours + ":" + Minutes + ":" + Seconds);
 		}
 		
+		
+		
 		// MY LIVE PACE CALCULATOR:
 		//LINK: https://www.daniweb.com/programming/web-development/threads/305789/javascript-calculate-time-between-times
-		function RecalculateElapsedTime () 
+		function FindPace () 
 		{
             var startHSelect = document.getElementById ("starttimehour");
             var startMSelect = document.getElementById ("starttimemin");
@@ -334,18 +342,6 @@ if ($PlayerID != false  && $category_id != false) {
 			elapsedSpan.value = "" + (pace); //seconds //(elapsedInS / (1000*distVal) )   //.innerHTML
         }
 		
-		/*function SelectTime(valueToSelect,valueToSelect2,valueToSelect3)
-		{    
-			var element = document.getElementById('starttimesec');
-			element.value = valueToSelect;
-
-			var element = document.getElementById('starttimemin');
-			element.value = valueToSelect2;
-			
-			var element = document.getElementById('starttimehour');
-			element.value = valueToSelect3;
-		}*/
-		
 		function Feel ()
 		{
 			//Gets value of slider field
@@ -361,29 +357,64 @@ if ($PlayerID != false  && $category_id != false) {
 			myfeel.value = "" + (actualFeel); //";//slider.value; 
 		}
 		
-		//RUN IT WHEN VALUES CHANGE
+		 
         function Init () 
 		{
-			RecalculateElapsedTime ();
+			FindPace ();
 			Feel ();
-			//SelectTime($Times,$Timem,$Timeh); // this is PHP.. bleh..
         }
-    </script>
+		
+		
+    </script>  
+	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script> 
+	$(function(){
+	  $("#header").load("header.html"); 
+	  $("#footer").load("footer.html"); 
+	});
+	</script> 
 	
 </head>
+   
+   
+ 
 
+ 
+   <body class="landing" onload="Init ()">
 
-<!-- the body section -->
+		<!-- Page Wrapper -->
+			<div id="page-wrapper">
 
-<body onload="Init ()">
-
-    <header><h1>Adding a New Race Result</h1></header>
-    <main>
+				<!-- Header/ Menu -->
+				<div id="header"></div>	
+<!-- END LINKS / PERL BASESCRIPTS.Please -->
+					
 	
-        <center><h2>Please Add Your Race Results:</h2>
-		<center><img src="<?php echo "$Picture"; ?>" alt="WaterToWine" align="center" style="width: 40%; height: 40%" ></center> <br>
+
+	
+	
+
+	
+<!-- MAIN PAGE -->
+<article id="main">	
+	
+				<header>
+					<h2>Modify Race</h2>
+					<p>Please Make Changes To Your Race Results.</p>
+				</header>
+	     
+		 
+	 
+		 
+		 <!-- NEW SECTION -->
+		 <section class="wrapper style5">
+			<div class="inner">
+		<h2>Add Race: Manually </h2>
 		
-		<h2>Image to be upload</h2>
+		<h4> - Fill in the following, please follow format shown. </h4>     
+      </br> </br>
+		<!--IMAGE-->
+		<h3>Select Race Picture</h3>
         <form action="modify_race.php" method="post" id="modify_race_form" enctype="multipart/form-data">
 			
 			<!--IMAGE-->
@@ -447,8 +478,7 @@ if ($PlayerID != false  && $category_id != false) {
 
 			<center>
 			  <div class="upload">
-				<label class="upload" for="image_uploads">Choose images to upload (PNG, JPG)</label>
-				<!--<input type="hidden" name="action" value="upload">-->
+				<label class="upload" for="image_uploads" style="color:white">Choose images to upload (PNG, JPG)</label>
 				<input class="upload" type="file" id="image_uploads" name="image_uploads" accept=".jpg, .jpeg, .png" multiple>
 			  </div>
 			  
@@ -463,8 +493,7 @@ if ($PlayerID != false  && $category_id != false) {
 				</p>
 				
 			  </div>
-			  
-			  <input class="upload" type="input" id="myFile" name="file1" value="<?php echo $Picture; ?>" readonly>
+			  <input class="upload" type="text" id="myFile" name="file1" value="<?php echo $Picture; ?>" readonly>
 			</center>
 			
 
@@ -549,10 +578,15 @@ if ($PlayerID != false  && $category_id != false) {
 			  }
 			}
 			</script>
-			
+
+
+						<!--<input type="hidden" name="action" value="upload">
+						<input type="file" name="file1"><br>-->
 
  			
-<table style="align:center;width:70%;border: 4px solid red;">
+
+
+
 
 <!-- 	
 
@@ -574,86 +608,35 @@ Notes
 -->
 <!-- CHANGE VALUE TO placeholder= -->
 
-			<tr>
-			<td><label>Race ID</label></td>
-			<td>
+						<div class="6u 12u$(xsmall)"><label>Race ID</label></div>
+			<div class="6u 12u$(xsmall)">
 				<input type="text" name="Index" value="<?php echo $Index; ?>" readonly>
-			 </td>
-			 </tr>
-	 
+			 </div>
 			 
-
-			<!-- Learn about this code on MDN: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file -->
-
 			
-						<?php
-
-						/*if($Picture!=NULL)
-						{
-							echo "$Picture";
-						}	
-						else
-						{
-							echo "No files currently selected for upload";
-						}*/
-						?>
-				
-					
-				   <!-- <form id="add_MyRaceResults.php" action="." method="POST" enctype="multipart/form-data">-->
-						<!--<input type="hidden" name="action" value="<?php echo $Picture; ?>">
-						<input type="file" name="file1"    value="<?php echo $Picture; ?>" accept=".jpg, .jpeg, .png" ><br>-->
-						<!--<input id="upload_button" type="submit" value="Upload"> -->
-					  <!--</form> -->
-
-			
-			</tr>
 			
 
-			<tr>
-           <td><label>Race Name:</label></td>
-           <td> <input type="text" name="Race" placeholder="Running of the Warriors" value="<?php echo $Race; ?>" required></td><br>		   
-		   </tr><tr>
 			
-			<td><label>Date of Race:</label></td>
+           <div class="6u 12u$(xsmall)"><label>Race Name:</label></div>
+           <div class="6u 12u$(xsmall)"> <input type="text" name="Race" placeholder="Running of the Warriors" value="<?php echo $Race; ?>" required></div><br>		   
+		   
 			
-			<?php
-			/*
-				$d= substr($Date, (strlen($Date)-2)); // makes seconds the last 2 chars
-				$inputTime=substr($Date,0,-3);//$inputTime=str_replace((":" . $s), "", $inputTime);	//gets rid of seconds and :
-				$m= substr($Date, (strlen($Date)-2)); 
-				$Date=substr($Date,0,-3);//$inputTime=str_replace((":" . $m), "", $inputTime);	//gets rid of minutes and :
-				$y= $Date; 
-			$myDate="$m/$d/$y"; //TEST
-			*/
-			//$Date=substr($Date, 2,-1);
+			<div class="6u 12u$(xsmall)"><label>Date of Race:</label></div>
 			
-			/*if($Date=="2017-07-04")
-			 echo"SAME! Date:$Date. and Text:2017-07-04.";
-		    else 
-			 echo"NOT SAME... Date:$Date. and Text:2017-07-04.";*/
-			?>
 			
-           <td> <input type="date" name="Date" value="<?php echo"$Date"; ?>" required ></td><br>		   
-		   </tr><tr>
+           <div class="6u 12u$(xsmall)"> <input type="date" name="Date" value="<?php echo"$Date"; ?>" required ></div><br>		   
+		   
 
-           <!--<td><label>Distance Run:</label></td>
-            <td><input type="number" name="quantity" min=".01" max="26.20" name="Distance" value="13.1" required></td><br>
-			</tr><tr>	-->	   
-			
 			 
 			 <!-- NEED TO FIGURE OUT HOW TO SELECT THE CURRENT DISTACE -->
-			 <td><label>Distance</label></td>
-             <td><select id="distance" name="Distance" onchange="RecalculateElapsedTime ()" class="selectboxkl">
+			 <div class="6u 12u$(xsmall)"><label>Distance</label></div>
+             <div class="6u 12u$(xsmall)"><select id="distance" name="Distance" onchange="RecalculateElapsedTime ()" class="selectboxkl">
 				<?php foreach ($Distance as $Distance) : ?>
 				    <!--https://stackoverflow.com/questions/1336353/how-do-i-set-the-selected-item-in-a-drop-down-box?newreg=d27b59304f42448e88b80762d4ca2b61-->
 					<option value="<?php echo $Distance['Distance']; ?>"<?=$Distance['Distance'] == "$MyDistance" ? ' selected="selected"' : '';?>><?php echo $Distance['distName']; ?></option> <!--WORKS!!!! :) -->				
 				<?php endforeach; ?>
-            </select></td></tr>
-			
-			<!--<tr>
-			 <td><label>Time Run:</label></td>
-            <td><input type="text" name="Time" value="1:10:09" required></td><br>
-			</tr><tr> -->
+            </select></div>
+
 			
 			
 			<!-- NEED TO FIGURE OUT HOW TO SELECT THE TIME -->
@@ -671,8 +654,8 @@ Notes
 			
 			
 			?>
-			<td><label>Time Run:</label></td>
-            <td>
+			<div class="6u 12u$(xsmall)"><label>Time Run:</label></div>
+            <div class="6u 12u$(xsmall)">
 			<pre><b>Hours                       Minutes                       Seconds</b></pre>
 				<select id="starttimehour" name="Hours" onchange="RecalculateElapsedTime ()" class="selectboxkl">
 					<?php foreach ($Hours as $Hours) : ?>
@@ -693,91 +676,113 @@ Notes
 				</select>
 				<br>
 							
-			</td><br>
-			</tr><tr> 
+			</div><br>
+			 
 			
-				<td> <label>Pace Run </label></td>
-           <td> <!--<input type="text" name="Pace" value="0:05:09">--> <input name="Pace" id="elapsed" readonly value="<?php echo $Pace; ?>"> </td><br> <!-- <span name="Pace" id="elapsed"></span>  -->
-		   </tr><tr>
+				<div class="6u 12u$(xsmall)"> <label>Pace Run </label></div>
+           <div class="6u 12u$(xsmall)"> <!--<input type="text" name="Pace" value="0:05:09">--> <input name="Pace" id="elapsed" readonly value="<?php echo $Pace; ?>"> </div><br> <!-- <span name="Pace" id="elapsed"></span>  -->
+		   
 
-           <td> <label>Place Finished:</label></td>
-           <td> <input name="Place" placeholder="1" value="<?php echo $Place; ?>" type="number" min="1" max="1000" pattern="[0-9]{3}" required ></td><br>
-		   </tr><tr>
+           <div class="6u 12u$(xsmall)"> <label>Place Finished:</label></div>
+           <div class="6u 12u$(xsmall)"> <input name="Place" placeholder="1" value="<?php echo $Place; ?>" type="number" min="1" max="1000" pattern="[0-9]{3}" required ></div><br>
+		   
 			 	
 			
-			<td> <label>Location</label></td>
-           <td> <input id="geocomplete" type="text" name="Location" placeholder="Santa Rosa, Ca" value="<?php echo $Location; ?>" required ></td><br>
-		   </tr><tr>
+			<div class="6u 12u$(xsmall)"> <label>Location</label></div>
+           <div class="6u 12u$(xsmall)"> <input id="geocomplete" type="text" name="Location" placeholder="Santa Rosa, Ca" value="<?php echo $Location; ?>" required ></div><br>
+		   
 		   
 		   	<!-- NEED TO FIGURE OUT HOW TO SELECT THE CURRENT Type -->
 			<?php
 			$Types  = array("XC","Track","Road","Tri");
 			?>
-			<td><label>Type of Race</label></td>
-             <td>
+			<div class="6u 12u$(xsmall)"><label>Type of Race</label></div>
+             <div class="6u 12u$(xsmall)">
 			 <select name="Type">
 				<?php foreach ($Types as $Types) : ?>	
 					<option value="<?php echo $Types; ?>"<?=$Types == "$Type" ? ' selected="selected"' : '';?>><?php echo "$Types"; ?></option> <!--WORKS!!!! :) -->
 				<?php endforeach; ?>	
             </select>
-			</td></tr>
+			</div>
 			
-			<!--<td>Picture: </td>
-			<td><input type="image" src="img_submit.gif" alt="Submit" width="48" height="48"></td>
-			</tr><tr>-->
-			
-			<td>Add link to your results: </td>
-			<td><input type="url" name="ResultsLink" placeholder="Directathletics.com" value="<?php echo $LinkToResults; ?>"></td> 
+			<div class="6u 12u$(xsmall)">Add link to your results: </div>
+			<div class="6u 12u$(xsmall)"><input type="url" name="ResultsLink" placeholder="Directathletics.com" value="<?php echo $LinkToResults; ?>"></div> 
  
-			</tr><tr>
 			
-			<td>Add link to your activity: <br><a href="https://www.strava.com/dashboard?feed_type=my_activity">My Strava Activities</a></td>
-			<td><input type="url" name="ActivityLink" placeholder="strava.activity.com" value="<?php echo $LinkToActivity; ?>"></td>
-			</tr><tr>
 			
-			<td>Shoe Model/ Brand </td>
-			<td><input type="text" name="Shoes" placeholder="Ex. Nike Lunar Racer" value="<?php echo $shoes; ?>"></td>
-			</tr>
+			<div class="6u 12u$(xsmall)">Add link to your activity: <br><a href="https://www.strava.com/dashboard?feed_type=my_activity">My Strava Activities</a></div>
+			<div class="6u 12u$(xsmall)"><input type="url" name="ActivityLink" placeholder="strava.activity.com" value="<?php echo $LinkToActivity; ?>"></div>
 			
-			<tr>
-			<td> <label>Notes:</label></td>
-           <td> <textarea rows="8" cols="75" name="Comments" placeholder="Please write a note about the race..." ><?php echo $Comments; ?></textarea></td><br>
-		   </tr>
+			
+			<div class="6u 12u$(xsmall)">Shoe Model/ Brand </div>
+			<div class="6u 12u$(xsmall)"><input type="text" name="Shoes" placeholder="Ex. Nike Lunar Racer" value="<?php echo $shoes; ?>"></div>
+			
+			
+			
+			<div class="6u 12u$(xsmall)"> <label>Notes:</label></div>
+           <div class="6u 12u$(xsmall)"> <textarea rows="8" cols="75" name="Comments" placeholder="Please write a note about the race..." ><?php echo $Comments; ?></textarea></div><br>
 		   
-		      <tr>
-			<td> <label>How did you feel? (Scale 1 to 10, 10 being the best)</label></td>
-           <td> 
+		   
+		      
+			<div class="6u 12u$(xsmall)"> <label>How did you feel? (Scale 1 to 10, 10 being the best)</label></div>
+           <div class="6u 12u$(xsmall)"> 
 		   Felt like a: 
 		   <input type="range" name="feel" min="0" max="10" value="<?php echo $feel; ?>" onchange="Feel ()" id="slider">
 		   <input type="text" name="feeltext" value="0" readonly id="feel"><br>
 		  <pre> 0 (Worst)                                                                       10 (Best) </pre>
-			</td><br>
-		   </tr>
+			</div><br>
 		   
-		   <!--FOR PASSING PASSWORD INFO FOR USER TO FORM-->
+		   <div class="6u 12u$(xsmall)">
+			 <label>Notes:</label>
+            <textarea rows="8" cols="75" name="Comments" value="" placeholder="Please write a note about the race..."> </textarea><br>
+		   </div>
+		   
+		   
 		   <input type="hidden" name="username" value="<? echo $myusername?>" >
 		   <input type="hidden" name="password" value="<? echo $mypassword?>" > 
-		   
-		   </table></center>
-		   
-		
-  
-			
-            <label>&nbsp;</label>
 
             <input class="button" type="submit" value="Modify Race">  <br><br> <input class="button" type=reset value="Clear">
 			<br>
         </form>
+		</br>
+		</br>
+		</br>
+			<!--buttons-->
+			<ul class="actions vertical">
+				<li><a href="<?php echo "RaceResults.php?choice=search&user=".urlencode($myusername)."&password=".urlencode($mypassword)."&Year=".urlencode('All')."&Distance=".urlencode('All'); ?>" class="button fit">Back</a></li>
+				<li><a href="../index.php" class="button fit special">Home</a></li>
+				<p><?php echo $login_message;?></p>								
+			</ul>
+	</div>
+   </div>
+        
+	
 
-        <p><a href="<?php echo "RaceResults.php?choice=search&user=".urlencode($myusername)."&password=".urlencode($mypassword)."&Year=".urlencode('All')."&Distance=".urlencode('All'); ?>">Back</a> <a href="../index.php">View Users</a></p>
-    </main>
+
+		 </div>
+	</section>
+</article> 
 
 
 
-    <footer>
-        <p>&copy; <?php echo date("Y"); ?> Vojta Ripa, 2017, Inc.</p>
-    </footer>
 
-</body>
 
+
+
+	
+<!-- Footer -------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<div id="footer"></div>
+
+			
+           </div>	
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/jquery.scrollex.min.js"></script>
+			<script src="../assets/js/jquery.scrolly.min.js"></script>
+			<script src="../assets/js/skel.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="../assets/js/main.js"></script>
+        
+	</body>
 </html>

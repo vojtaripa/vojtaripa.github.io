@@ -219,8 +219,8 @@ function sortList() {
 	
 
 
-<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js">
-</script>
+	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js">
+	</script>
 <script>
 $(document).ready(function()
 {

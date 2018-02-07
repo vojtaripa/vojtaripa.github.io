@@ -1,5 +1,35 @@
 //JAVASCRIPT FOR RACE RESULTS:
         
+		//CHANGED HERE DOWN. ****************************************************************************** 
+		function accordion ()
+		{
+			//THIS IS FOR HIDDEN DROPDOWN (ABOUT )
+			var acc = document.getElementsByClassName("accordion");
+			var i;
+
+			for (i = 0; i < acc.length; i++) 
+			{
+				acc[i].onclick = function()
+				{
+					/* Toggle between adding and removing the "active" class,
+					to highlight the button that controls the panel */
+					this.classList.toggle("active");
+
+					/* Toggle between hiding and showing the active panel */
+					var panel = this.nextElementSibling;
+					if (panel.style.display === "block") 
+					{
+						panel.style.display = "none";
+					} 
+					else 
+					{
+						panel.style.display = "block";
+					}
+				}
+			}
+		}
+    
+		
 		//GETS SECONDS AND CONVERTS BACK TO TIME FORMAT
 		function SecondsToTime(inputTime) 
 		{	
@@ -300,36 +330,8 @@
         }
 	
 	
-		//CHANGED HERE DOWN. ****************************************************************************** 
-		function accordion ()
-		{
-			//THIS IS FOR HIDDEN DROPDOWN (ABOUT )
-			var acc = document.getElementsByClassName("accordion");
-			var i;
 
-			for (i = 0; i < acc.length; i++) 
-			{
-				acc[i].onclick = function()
-				{
-					/* Toggle between adding and removing the "active" class,
-					to highlight the button that controls the panel */
-					this.classList.toggle("active");
-
-					/* Toggle between hiding and showing the active panel */
-					var panel = this.nextElementSibling;
-					if (panel.style.display === "block") 
-					{
-						panel.style.display = "none";
-					} 
-					else 
-					{
-						panel.style.display = "block";
-					}
-				}
-			}
-		}
-    
-	//TABLE SEARCH
+	//TABLE SEARCH for race by name... 
 	function myFunction() 
 	{
 	  // Declare variables 
@@ -399,6 +401,21 @@
 	  }
 	}
 	
+	//Hide Rows with "YEAR" when header is clicked
+	function toggle2() 
+	{
+	var input, filter, table, tr, td, i, year, th; //variables
+	 
+	 table = document.getElementById("races"); //which table? races table
+	  tr = table.getElementsByTagName("tr"); //gets each row.
+
+	 for (i = 0; i < tr.length; i++) 
+	  {
+		document.getElementById("hidethis").style.display = 'none';
+	  }
+	}
+	
+	
 	// When the user scrolls down 20px from the top of the document, show the button
 	window.onscroll = function() {scrollFunction()};
 
@@ -415,4 +432,9 @@
 		document.body.scrollTop = 0;
 		document.documentElement.scrollTop = 0;
 	}
+	
+ //IF HEADER IS CLICKED.
+
+    //th.onclick = function toggle();
+
 	

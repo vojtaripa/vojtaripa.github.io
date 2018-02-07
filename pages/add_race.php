@@ -212,7 +212,6 @@ $DateDifference = $DateDifference->format('%R%a');
 
 if( $DateDifference < 0)
 {
-	
 	$message = "<br><h2>ERROR: Please check your Date, you are " . abs($DateDifference) . " in the future, this race did not happen yet. (For Date: $Date)</h2>";
     echo $message;
 	include('add_race_form.php');
@@ -245,8 +244,7 @@ if(!((1 <= $Place) && ($Place <= 999)))
 //$Location;
 if (geocode($Location) != true) 
 {
-    echo geocode($Location)."<br>";
-	$message = "<br><h2>ERROR: Please check your address, geocode failed for: ($Location)</h2>";
+    $message = "<br><h2>ERROR: Please check your address, geocode failed for: ($Location)</h2>";
     echo $message;
 	include('add_race_form.php');
     exit();
@@ -397,11 +395,9 @@ if(!$db_selected)
 //NEED TO TRANSLATE DISTANCE! NOTE: NOT ALL MY DISTANCES WILL HAVE A POINT VALUE... :/
 function translateDistance($output, $value4)
 { 
-			
 			switch($output)
 			{ 
-							
-				
+			
 				case '0.06'	:
 				$distanceName='100m';
 				break;
@@ -448,76 +444,12 @@ function translateDistance($output, $value4)
 				
 				//NOT Listed but I tried to convert it.
 				case '6.00'	:
-				{
-				
-					function TimeToSecondsX($inputTime) 
-					{	
-						//now i need to strip h m s from this 
-						$s= substr($inputTime, (strlen($inputTime)-2)); // makes seconds the last 2 chars
-						$inputTime=substr($inputTime,0,-3);//$inputTime=str_replace((":" . $s), "", $inputTime);	//gets rid of seconds and :
-						$m= substr($inputTime, (strlen($inputTime)-2)); 
-						$inputTime=substr($inputTime,0,-3);//$inputTime=str_replace((":" . $m), "", $inputTime);	//gets rid of minutes and :
-						$h= $inputTime; 
-						
-						//PRINT
-						//array_push($printArray,"TimeToSeconds(adding/before): $h:$m:$s <br>");
-						
-						//USE THIS FOR TOTALS? add each individual piece
-						$totalH=($h*60*60);
-						$totalM=($m*60);
-						$totalS=($s);
-						
-						//Then send updated totals back to user	
-						
-						//PRINT
-						//array_push($printArray,"TimeToSeconds: TotalTime- $totalH:$totalM:$totalS, Total: (". ($totalH+$totalM+$totalS) .") <br>");
-						
-						return ($totalH+$totalM+$totalS);
-					}
-					
-					//GETS SECONDS AND CONVERTS BACK TO TIME FORMAT
-					function SecondsToTimeX($inputTime) 
-					{	
-						//echo nl2br("Seconds are now: $Seconds \n");
-						if($inputTime>=(60*60))
-						{
-							$CaryOver=$inputTime%(60*60);
-							$Hours=floor($inputTime/(60*60));
-							$inputTime=$CaryOver;
-							//echo nl2br("Seconds are now: $CarryOver \n");
-									
-						}
-
-						if($inputTime>=60)
-						{
-							$CaryOver=$inputTime%60; //Remainder
-							$Minutes=floor($inputTime/60);
-							$inputTime=$CaryOver;
-							//echo nl2br("Minutes are now: $CarryOver \n");
-							
-						}
-						$Seconds=$inputTime;
-						
-						//array_push($printArray,"SecToTime: ","$Hours:$Minutes:$Seconds","<br>");
-						
-						//NOW Correct the FORMAT
-						if($Hours<10)
-						{$Hours="0".$Hours;}	
-						if($Minutes<10)
-						{$Minutes="0".$Minutes;}
-						if($Seconds<10)
-						{$Seconds="0".$Seconds;}
-						
-						
-						return ("$Hours:$Minutes:$Seconds");
-					}
 				//can try to convert this to 10k time add 71 seconds for 6min pace
-				$value4=TimeToSecondsX($value4);
+				$value4=TimeToSeconds($value4);
 				$value4=$value4+71;
-				$value4=SecondsToTimeX($value4);
+				$value4=SecondsToTime($value4);
 				//echo "6MI convertion!!! time is now: $value4 ";
 				$distanceName='10km';
-				}
 				break;
 				
 				case '6.20'	:

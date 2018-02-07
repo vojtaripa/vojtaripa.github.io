@@ -1,0 +1,105 @@
+	
+	<script>
+									var url = window.location.href.split("/"); //replace string with location.href
+									
+									var navLinks = document.getElementsByTagName("nav")[0].getElementsByTagName("a");
+									
+									//naturally you could use something other than the <nav> element
+									var i=0;
+									var currentPage = url[url.length - 1];
+									//window.alert(currentPage);
+									
+									for(i;i<navLinks.length;i++)
+									{
+										  var lb = navLinks[i].href.split("/");
+										  
+										  if(lb[lb.length-1] == currentPage) 
+										  {
+										   navLinks[i].className = "current";
+
+										  }
+									  }
+				</script>
+				
+				<script src="../assets/js/main.js"></script> 
+				
+			
+
+				<style>
+					 .current 
+					 {
+						color:#E6594D; 
+						/*border:1px solid red;*/
+						text-decoration: underline;
+					  }
+					</style>
+	
+	<header id="header">
+					<!--EMOJIS https://www.emojicopy.com/ -->
+			
+					
+					<link rel="Finishline Icon" href="../image/finishline.ico">
+						<h1><a href="../index.php"><i class="icon fa-flag-checkered"></i><b> Finish</b>line</a></h1>
+						<nav id="nav">
+							<ul>
+								<a href="../index.php"><i class="icon fa-home"></i> Home</a>&nbsp; 
+								<a  href="../index.php#users"><i class="icon fa-users"></i> Users</a>&nbsp;
+								<a href="functions.php"><i class="icon fa-calculator"></i> Functions</a>&nbsp; 
+								<a href="distance_list.php"><i class="icon fa-road"></i> Distances</a>&nbsp; 
+								<a href="points.php"><i class="icon fa-info"></i> Points</a>&nbsp; 
+								<a href="signup.php"><i class="icon fa-envelope"></i> Contact</a>&nbsp; 
+								<a href="about.html"><i class="icon fa-user"></i> About Author</a>&nbsp; 
+								<a class="noline" href="#">&nbsp; 	&nbsp;	|	&nbsp;	&nbsp;</a>
+								<a href="create_account.php"><i class="icon fa-user-plus"></i> Sign Up</a>&nbsp; 
+								<a href="login.php"><i class="icon fa-sign-in"></i> Log In</a>
+								
+												
+								
+								<li class="special">
+									<a href="#menu" class="menuToggle"><span>Menu</span></a>
+									<div id="menu">
+										<ul>
+											<?php
+											if($myusername!=NULL)
+											{ ?>
+												
+												<label style="color:#696969;">Page Navigation:</label>      <li><a class='scrolly button ' href='#results' ><i class='icon fa-road'></i>  Race Results</a></li>
+																					 <li><a class='scrolly button ' href='#Filters' ><i class='icon fa-filter'></i>  Filters</a></li>
+																					 <li><a class='scrolly button ' href='#user' ><i class='icon fa-user-circle'></i>  User Info</a></li>
+																					 <li><a class='scrolly button ' href='#PRs' ><i class='icon fa-trophy'></i>  Race PRs</a></li>
+																					 <li><a class='scrolly button ' href='#YearPRs' ><i class='icon fa-trophy'></i>  Yearly PRs</a></li>
+																					 <li><a class='scrolly button ' href='#Totals' ><i class='icon fa-plus'></i>  Result Totals/ Averages</a>  </li>   
+																					 <li><a class='scrolly button ' href='#Goals' ><i class='icon fa-book'></i>  Race Goals</a></li>
+																					 <li><a class='scrolly button ' href='#Graphs' ><i class='icon fa-bar-chart'></i>  Race Graphs</a></li>
+																					 <li><a class='scrolly button ' href='#Map' ><i class='icon fa-map'></i>  Races On a Map</a></li>
+											<?php
+											}
+											?>
+											
+											</br>
+											<label style="color:#696969;">Nomal Links:</label>
+											<li><a href="../index.php"><i class="icon fa-home"></i> Home</a></li>
+											<li><a  href="../index.php#users"><i class="icon fa-users"></i> Users</a></li>
+											<li><a href="functions.php"><i class="icon fa-calculator"></i> Functions</a></li>
+											<li><a href="distance_list.php"><i class="icon fa-road"></i> Distances</a></li>
+											<li><a href="points.php"><i class="icon fa-info"></i> Points</a></li>
+											<li><a href="signup.php"><i class="icon fa-envelope"></i> Contact</a></li>
+											<li><a href="about.html"><i class="icon fa-user"></i> About Author</a></li>
+											<li><a href="http://vojta.users.sonic.net/blog/">Vojta's Main Page</a></li>
+											</br>
+											<li><a href="../generic.html">Generic</a></li>
+											<li><a href="../elements.html">Elements</a></li>
+											</br>
+											<li><a href="create_account.php"><i class="icon fa-user-plus"></i> Sign Up</a></li>
+											<li><a href="login.php"><i class="icon fa-sign-in"></i> Log In</a></li>
+										</ul>
+									</div>
+								</li>
+							</ul>
+						</nav>
+			</header>		
+
+	
+		
+			<!--	<script src="../assets/js/main.js"></script> -->
+	

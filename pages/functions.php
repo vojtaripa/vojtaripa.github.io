@@ -25,42 +25,18 @@ $statement2->closeCursor();
 
 ?>
 
+
 <!DOCTYPE html>
-
 <html>
-
-<!-- the head section -->
-<head>
-    <title>Functions</title>
-    <link rel="stylesheet" type="text/css" href="../main.css">
-	<style>
-		* {
-			padding: 1px;
-			size: 16px;
-			align: center;
-		}
-		input
-		{
-			width:100%;
-		}
-		select
-		{
-			width:30%;
-			text-align:center; 
-			align:center;
-			margin-left:auto; 
-			margin-right:auto; 
-		}
-		td{
-			border: 1px solid #ddd;
-			margin-top: -1px;
-			padding: 12px;
-		}
-	</style>
-	
-	
-	
-	<!-- JAVASCRIPT -->
+   <head>
+      <title>Functions</title>
+	  <meta charset="utf-8" />
+	  <meta name="viewport" content="width=device-width, initial-scale=1" />
+	  
+      <!--OLD STYLE: <link rel="stylesheet" type="text/css" href="../main.css"/>-->
+      <link rel="stylesheet" href="../assets/css/main.css" />
+	  
+	  <!-- JAVASCRIPT -->
 	<script>
 	   
 		//GETS SECONDS AND CONVERTS BACK TO TIME FORMAT
@@ -295,100 +271,39 @@ $statement2->closeCursor();
 		
     </script>
 	
-</head>
-
-
-
-<!-- the body section -->
-
-<body onload="Init ()">
-     <main>
-	 
-	 
- <center>
-   <span class="myButtons" style="display: inline;">
+		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+		<script> 
+		$(function(){
+		  $("#header").load("header.html"); 
+		  $("#footer").load("footer.html"); 
+		});
+		</script> 
+   </head>
    
-   <h2> Links: </h2>
    
-   <a class="button" href="login.php" >Admin</a> <!--indexAdmin.php -->
-   <a class="button" href="../index.php" >View All Users</a>
-   <a class="button" href="functions.php" style="background-color:red;" >Other Functions / Conversions</a>
-   <a class="button" href="distance_list.php">List distances</a> 
-   <a class="button" href="points.php">Points</a>   
-   <a class="button" href="signup.php" >Sign up for updates</a>
    
-   <a class="button" href="http://vojta.users.sonic.net/blog/"> Vojta's Main Page </a>
-   <a class="button" href="about.html">Vojta's Bio</a>
-   
-   </span>
-   
-    <br>
-   <hr  >
-   <br>
-    <header><h1>Useful Functions and Conversions</h1></header>
+   <body class="landing" onload="Init ()">
 
-</center>
+		<!-- Page Wrapper -->
+			<div id="page-wrapper">
 
-        	
-			
-			<style>
-				  
-				  .upload
-				  {
-					color: black;
-					width: 40%;
-					background: #ccc;
-					margin: 0 auto;
-					padding: 1.5%;
-				  }
+				<!-- Header/ Menu -->
+<div id="header"></div>
+<!-- END LINKS / PERL BASESCRIPTS.Please -->
+					
+	
 
-				   ol.upload {
-					  color: black;
-					padding-left: 0;
-				  }
+	
+					
+<!-- MAIN PAGE -->
+<article id="main">	
+				<header>
+					<h2>Functions</h2>
+					<p>I have created numerous functions which might be useful, please see below.</p>
+				</header>
 
-				   li.upload {
-					color: black;
-					background: #eee;
-					display: flex;
-					justify-content: space-between;
-					margin-bottom: 10px;
-					list-style-type: none;
-				  }
-
-				   img.upload {
-					color: black;
-					height: 64px;
-					margin-left; 20px;
-					order: 1;
-				  }
-
-				   p.upload {
-					color: black;
-					line-height: 32px;
-					padding-left: 5px;
-				  }
-
-				   label.upload, button.upload {
-					background-color: black;
-					background-image: linear-gradient(to bottom, rgba(255, 0, 0, 0), rgba(255, 0, 0, 0.4) 40%, rgba(255, 0, 0, 0.4) 60%, rgba(255, 0, 0, 0));
-					color: #ccc;
-					padding: 5px 10px;
-					border-radius: 5px;
-					border: 1px ridge gray;
-				  }
-
-				   label:hover, button:hover {
-					background-color: #222;
-				  }
-
-				   label:active, button:active {
-					background-color: #333;
-				  }
-			</style>
-			
-<div style="background-color: rgba(0,0,0,.5); ">
-	    <center><h2>Here are some useful functions:</h2>
+	<div style="background-color: rgba(0,0,0,.5); ">
+		<h2>Here are some useful functions:</h2>
 		<table style="background: rgb(0,0,0); ">
 		
 		  <tr><td><a class="button" href="#Pace Calculator">Pace Calculator</a>       </td> <td>Given a time and distance, this function will give you the pace per mile needed to achive this goal. </td></tr>
@@ -398,20 +313,16 @@ $statement2->closeCursor();
 		  <tr><td><a class="button" href="#Time to Seconds">Time to Seconds</a>       </td> <td>Tells you how many seconds a given time is. </td></tr>
 		  <tr><td><a class="button" href="#Seconds to Time">Seconds to Time</a>       </td> <td>Given the amount of seconds, it converts it to an actual time. </td></tr>
 		  <tr><td><a class="button" href="#Distance converter">Distance converter</a>	   </td> <td>Select the distance you ran and the metrics, then chose which metrics you want to convert it to. </td></tr>	  
-		  <tr><td><a class="button" href="#Distance converter">VO2MAX calculator</a>	   </td> <td>VO2 max represents your maximal oxygen consumption and varies from athlete to athlete depending on your cardiovascular fitness. It's often expressed in milliliters of oxygen per kilogram of body weight per minute and is the single best measure of cardiovascular fitness. Think of VO2 max as a measure of how efficiently your body uses oxygen. </td></tr>
+		  <tr><td><a class="button" href="#VO2MAX">VO2MAX calculator</a>	   </td> <td>VO2 max represents your maximal oxygen consumption and varies from athlete to athlete depending on your cardiovascular fitness. It's often expressed in milliliters of oxygen per kilogram of body weight per minute and is the single best measure of cardiovascular fitness. Think of VO2 max as a measure of how efficiently your body uses oxygen. </td></tr>
 		</table>
-        
-			<center>
-			
-</div>
-</body>
-</main>
+   		
+	</div>
 
 
-<br><br><br>
 
-<main>
-<body>
+	<!-- INSERT PAGE CODE HERE -->
+	<section id="video" class="wrapper style4"><div class="inner">
+
 <div id='Pace Calculator'>
 <u><h1>Pace Calculator</h1></u><br>
 <h3>Please select a distance and time:</h3>	
@@ -584,14 +495,15 @@ $statement2->closeCursor();
 
         <p><a href="../index.php">Home</a></p>
 </div>		
-</body> 
-</main>
+ 
+</div></section>
 
 
 <br><br><br>
 
-<main>
-	<body>
+<section class="wrapper style5">
+<div class="inner">
+	
 		<div id='Best Event Selector'>
 			<u><h1>Best Event Selector</h1></u><br>
 			<center><h3>Please put in your best times in associated distances:</h3>	</center>
@@ -1110,14 +1022,14 @@ $statement2->closeCursor();
 <!-- ******************************************************************************  -->
 			
 		</div>
-	</body> 
- </main>
+	 
+ </div></section>
 
 <br><br><br> 
  
  
-<main>
-	<body>
+<section id="video" class="wrapper style4"><div class="inner">
+	
 		<div id='Points Converter'>
 			<u><h1>Points Converter</h1></u><br>
 			<h3>Please put in a time and distance, and it will determine how many points the effort is worth scale (0 - 1400):</h3>	
@@ -1196,15 +1108,15 @@ $statement2->closeCursor();
         <p><a href="../index.php">Home</a></p>
 		
 		</div>
-	</body>
- </main>
+	
+ </div></section>
 
 <br><br><br> 
 
 
 
-<main>
-	<body>
+<section id="video" class="wrapper style4"><div class="inner">
+	
 		<div id='Pace to MPH'>
 			<u><h1>Pace to MPH</h1></u><br>
 			<h3>Please put in a pace:</h3>	
@@ -1371,13 +1283,13 @@ $statement2->closeCursor();
         <p><a href="../index.php">Home</a></p>
 		
 		</div>
-	</body> 
- </main>
+	 
+ </div></section>
 
 <br><br><br> 
 
-<main>
-	<body>
+<section id="video" class="wrapper style4"><div class="inner">
+	
 		<div id='Time to Seconds'>
 			<u><h1>Time to Seconds</h1></u><br>
 			<h3>Please put in a time:</h3>	 
@@ -1544,13 +1456,13 @@ $statement2->closeCursor();
         <p><a href="../index.php">Home</a></p>
 		
 		</div>
-	</body> 
- </main>
+	 
+ </div></section>
 
 <br><br><br> 
 
-<main>
-	<body>
+<section id="video" class="wrapper style4"><div class="inner">
+	
 		<div id='Seconds to Time'>
 			<u><h1>Seconds to Time</h1></u><br>
 			<h3>Please put in Seconds run:</h3>	
@@ -1574,13 +1486,13 @@ $statement2->closeCursor();
         <p><a href="../index.php">Home</a></p>
 			
 		</div>
-	</body> 
- </main>
+	 
+ </div></section>
 
 <br><br><br> 
 
-<main>
-	<body>
+<section id="video" class="wrapper style4"><div class="inner">
+	
 		<div id='Distance converter'>
 			<u><h1>Distance converter <br><i>(*does not work yet*)</i></h1></u><br>
 			<h3>Please select a distance:</h3>	 
@@ -1645,13 +1557,13 @@ $statement2->closeCursor();
         <p><a href="../index.php">Home</a></p>
 			
 		</div>
-	</body> 
- </main>
+	 
+ </div></section>
 
 <br><br><br> 
 
-<main>
-	<body>
+<section id="video" class="wrapper style4"><div class="inner">
+	
 		<div id='VO2MAX'>
 			<u><h1>VO2MAX</h1></u><br>
 			<h3>VO2 max represents your maximal oxygen consumption and varies from athlete to athlete depending on your cardiovascular fitness. It's often expressed in milliliters of oxygen per kilogram of body weight per minute and is the single best measure of cardiovascular fitness. Think of VO2 max as a measure of how efficiently your body uses oxygen.</h3>
@@ -1850,14 +1762,34 @@ Formula:
         <p><a href="../index.php">Home</a></p>
 		
 		</div>
-	</body> 
- </main>
-
-<br><br><br>  
-
-    <footer>
-        <p>&copy; <?php echo date("Y"); ?> Vojta Ripa, 2017, Inc.</p>
-    </footer>
+	 
+ </div></section>
 
 
+
+	
+</article> 
+
+
+
+
+
+
+
+	
+<!-- Footer -------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<div id="footer"></div>
+
+			
+           </div>	
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/jquery.scrollex.min.js"></script>
+			<script src="../assets/js/jquery.scrolly.min.js"></script>
+			<script src="../assets/js/skel.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="../assets/js/main.js"></script>
+        
+	</body>
 </html>

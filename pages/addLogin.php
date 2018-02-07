@@ -115,7 +115,7 @@ echo $todaysDate."<br>";*/
 	//var_dump($users);
 	if($username_taken!=NULL)
 	{
-		echo "<h1 style='background-color:red; color:white'>Sorry, username already taken.</h1>";
+		echo "<br><br><br><h1 style='background-color:#E6594D; color:white'>Sorry, username already taken.</h1>";
 		include('create_account.php');
 		exit();
 	}
@@ -136,7 +136,7 @@ echo $todaysDate."<br>";*/
 			//PASSWORD DONT MATCH
 			if($pass1 != $pass2) 
 			{
-				 echo "<h1 style='background-color:red; color:white'>Passwords do not match, please try again.</h1>";
+				 echo "<br><br><br><h1 style='background-color:#E6594D; color:white'>Passwords do not match, please try again.</h1>";
 				 include('create_account.php');
 				 exit();
 			} 
@@ -144,8 +144,8 @@ echo $todaysDate."<br>";*/
 			//IF ANYTHING IS BLANK
 			else if ($myusername == null || $myusername == false || $pass1 == null || $pass1 == false ) 
 			{
-				echo "<h1 style='background-color:red; color:white'>Invalid username or password. Check all fields and try again.</h1>";
-				$error = "<h1 style='background-color:red; color:white'>Invalid username or password. Check all fields and try again.</h1>";
+				echo "<br><br><br><h1 style='background-color:#E6594D; color:white'>Invalid username or password. Check all fields and try again.</h1>";
+				$error = "<br><br><br><h1 style='background-color:#E6594D; color:white'>Invalid username or password. Check all fields and try again.</h1>";
 				include('error.php');
 				exit();
 			} 
@@ -338,7 +338,7 @@ echo $todaysDate."<br>";*/
 				// Display the Product List page
 				//echo $email . "Welcome $myusername";
 				
-				echo "<h1 style='background-color:red; color:white'>Thank you for signing up!<br><br><b><u>STEP 2:</u></b><br> Please add your first race.</h1>";
+				echo "<center><br><br><br><br><h1 style='background-color:#E6594D; color:white'>Thank you for signing up $first_name!<br><br><b><u>STEP 2:</u></b><br> Please add your first race.</h1></center>";
 				
 				include('add_race_form.php'); 
 			    
@@ -348,7 +348,7 @@ echo $todaysDate."<br>";*/
 	//Captcha WRONG
     else 
 	{
-      echo "<h1 style='background-color:red; color:white'>Please enter the verification pass-phrase exactly as shown.</h1>";
+      echo "<br><br><br><h1 style='background-color:#E6594D; color:white'>Please enter the verification pass-phrase exactly as shown.</h1>";
 	  include 'create_account.php';
     }
 	

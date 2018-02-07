@@ -60,52 +60,72 @@ function queryRaces($queryrace)
 
 
 <!-- HTML --------------------------------------------------------------------------------------------------------------------------->
+<?php
+    //require_once('../util/secure_conn.php');  // require a secure connection
+	
+	//https://www.w3schools.com/howto/howto_css_coming_soon.asp
+	require_once('../captcha/appvars.php');
+	require_once('../captcha/connectvars.php');
+?>
+
+	
 <!DOCTYPE html>
 <html>
-
-<!-- the head section -->
-<head>
-	<!-- FOR SORTING TABLES!!! -->
+   <head>
+      	<!-- FOR SORTING TABLES!!! -->
 	<script src="pages/sorttable.js"></script> 
 	<!-- INCLUDING FOR ALL JAVASCRIPT! -->
 	<script src="pages/javascript_RaceResults.js"></script> 
 	
     <title>Points</title>
-    <link rel="stylesheet" type="text/css" href="../main.css" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<style> 
-		h2,h4    {text-shadow: 1px 5px 5px #FF0000; color: white;}  
-		p      { color: white; font-size: 18px;}  
-	</style>
-
-</head>
-
-<!-- the body section -->
-<body onload="Init ()">
-
-<!-- TOP BUTTONS --> 
-<main>
-<center>
-   <span class="myButtons" style="display: inline;">
+	
+	
+	  <meta charset="utf-8" />
+	  <meta name="viewport" content="width=device-width, initial-scale=1" />
+	  
+      <!--OLD STYLE: <link rel="stylesheet" type="text/css" href="../main.css"/>-->
+      <link rel="stylesheet" href="../assets/css/main.css" /> 
+   </head>
    
-   <!--<h2> Links: </h2>-->
    
-   <a class="button" href="login.php" >Admin</a> <!--indexAdmin.php -->
-   <a class="button" href="../index.php" >View All Users</a>
-   <a class="button" href="functions.php">Other Functions / Conversions</a>
-   <a class="button" href="distance_list.php">List distances</a>
-   <a class="button" href="points.php" style="background-color:red;">Points</a>   
-   <a class="button" href="signup.php" >Sign up for updates</a>
    
-   <a class="button" href="http://vojta.users.sonic.net/blog/"> Vojta's Main Page </a>
-   <a class="button" href="about.html">Vojta's Bio</a>
-   </span>
+   <body class="landing" onload="Init ()">
 
-<h1 style="color: yellow;">POINTS = PERFORMANCE (VALUE) <h1>
+		<!-- Page Wrapper -->
+			<div id="page-wrapper">
+
+		<!-- IMPORTING HEADER AND FOOTER: -->
+		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+		<script> 
+		$(function(){
+		  $("#header").load("header.html"); 
+		  $("#footer").load("footer.html"); 
+		});
+		</script> 
+<!-- END LINKS / PERL BASESCRIPTS.Please -->
+	
+	
+	<div id="header"></div>						
+	
+
+	
+					
+<!-- MAIN PAGE -->
+<article id="main">	
+	<header>
+		<h2>Points</h2>
+		<p>This page describes what I use "points" for, where it comes from and how it works.</p>
+	</header>
+	
+<section class="wrapper style5">
+<div class="inner">	
+
+<center><h1 style="color: yellow; background-color:gray;">POINTS = PERFORMANCE (VALUE) <h1></center>
 <h2>Better the performance the more points you get!</h2>
 <br><br>
 
-<h1>Why?</h1>
+<h2>Why?</h2>
 <h4>Why is this special?</h4>
 <p>Normally people compare their times, marks, and performances, but they are only able to do this within their gender and within their even. This website allows you to expand that comparison and allows you to compare your performance to performances of the other gender and other events in track and field!</p>
 <br><p style="color: green;"><b><u>Example:</u></b> Who did better? Joey runs a 22.23 200m time and Sally runs a 1500m time of 4:42.</p>
@@ -116,7 +136,7 @@ function queryRaces($queryrace)
 <p style="color: red;"> So looks like Joey beats Sally since 894 > 892. Close!</p>
 
 
-<h1>How?</h1>
+<h2>How?</h2>
 <h4>How does it work?</h4>
 <p>It works on a point system. (not invented by me)
 The point system came from professional studies that can be found here:</p>
@@ -127,8 +147,8 @@ The point system came from professional studies that can be found here:</p>
 The data listed here (tables) gets pulled from this database every time the page is refreshed.
 The data imputed by the users gets imputed into the database and gets checked/compared/searched to the closest representation of your performance in the database. It then gets assigned a point value. (based on where it falls within the performance list). This value is then returned here to this page and compared to the rest of the point values. (each point value represents a physical performance of the same "effort")</p>
 
-<h4 style="text-align: center;" ><span style="color: #000080;"><em style="color: yellow;">(Ranking is based a point system I did not create)</em></span></h4>
-<
+<h4 style="text-align: center;" ><span style="color: #000080;"><em style="color: yellow; background-color:gray;">(Ranking is based a point system I did not create)</em></span></h4>
+
 <table style="width: 300px;">
 <tbody>
 <tr>
@@ -185,9 +205,9 @@ The data imputed by the users gets imputed into the database and gets checked/co
 </table>
 
 
-
+<hr>
 <br><br>
-<h1 style="font-size:50px;"> Point Ranges </h1>	
+<h2 style="font-size:50px;"> Point Ranges </h2>	
 <p>Below are the ranges of points you will recieve based on your performance.</p>
 
 <br>
@@ -257,30 +277,51 @@ function displayTable($inputQuery)
 Execute:
 */
 
-echo "<h1>Men Points:</h1>";
+echo "<h2>Men Points:</h2>";
 echo "<a class='button' href='http://vojta.users.sonic.net/finishline/pages/resultquery.php?user=Select+*+from+MenTimes'>View All Points Possibilities MEN</a><br>";
-echo "<h2>Ranging from: </h2><br>";
+echo "<h3>Ranging from: </h3><br>";
 displayTable($queryPointsMmax);
-echo "<h2>TO: </h2><br>";
+echo "<h3>TO: </h3><br>";
 displayTable($queryPointsMmin);
 
 echo "<br></main><br><br><br><br><main>";
 
-echo "<h1>Women Points:</h1>";
+echo "<h2>Women Points:</h2>";
 echo "<center><a class='button' href='http://vojta.users.sonic.net/finishline/pages/resultquery.php?user=Select+*+from+WomensTimes'>View All Points Possibilities WOMEN</a><br>";
-echo "<h2>Ranging from: </h2><br>";
+echo "<h3>Ranging from: </h3><br>";
 displayTable($queryPointsWmax);
-echo "<h2>TO: </h2><br>";
+echo "<h3>TO: </h3><br>";
 displayTable($queryPointsWmin);
 ?>
 
 </center>
 
+</div>
+</section>	
+</article> 
+
+
+
+
+
+
 
 	
-</main>
-<footer>
-    <p>&copy; <?php echo date("Y"); ?> Vojta Ripa, Inc.</p>
-</footer>
-</body>
+<!-- Footer -------------------------------------------------------------------------------------------------------------------------------------------------------------->
+<footer id="footer">
+						
+	
 
+			
+           </div>	
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/jquery.scrollex.min.js"></script>
+			<script src="../assets/js/jquery.scrolly.min.js"></script>
+			<script src="../assets/js/skel.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="../assets/js/main.js"></script>
+        
+	</body>
+</html>

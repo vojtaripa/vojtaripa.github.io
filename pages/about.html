@@ -1,67 +1,108 @@
+<?php
+    //require_once('../util/secure_conn.php');  // require a secure connection
+	
+	//https://www.w3schools.com/howto/howto_css_coming_soon.asp
+	require_once('../captcha/appvars.php');
+	require_once('../captcha/connectvars.php');
+?>
+
+	
 <!DOCTYPE html>
 <html>
-
-<!-- the head section -->
-<head>
-	<script src="sorttable.js"></script> <!-- FOR SORTING TABLES!!! -->
-    <title>Here Are All My Race Results</title>
-    <link rel="stylesheet" type="text/css" href="../main.css" />
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<style> 
-		h2   {text-shadow: 1px 5px 5px #FF0000; color: white}  
-	</style>
-</head>
-
-<!-- the body section -->
-<body>
-
-
-<main>
-<center>
-   <span class="myButtons" style="display: inline;">
+   <head>
+      <title>About Vojta Ripa</title>
+	  <meta charset="utf-8" />
+	  <meta name="viewport" content="width=device-width, initial-scale=1" />
+	  
+      <!--OLD STYLE: <link rel="stylesheet" type="text/css" href="../main.css"/>-->
+      <link rel="stylesheet" href="../assets/css/main.css" />
+   </head>
    
-   <h2> Links: </h2>
    
-   <a class="button" href="login.php" >Admin</a> <!--indexAdmin.php -->
-   <a class="button" href="../index.php" >View All Users</a>
-   <a class="button" href="functions.php">Other Functions / Conversions</a>
-   <a class="button" href="distance_list.php">List distances</a>    
-   <a class="button" href="points.php">Points</a>   
-   <a class="button" href="signup.php" >Sign up for updates</a>
    
-   <a class="button" href="http://vojta.users.sonic.net/blog/"> Vojta's Main Page </a>
-   <a class="button" href="about.html" style="background-color:red;">Vojta's Bio</a>
-   
-   </span>
-   
-    <br>
-   <hr  >
-   <br>
-</center>
+   <body class="landing" onload="Init ()">
 
+		<!-- Page Wrapper -->
+			<div id="page-wrapper">
 
-  <h2> Biography </h2>
-	<iframe src="http://vojta.users.sonic.net/RaceResults/css/Running_Resume.pdf" style="width:718px; height:700px;" frameborder="0"></iframe>
+		<!-- IMPORTING HEADER AND FOOTER: -->
+		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+		<script> 
+		$(function(){
+		  $("#header").load("header.html"); 
+		  $("#footer").load("footer.html"); 
+		});
+		</script> 
+<!-- END LINKS / PERL BASESCRIPTS.Please -->
 	
-	<h2> V02 MAX Testing </h2>
-	<h3> FITNESS REPORT </h3>
-	<p>
-     Your fitness level (VO2Max) is 75.4 - which places you in the Athletic Zone and is higher than the average for a 20-year old male (44 VO2Max)<br> 
-	 and is also higher than the average of a 15-19 year old male. <br> 
-	 VO2Max is measured as the amount of oxygen your body is able to uptake / per kg of body weight / per minute. <br>
-	 Higher the VO2Max, greater the capaTab for physical effort. <br> 
-    <br>
-    Recovery is good at 9%. <br> Recovery is calculated by looking at the % drop in heart rate from the time the interval stopped to 30-seconds later throughout the test. <br>
-	Recovery can be volatile and is sensitive to over-training, lack of sleep, stress as well as health issues amongst other things. <br>
-	</p>
-	<iframe src="http://vojta.users.sonic.net/RaceResults/css/Ripa_Session.pdf" style="width:718px; height:700px;" frameborder="0"></iframe>
-<br>
-<br>
-<p style="display: inline;"><a class="button" href="../index.php" >Back Home to Races</a></p>
+	
+	<div id="header"></div>						
+	
 
-</main>
-<footer>
-    <p>&copy; <?php echo date("Y"); ?> Vojta Ripa, Inc.</p>
-</footer>
-</body>
+	
+					
+<!-- MAIN PAGE -->
+<article id="main">	
+	
+	<!--Title-->
+	<header>
+		<h2>About Vojta Ripa</h2>
+		<p>Here is some information about me.</p>
+	</header>
+	
+	<!--main page content -->
+	<section class="wrapper style5">
+		<div class="inner">	
+			<h2> Biography </h2>
+			<p>
+			Hi guys, my name is Vojta Ripa and I'm an active runner. I have been running since I was little all the way through high school and college and now I'm running post-collegently.
+			<br> I'm also interested in programming and webdesign, which is where this project and me crossed our paths. I wanted to build something useful for runners that would be 
+			beneficial in their running career, as well as its a project to help me learn and improve my webdesign and programming skills.
+			</p>
+		
+            <h2> Running Resume </h2>
+			<iframe src="http://vojta.users.sonic.net/RaceResults/css/Running_Resume.pdf" style="width:718px; height:700px;" frameborder="0"></iframe>
+			
+			<h2> V02 MAX Testing </h2>
+			<h3> FITNESS REPORT </h3>
+			<p>
+			 Your fitness level (VO2Max) is 75.4 - which places you in the Athletic Zone and is higher than the average for a 20-year old male (44 VO2Max)<br> 
+			 and is also higher than the average of a 15-19 year old male. <br> 
+			 VO2Max is measured as the amount of oxygen your body is able to uptake / per kg of body weight / per minute. <br>
+			 Higher the VO2Max, greater the capaTab for physical effort. <br> 
+			<br>
+			Recovery is good at 9%. <br> Recovery is calculated by looking at the % drop in heart rate from the time the interval stopped to 30-seconds later throughout the test. <br>
+			Recovery can be volatile and is sensitive to over-training, lack of sleep, stress as well as health issues amongst other things. <br>
+			</p>
+			<iframe src="http://vojta.users.sonic.net/RaceResults/css/Ripa_Session.pdf" style="width:718px; height:700px;" frameborder="0"></iframe>
+		<br>
+		</div>
+	</section>
+	
+</article> 
+
+
+
+
+
+
+
+	
+<!-- Footer -------------------------------------------------------------------------------------------------------------------------------------------------------------->
+					<footer id="footer">
+						
+
+
+			
+           </div>	
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/jquery.scrollex.min.js"></script>
+			<script src="../assets/js/jquery.scrolly.min.js"></script>
+			<script src="../assets/js/skel.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="../assets/js/main.js"></script>
+        
+	</body>
 </html>

@@ -55,281 +55,357 @@ echo 'Connected Successfully';
 echo "<br/>";
 
 
-// This should be working, returns an array of race results.
-function queryRaces2($queryrace, $Distance, $Year) 
-{
-    
-	$dsn = 'mysql:host=vojta-data.db.sonic.net; dbname=vojta_data';
-    $username = 'vojta_data-all';
-    $password = '590d05cd';
-
-    try 
-	{
-        $db = new PDO($dsn, $username, $password);
-    } 
-	catch (PDOException $e) 
-	{
-        $error_message = $e->getMessage();
-        include('database_error.php');
-        exit();
-    } 
-
-	//echo $queryrace;
-	$statement3 = $db->prepare($queryrace);
-	if($Distance!=NULL && $Distance!='All')
-	{
-		$statement3->bindValue(':Distance', $Distance);
-	}
-	if($Year!=NULL && $Year!='All')
-	{
-		$statement3->bindValue(':Year', $Year);
-	}
-	$statement3->bindValue(':Year', $Year);
-	$statement3->execute();
-	$myrace = $statement3->fetchAll();
-	//$race=$myrace;
-	//echo $Distance;
-	
-	$statement3->closeCursor();
-	//echo "not NULL";
-	return $myrace;
-} 
-
-// GETTING ALL RACES READY
-$queryrace1 = 'SELECT * FROM MyRaceResults order by Date DESC'; // order by index? 
-$race = queryRaces2($queryrace1, $Distance, $Year);
-
-
-
-
-
-//NEED TO TRANSLATE DISTANCE! NOTE: NOT ALL MY DISTANCES WILL HAVE A POINT VALUE... :/
-function translateDistance($output, $value4)
-{ 
-			switch($output)
-			{ 
-			
-				case '0.06'	:
-				$distanceName='100m';
-				break;
-				
-				case '0.12'	:
-				$distanceName='200m';
-				break;
-				
-				case '0.25'	:
-				$distanceName='400m';
-				break;
-				
-				case '0.37'	:
-				$distanceName='600m';
-				break;
-				
-				case '0.50'	:
-				$distanceName='800m';
-				break;
-				
-				case '0.62'	:
-				$distanceName='1000m';
-				break;
-				
-				case '0.93'	:
-				$distanceName='1500m';
-				break;
-				
-				case '1.00'	:
-				$distanceName='Mile';
-				break;
-				
-				case '1.86'	:
-				$distanceName='3000m';
-				break;
-				
-				case '2.00'	:
-				$distanceName='2Miles';
-				break;
-				
-				case '3.10'	:
-				$distanceName='5000m';
-				break;
-				
-				case '6.00'	:
-				//can try to convert this to 10k time add 71 seconds for 6min pace
-				$value4=TimeToSeconds($value4);
-				$value4=$value4+71;
-				$value4=SecondsToTime($value4);
-				echo "6MI convertion!!! time is now: $value4 ";
-				$distanceName='10km';
-				break;
-				
-				case '6.20'	:
-				$distanceName='10km';
-				break;
-				
-				case '10.00':	
-				$distanceName='10Miles';
-				break;
-				
-				case '13.10':	
-				$distanceName='HM';
-				break;
-				
-				case '26.20':	
-				$distanceName='Marathon';
-				break;
-				
-				default:
-				$distanceName="none";
-
-			} 
-			return array($distanceName,$value4); //$distanceName
-		
-} 
-//NOW GET VALUES
-/*
-$value1 = $_POST['name'];
-$value2 = $_POST['sex'];
-$value3 = $_POST['event1'];
-$value4 = $_POST['time1'];
-$value9 =($_POST['time1'] . '%');
-*/
-
-
-foreach ($race as $race)
-{
-   $myIndex = $race['Index'];
-	$value1 = $race['Race'];
-	$value2 = "male";
-	$value3 = $race['Distance'];
-	$Dist   = $value3;
-	$value4 = $race['Time'];
-	
-	//Sending distance and time into function, and getting the right distance and time to use. (time is ususally the same).
-	list($value3,$value4)=translateDistance($value3, $value4);
-	
-	$value9 = $value4 . '%';
-	
-	while($value9!="")
-	{
-		if(substr($value9,0,1)=="0" || substr($value9,0,1)==":")
-		$value9 = substr($value9,1);
-		else{break;}
-	}
-
-	//need to put values in array and pop them later. Then while there is item in array pop.. OR i can include fuction in here.
-
-	echo "The name is: $value1 <br>";
-	echo "The sex is: $value2 <br>";
-	echo "The Distance is: $value3 <br>";
-	echo "The time is: $value9 <br>";
-	
-	if($value3=="none")
-	{
-		//DO NOTHING
-		$points1temp=0;
-	}
-	else
-	{
-
-		//first rank
-		$rank = '0';
-
-		//FEMALE (I WONT NEED THIS BUT MIGHT USE IT LATER.....other accounts) ****************************************************************************** 
-		/*
-		if($value2 == "female") //female table
-		{
-		$points1temp = mysql_query('SELECT points FROM WomansTimes WHERE ' . $value3 . '  like ' . "'$value9'" . ' ORDER BY ' . $value3 . ' LIMIT 1');
-		$points1 = mysql_fetch_array($points1temp);
-		$mypoints1 = $points1[0];
-		if($mypoints1=="")
-			{
-				for ($x=8; $x>1; $x--)
-				{
-					if($mypoints1=="")
-					{
-						$value9 = substr($value9,0,$x);
-						$value9=($value9 . '%');
-						echo "The loop val9 is: $value9 <br>";
-						$points1temp = mysql_query('SELECT points FROM WomensTimes WHERE ' . $value3 . '  like ' . "'$value9'" . ' ORDER BY ' . $value3 . ' LIMIT 1');
-						$points1 = mysql_fetch_array($points1temp);
-						$mypoints1 = $points1[0];
-					}
-					else
-						$x=0;
-				}
-			}
-			echo "The number is: $points1temp <br>";
-
-		}
-		*/
-
-		//MALE ***************************************************************************** 
-		if($value2 == "male") //male table
-		{
-		echo "Distance is $value3.<br>";
-		$points1temp = mysql_query('SELECT points FROM MenTimes WHERE ' . $value3 . '  like ' . "'$value9'" . ' ORDER BY ' . $value3 . ' LIMIT 1');
-		$points1 = mysql_fetch_array($points1temp);
-		$mypoints1 = $points1[0];
-		if($mypoints1=="")
-			{
-				$x=5;
-				while((strlen($value9)>2) && $x!=0)
-				{
-					if($mypoints1=="")
-					{
-						$value9 = substr($value9,0,$x);
-						$x--;
-						$value9=($value9 . '%');
-						
-						echo "The loop val9 is: $value9 <br>";
-						
-						$points1temp = mysql_query('SELECT points FROM MenTimes WHERE ' . $value3 . '  like ' . "'$value9'" . ' ORDER BY ' . $value3 . ' LIMIT 1');
-						$points1 = mysql_fetch_array($points1temp);
-						$mypoints1 = $points1[0];
-					}
-					else
-						$x=0;
-				}
-				if(strlen($value9)==2)
-					$mypoints1 =0;
-			}
-			echo "The points is: $mypoints1 <br>";
-		}
-		//****************************************************************************** 
-		else
-		{}
-
-
-		echo "The points is: $mypoints1 <br><br>";
-
-
-		//put points back into my database
-		$sql = "UPDATE `MyRaceResults` SET `Points` = '$mypoints1' WHERE `MyRaceResults`. `Index`=$myIndex";
-		
-		// Prepare statement
-		$stmt = $db->prepare($sql);
-
-		// execute the query
-		$stmt->execute();
-
-		// echo a message to say the UPDATE succeeded
-		echo $stmt->rowCount() . " records UPDATED successfully<br><br>";
-	
-		//TEST:  INSERT INTO MyRaceResultsCOPY (Points) VALUE ('100') where Index=1
-		//TEST2: UPDATE `MyRaceResultsCOPY` SET `Points` = '1' WHERE `MyRaceResultsCOPY`.`Index` = 1;
-	}
-}
-
-	if(!mysql_query($sql))
-		{
-			die('ERROR: ' . mysql_error());
-		}
-		mysql_close();
-
 ?>
+
+
+	
 <!DOCTYPE html>
 <html>
- </body>
-		<p style="display: inline;"><a class="button" href="index.php" >Back Home to Races</a></p>
- </body>
+   <head>
+      <title>Log In</title>
+	  <meta charset="utf-8" />
+	  <meta name="viewport" content="width=device-width, initial-scale=1" />
+	  
+      <!--OLD STYLE: <link rel="stylesheet" type="text/css" href="../main.css"/>-->
+      <link rel="stylesheet" href="../assets/css/main.css" />
+   </head>
+   
+   
+   
+   <body class="landing" onload="Init ()">
+
+		<!-- Page Wrapper -->
+			<div id="page-wrapper">
+
+		<!-- IMPORTING HEADER AND FOOTER: -->
+		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+		<script> 
+		$(function(){
+		  $("#header").load("header.html"); 
+		  $("#footer").load("footer.html"); 
+		});
+		</script> 
+<!-- END LINKS / PERL BASESCRIPTS.Please -->
+	
+	
+	<div id="header"></div>						
+	
+
+	
+					
+<!-- MAIN PAGE -->
+<article id="main">	
+	
+	<!--Title-->
+	<header>
+		<h2>Performance to Points</h2>
+		<p>Your perfomance has been converted to points.</p>
+	</header>
+	
+	<!--main page content -->
+	<section class="wrapper style5">
+		<div class="inner">	
+            <?php
+			// This should be working, returns an array of race results.
+			function queryRaces2($queryrace, $Distance, $Year) 
+			{
+				
+				$dsn = 'mysql:host=vojta-data.db.sonic.net; dbname=vojta_data';
+				$username = 'vojta_data-all';
+				$password = '590d05cd';
+
+				try 
+				{
+					$db = new PDO($dsn, $username, $password);
+				} 
+				catch (PDOException $e) 
+				{
+					$error_message = $e->getMessage();
+					include('database_error.php');
+					exit();
+				} 
+
+				//echo $queryrace;
+				$statement3 = $db->prepare($queryrace);
+				if($Distance!=NULL && $Distance!='All')
+				{
+					$statement3->bindValue(':Distance', $Distance);
+				}
+				if($Year!=NULL && $Year!='All')
+				{
+					$statement3->bindValue(':Year', $Year);
+				}
+				$statement3->bindValue(':Year', $Year);
+				$statement3->execute();
+				$myrace = $statement3->fetchAll();
+				//$race=$myrace;
+				//echo $Distance;
+				
+				$statement3->closeCursor();
+				//echo "not NULL";
+				return $myrace;
+			} 
+
+			// GETTING ALL RACES READY
+			$queryrace1 = 'SELECT * FROM MyRaceResults order by Date DESC'; // order by index? 
+			$race = queryRaces2($queryrace1, $Distance, $Year);
+
+
+
+
+
+			//NEED TO TRANSLATE DISTANCE! NOTE: NOT ALL MY DISTANCES WILL HAVE A POINT VALUE... :/
+			function translateDistance($output, $value4)
+			{ 
+						switch($output)
+						{ 
+						
+							case '0.06'	:
+							$distanceName='100m';
+							break;
+							
+							case '0.12'	:
+							$distanceName='200m';
+							break;
+							
+							case '0.25'	:
+							$distanceName='400m';
+							break;
+							
+							case '0.37'	:
+							$distanceName='600m';
+							break;
+							
+							case '0.50'	:
+							$distanceName='800m';
+							break;
+							
+							case '0.62'	:
+							$distanceName='1000m';
+							break;
+							
+							case '0.93'	:
+							$distanceName='1500m';
+							break;
+							
+							case '1.00'	:
+							$distanceName='Mile';
+							break;
+							
+							case '1.86'	:
+							$distanceName='3000m';
+							break;
+							
+							case '2.00'	:
+							$distanceName='2Miles';
+							break;
+							
+							case '3.10'	:
+							$distanceName='5000m';
+							break;
+							
+							case '6.00'	:
+							//can try to convert this to 10k time add 71 seconds for 6min pace
+							$value4=TimeToSeconds($value4);
+							$value4=$value4+71;
+							$value4=SecondsToTime($value4);
+							echo "6MI convertion!!! time is now: $value4 ";
+							$distanceName='10km';
+							break;
+							
+							case '6.20'	:
+							$distanceName='10km';
+							break;
+							
+							case '10.00':	
+							$distanceName='10Miles';
+							break;
+							
+							case '13.10':	
+							$distanceName='HM';
+							break;
+							
+							case '26.20':	
+							$distanceName='Marathon';
+							break;
+							
+							default:
+							$distanceName="none";
+
+						} 
+						return array($distanceName,$value4); //$distanceName
+					
+			} 
+			//NOW GET VALUES
+			/*
+			$value1 = $_POST['name'];
+			$value2 = $_POST['sex'];
+			$value3 = $_POST['event1'];
+			$value4 = $_POST['time1'];
+			$value9 =($_POST['time1'] . '%');
+			*/
+
+
+			foreach ($race as $race)
+			{
+			   $myIndex = $race['Index'];
+				$value1 = $race['Race'];
+				$value2 = "male";
+				$value3 = $race['Distance'];
+				$Dist   = $value3;
+				$value4 = $race['Time'];
+				
+				//Sending distance and time into function, and getting the right distance and time to use. (time is ususally the same).
+				list($value3,$value4)=translateDistance($value3, $value4);
+				
+				$value9 = $value4 . '%';
+				
+				while($value9!="")
+				{
+					if(substr($value9,0,1)=="0" || substr($value9,0,1)==":")
+					$value9 = substr($value9,1);
+					else{break;}
+				}
+
+				//need to put values in array and pop them later. Then while there is item in array pop.. OR i can include fuction in here.
+
+				echo "The name is: $value1 <br>";
+				echo "The sex is: $value2 <br>";
+				echo "The Distance is: $value3 <br>";
+				echo "The time is: $value9 <br>";
+				
+				if($value3=="none")
+				{
+					//DO NOTHING
+					$points1temp=0;
+				}
+				else
+				{
+
+					//first rank
+					$rank = '0';
+
+					//FEMALE (I WONT NEED THIS BUT MIGHT USE IT LATER.....other accounts) ****************************************************************************** 
+					/*
+					if($value2 == "female") //female table
+					{
+					$points1temp = mysql_query('SELECT points FROM WomansTimes WHERE ' . $value3 . '  like ' . "'$value9'" . ' ORDER BY ' . $value3 . ' LIMIT 1');
+					$points1 = mysql_fetch_array($points1temp);
+					$mypoints1 = $points1[0];
+					if($mypoints1=="")
+						{
+							for ($x=8; $x>1; $x--)
+							{
+								if($mypoints1=="")
+								{
+									$value9 = substr($value9,0,$x);
+									$value9=($value9 . '%');
+									echo "The loop val9 is: $value9 <br>";
+									$points1temp = mysql_query('SELECT points FROM WomensTimes WHERE ' . $value3 . '  like ' . "'$value9'" . ' ORDER BY ' . $value3 . ' LIMIT 1');
+									$points1 = mysql_fetch_array($points1temp);
+									$mypoints1 = $points1[0];
+								}
+								else
+									$x=0;
+							}
+						}
+						echo "The number is: $points1temp <br>";
+
+					}
+					*/
+
+					//MALE ***************************************************************************** 
+					if($value2 == "male") //male table
+					{
+					echo "Distance is $value3.<br>";
+					$points1temp = mysql_query('SELECT points FROM MenTimes WHERE ' . $value3 . '  like ' . "'$value9'" . ' ORDER BY ' . $value3 . ' LIMIT 1');
+					$points1 = mysql_fetch_array($points1temp);
+					$mypoints1 = $points1[0];
+					if($mypoints1=="")
+						{
+							$x=5;
+							while((strlen($value9)>2) && $x!=0)
+							{
+								if($mypoints1=="")
+								{
+									$value9 = substr($value9,0,$x);
+									$x--;
+									$value9=($value9 . '%');
+									
+									echo "The loop val9 is: $value9 <br>";
+									
+									$points1temp = mysql_query('SELECT points FROM MenTimes WHERE ' . $value3 . '  like ' . "'$value9'" . ' ORDER BY ' . $value3 . ' LIMIT 1');
+									$points1 = mysql_fetch_array($points1temp);
+									$mypoints1 = $points1[0];
+								}
+								else
+									$x=0;
+							}
+							if(strlen($value9)==2)
+								$mypoints1 =0;
+						}
+						echo "The points is: $mypoints1 <br>";
+					}
+					//****************************************************************************** 
+					else
+					{}
+
+
+					echo "The points is: $mypoints1 <br><br>";
+
+
+					//put points back into my database
+					$sql = "UPDATE `MyRaceResults` SET `Points` = '$mypoints1' WHERE `MyRaceResults`. `Index`=$myIndex";
+					
+					// Prepare statement
+					$stmt = $db->prepare($sql);
+
+					// execute the query
+					$stmt->execute();
+
+					// echo a message to say the UPDATE succeeded
+					echo $stmt->rowCount() . " records UPDATED successfully<br><br>";
+				
+					//TEST:  INSERT INTO MyRaceResultsCOPY (Points) VALUE ('100') where Index=1
+					//TEST2: UPDATE `MyRaceResultsCOPY` SET `Points` = '1' WHERE `MyRaceResultsCOPY`.`Index` = 1;
+				}
+			}
+
+				if(!mysql_query($sql))
+					{
+						die('ERROR: ' . mysql_error());
+					}
+					mysql_close();
+
+			?>
+		</div>
+	</section>
+	
+</article> 
+
+
+
+
+
+
+
+	
+<!-- Footer -------------------------------------------------------------------------------------------------------------------------------------------------------------->
+					<footer id="footer">
+						
+
+
+			
+           </div>	
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/jquery.scrollex.min.js"></script>
+			<script src="../assets/js/jquery.scrolly.min.js"></script>
+			<script src="../assets/js/skel.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="../assets/js/main.js"></script>
+        
+	</body>
 </html>
+
