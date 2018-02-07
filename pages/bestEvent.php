@@ -92,7 +92,7 @@ function findPoints($eventX,$timeXchange,&$event,&$mark,&$points, &$i)
 //FEMALE!!! ************************************************************************************************************************************************************ 		
 		if($sex == "female") //female table
 		{
-			$pointsXtemp = mysql_query('SELECT points FROM WomansTimes WHERE ' . $eventX . '  like ' . "'$timeXchange'" . ' ORDER BY ' . $eventX . ' LIMIT 1');
+			$pointsXtemp = mysql_query('SELECT points FROM WomensTimes WHERE ' . $eventX . '  like ' . "'$timeXchange'" . ' ORDER BY ' . $eventX . ' LIMIT 1');
 			$pointsX = mysql_fetch_array($pointsXtemp);
 			$mypointsX = $pointsX[0];
 			

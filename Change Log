@@ -1,0 +1,19 @@
+version 2
+
+Change LOG:
+****************************************************************************** 
+-Changing front end webpage display to HTML 5 (still needs work)
+-Adding Points page to show point info
+-Allowing user to get between pages as ADMIN in NAV BAR
+-added some more user profile descriptions
+-added counter on main page
+-if no races, display none / nothing
+-adding points page and points page to Nav bar
+-INCLUDING "less.js" to handle table headers ect.. 
+-changed some of the  header widths to try to get them to line up.
+-adding tables to graphs. 
+-got rid of Races Run / Year and compined it. with Races Run
+-added login and register up top on main page.
+-added Section of page and easy navigation to each. 
+-highlight which filters are being applied. 
+-

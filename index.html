@@ -1,3 +1,64 @@
+<?php
+// ***index.php use to be called USERS.php
+require_once('pages/database.php');
+
+
+
+/*   VARIABLES **************************************************************
+
+*****************************************************************************/
+// This should be working, returns an array of race results.
+function queryRaces($queryrace) 
+{
+    
+	$dsn = 'mysql:host=vojta-data.db.sonic.net; dbname=vojta_data';
+    $username = 'vojta_data-all';
+    $password = '590d05cd';
+
+    try 
+	{
+        $db = new PDO($dsn, $username, $password);
+    } 
+	catch (PDOException $e) 
+	{
+        $error_message = $e->getMessage();
+        include('database_error.php');
+        exit();
+    } 
+
+	//echo $queryrace;
+	$statement3 = $db->prepare($queryrace);
+	$statement3->execute();
+	$myrace = $statement3->fetchAll();
+	//$race=$myrace;
+	//echo $Distance;
+	
+	$statement3->closeCursor();
+	//echo "not NULL";
+	return $myrace;
+} 
+
+
+
+
+//SPITS OUT "ALL" users and info
+//****************************************************************************** 
+
+	$queryusers = 'SELECT * FROM users';
+	$statement1 = $db->prepare($queryusers);
+	$statement1->execute();
+	//$users = $statement1->fetch();
+	$statement1->closeCursor();
+	
+	//ALL USERS STORED IN HERE:
+	$users=queryRaces($queryusers);
+?>
+
+
+
+
+
+
 
 <!-- HTML --------------------------------------------------------------------------------------------------------------------------->
 <!DOCTYPE html>
@@ -5,6 +66,8 @@
 
 <!-- the head section -->
 <head>
+	<link rel="Finishline Icon" href="image/finishline.ico">
+
 	<!-- FOR SORTING TABLES!!! -->
 	<script src="pages/sorttable.js"></script> 
 	<!-- INCLUDING FOR ALL JAVASCRIPT! -->
@@ -15,50 +78,71 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<style> 
 		h2   {text-shadow: 1px 5px 5px #FF0000; color: white}  
+		p    {font-size: 26px;}
 	</style>
 
 </head>
 
 <!-- the body section -->
 <body onload="Init ()">
+	<div>
+		<span style="display: inline; float:right; border: 1px solid red;"><a class="button" href="pages/create_account.php" >Register</a>
+		<a style="display: inline; float:right;" class="button" href="pages/login.php" >Login</a><br></span><br>
+	</div>
+<br>
+<!-- TOP BUTTONS --> 
+<center>
 
-
-<main>
-
-
-
-
-<!-- TOP BUTTONS -->  
-   <center>
    <span class="myButtons" style="display: inline;">
    
-   <h2> Links: </h2>
+   <!--<h2> Links: </h2>-->
    
    <a class="button" href="pages/login.php" >Admin</a> <!--indexAdmin.php -->
    <a class="button" href="index.php" style="background-color:red;" >View All Users</a>
    <a class="button" href="pages/functions.php">Other Functions / Conversions</a>
    <a class="button" href="pages/distance_list.php">List distances</a>     
+   <a class="button" href="pages/points.php">Points</a>
    <a class="button" href="pages/signup.php" >Sign up for updates</a>
    
    <a class="button" href="http://vojta.users.sonic.net/blog/"> Vojta's Main Page </a>
    <a class="button" href="pages/about.html">Vojta's Bio</a>
    
    </span>
+
+
+</center>
+<main id="users">
+
+
+
+
+ 
+   <center>
    
     <br>
    <hr  >
    <br>
    <!--<h1 style="font-size:100px;">Finishline </h1>-->
 	<img src='image/finishline2.jpg' alt='finish' align='center'  height="400"> 
+	
+	<p style="border: 4px solid red;">Welcome to Finishline! </p><p> This website allows you to add, store, and analyze your race results. <br>You can filter your results bases on: year, distance, race type ect., you can sort your races by any field. 
+	<br>See all of your PRs, compare your results with other users, add a race picture with each race, races will be diplayed on a map so you can see where you ran, see all totals and averages.<br>
+	You can also set race goals, and see diffrent race data on graphs.<br>
+	Please let me know what else you would like to see, I can change, modify, add anything; Open to suggestions!<br>
+	Please create your account and start adding races, the more people we have the better!<br>
+	Enjoy<br><br>
+	-Vojta Ripa</p>
    </center>
 
 <center>
-	<div style="border: 4px solid red;">
-		<span><h2> Create Account: </h2><p style="display: inline;"><a class="button" href="pages/create_account.php" >Sign-up</a></p></span><br>
-		<span><h2> Existing User: </h2><p style="display: inline;"><a class="button" href="pages/login.php" >Login</a></p><br><br></span>
+	<div style="border: 4px solid red; background-color: white;">
+		<span><h2 style="color:black;"> Create Account: </h2><p style="display: inline;"><a class="button" href="pages/create_account.php" >Sign-up</a></p></span><br>
+		<span><h2 style="color:black;"> Existing User: </h2><p style="display: inline;"><a class="button" href="pages/login.php" >Login</a></p><br><br></span>
 	</div>
 	
 	<br><br>
+	<h1>HOW TO / ABOUT VIDEO</h1>
+	
 	<iframe width="560" height="315" src="https://www.youtube.com/embed/0ZYh7jzcIMY" frameborder="0" gesture="media" allowfullscreen></iframe>
 	<br><br>
 </center>
@@ -208,6 +292,10 @@
 	</center>
 </main>
 <footer>
-    <p>&copy; <?php echo date("Y"); ?> Vojta Ripa, Inc.</p>
+<center>
+    <p>
+	&copy; <?php echo date("Y"); ?> Vojta Ripa, Inc. 		
+	</p>
+</center>
 </footer>
 </body>

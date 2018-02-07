@@ -1,0 +1,44 @@
+/* for table headers to be fixed */
+/* https://codepen.io/tjvantoll/pen/JEKIu */
+/* https://www.webpagefx.com/blog/web-design/set-up-less-js/ */ 
+
+
+
+@table_width: auto;
+@table_body_height: 600px;
+
+
+.fixed_headers 
+{
+  width: @table_width;
+  /*table-layout: fixed;*/
+  border-collapse: collapse;
+
+  th 
+  {
+
+    text-decoration: underline;
+  }
+
+
+  thead 
+  {
+ 
+    tr 
+	{
+      display: block;
+      /*width: 100%;*/
+    }
+  }
+  tbody 
+  {
+    display: block;
+    overflow: auto;
+    width: 100%;
+    height: @table_body_height;
+
+  }
+}
+
+
+

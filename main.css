@@ -410,6 +410,8 @@ p, h2, h3{
  color: white;
 }
 
+p {font-size:26px;}
+
 /* the styles for classes */
 
 .right {
@@ -516,7 +518,7 @@ tr:nth-child(odd) {background: #FFF; color: black}
 	/* Style the header */
 	.header {
 		background-color: #f44336;
-		padding: 30px 40px;
+		/*padding: 30px 40px;*/
 		color: white;
 		text-align: center;
 	}
@@ -560,4 +562,3 @@ tr:nth-child(odd) {background: #FFF; color: black}
 		border: 2px solid gold;
 	}
 
-/****************************************************************************** */

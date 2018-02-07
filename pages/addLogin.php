@@ -157,7 +157,7 @@ echo $todaysDate."<br>";*/
 				$to      = 'vojtaripa@yahoo.com';
 				$subject = "Finishline: New user $myusername";
 				$message = "A new user: $myusername signed up for Finishline.";
-				$message = $message . "Variables: \n ".$myusername. "\r\n".$pass1. "\r\n". $first_name. "\r\n". $last_name. "\r\n".$age. "\r\n".$email. "\r\n".$sex. "\r\n" . $webpage . "\r\n";
+				$message = $message . "\n\nVariables: \n "."USERNAME: ".$myusername. "\r\n"."PASSWORD: ".$pass1. "\r\n". "FIRST NAME: ".$first_name. "\r\n". "LAST NAME: ".$last_name. "\r\n"."AGE: ".$age. "\r\n"."EMAIL: ".$email. "\r\n"."GENDER: ".$sex. "\r\n" . "WEBSITE: ". $webpage . "\r\n";
 				$headers = 'From: finishline@sonic.com' . "\r\n" .'Reply-To: webmaster@example.com' . "\r\n" .'X-Mailer: PHP/' . phpversion();
 
 				mail($to, $subject, $message, $headers);

@@ -61,7 +61,8 @@ else
 	$statement5->closeCursor();
 	
 	$theusername = $theuser['0']['username'];
-	$thepassword =	$theuser['0']['password'];
+	$thepassword = $theuser['0']['password'];
+	$sex         = $theuser['0']['sex'];
 	
 	/*echo "THEUSERNAME: $theusername <br>";
 	echo "MYUSERNAME: $myusername <br>";
@@ -185,39 +186,11 @@ if($Index < $myquery)
 }
 
 
+        
+        
+		
+		
 
-
-//PACE ************************************************************************************************************************************************************ WORKS
-
-//GETS TIME in TIME FORMAT AND CONVERTS IT TO SECONDS.
-function TimeToSecondsCopy($inputTime) 
-{	
-	//now i need to strip h i s from this 
-	$s= substr($inputTime, (strlen($inputTime)-2)); // makes seconds the last 2 chars
-    $inputTime=str_replace((":" . $s), "", $inputTime);	//gets rid of seconds and :
-	$m= substr($inputTime, (strlen($inputTime)-2)); 
-	$inputTime=str_replace((":" . $m), "", $inputTime);	//gets rid of minutes and :
-	$h= $inputTime; 
-	
-	//USE THIS FOR TOTALS? add each individual piece
-	$totalH=($h*60*60);
-	$totalM=($m*60);
-	$totalS=($s);
-	
-	//Then send updated totals back to user	
-	
-	return ($totalH+$totalM+$totalS);
-}
-
-$PaceInSeconds = TimeToSecondsCopy($Pace);
-
-if( (188 > $PaceInSeconds) || ($PaceInSeconds> 540) )
-{
-	$message = "<br><h2>ERROR: Please check your time and distance, pace seems to be too fast or too slow. (for pace: $Pace)</h2>";
-    echo $message;
-	include('add_race_form.php');
-    exit();
-}
 
 //Date ************************************************************************************************************************************************************ DONE
 //further than todays date
@@ -469,6 +442,7 @@ function translateDistance($output, $value4)
 				$distanceName='5000m';
 				break;
 				
+				//NOT Listed but I tried to convert it.
 				case '6.00'	:
 				//can try to convert this to 10k time add 71 seconds for 6min pace
 				$value4=TimeToSeconds($value4);
@@ -501,12 +475,15 @@ function translateDistance($output, $value4)
 			return array($distanceName,$value4); //$distanceName
 		
 } 
-
-
+	//Male OR Female
+	if($sex=="f")
+		$sex="female";
+	else
+		$sex="male";
 
     $myIndex = $Index;
 	$value1 =  $Race;
-	$value2 =  "male";
+	$value2 =  $sex;
 	$value3 =  $Distance;
 	$Dist   =  $value3;
 	$value4 =  $Time;
@@ -542,10 +519,10 @@ function translateDistance($output, $value4)
 		$rank = '0';
 
 		//FEMALE (I WONT NEED THIS BUT MIGHT USE IT LATER.....other accounts) ****************************************************************************** 
-		/*
+		
 		if($value2 == "female") //female table
 		{
-		$points1temp = mysql_query('SELECT points FROM WomansTimes WHERE ' . $value3 . '  like ' . "'$value9'" . ' ORDER BY ' . $value3 . ' LIMIT 1');
+		$points1temp = mysql_query('SELECT points FROM WomensTimes WHERE ' . $value3 . '  like ' . "'$value9'" . ' ORDER BY ' . $value3 . ' LIMIT 1');
 		$points1 = mysql_fetch_array($points1temp);
 		$mypoints1 = $points1[0];
 		if($mypoints1=="")
@@ -565,10 +542,10 @@ function translateDistance($output, $value4)
 						$x=0;
 				}
 			}
-			echo "The number is: $points1temp <br>";
+			//echo "The number is: $points1temp <br>";
 
 		}
-		*/
+		
 
 		//MALE ***************************************************************************** 
 		if($value2 == "male") //male table
@@ -619,7 +596,7 @@ function translateDistance($output, $value4)
 //****************************************************************************** ****************************************************************************** 
 
 
-//RANK
+//RANK / POINTS
 
 $myquery = "Select * FROM $myusername ORDER BY Points desc";
 $statement3 = $db->prepare($myquery);
@@ -667,6 +644,49 @@ foreach ($username2 as $username2) :
 		else
 			$myPlaceTotal++;
 endforeach; 
+
+
+
+
+
+
+
+
+
+//PACE Restrictions ************************************************************************************************************************************************************ WORKS
+
+//GETS TIME in TIME FORMAT AND CONVERTS IT TO SECONDS.
+function TimeToSecondsCopy($inputTime) 
+{	
+	//now i need to strip h i s from this 
+	$s= substr($inputTime, (strlen($inputTime)-2)); // makes seconds the last 2 chars
+    $inputTime=str_replace((":" . $s), "", $inputTime);	//gets rid of seconds and :
+	$m= substr($inputTime, (strlen($inputTime)-2)); 
+	$inputTime=str_replace((":" . $m), "", $inputTime);	//gets rid of minutes and :
+	$h= $inputTime; 
+	
+	//USE THIS FOR TOTALS? add each individual piece
+	$totalH=($h*60*60);
+	$totalM=($m*60);
+	$totalS=($s);
+	
+	//Then send updated totals back to user	
+	
+	return ($totalH+$totalM+$totalS);
+}
+
+$PaceInSeconds = TimeToSecondsCopy($Pace);
+
+        
+//if( (188 > $PaceInSeconds) || ($PaceInSeconds> 540) )
+if(($Points > 1300) || ($Points ==0) || ($Points == NULL))
+{
+	$message = "<br><h2>ERROR: Please check your time and distance, pace seems to be too fast or too slow. (for pace: $Pace)</h2>";
+	echo $message;
+	include('add_race_form.php');
+	exit();
+}
+
 
 
 

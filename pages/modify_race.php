@@ -42,7 +42,8 @@ else
 	$statement5->closeCursor();
 	
 	$theusername = $theuser['0']['username'];
-	$thepassword =	$theuser['0']['password'];
+	$thepassword = $theuser['0']['password'];
+	$sex      = $theuser['0']['sex'];
 	
 	/*echo "THEUSERNAME: $theusername <br>";
 	echo "MYUSERNAME: $myusername <br>";
@@ -91,6 +92,7 @@ $statement5->closeCursor();
 
 $username = $theuser['0']['username'];
 $password =	$theuser['0']['password'];
+
 //echo"Username: $username <br>Password: $password<br>";
 
 /*
@@ -499,11 +501,15 @@ function translateDistance($output, $value4)
 		
 } 
 
-
+	//Male OR Female
+	if($sex=="f")
+		$sex="female";
+	else
+		$sex="male";
 
     $myIndex = $Index;
 	$value1 =  $Race;
-	$value2 =  "male";
+	$value2 =  $sex;
 	$value3 =  $Distance;
 	$Dist   =  $value3;
 	$value4 =  $Time;
@@ -539,10 +545,10 @@ function translateDistance($output, $value4)
 		$rank = '0';
 
 		//FEMALE (I WONT NEED THIS BUT MIGHT USE IT LATER.....other accounts) ****************************************************************************** 
-		/*
+		
 		if($value2 == "female") //female table
 		{
-		$points1temp = mysql_query('SELECT points FROM WomansTimes WHERE ' . $value3 . '  like ' . "'$value9'" . ' ORDER BY ' . $value3 . ' LIMIT 1');
+		$points1temp = mysql_query('SELECT points FROM WomensTimes WHERE ' . $value3 . '  like ' . "'$value9'" . ' ORDER BY ' . $value3 . ' LIMIT 1');
 		$points1 = mysql_fetch_array($points1temp);
 		$mypoints1 = $points1[0];
 		if($mypoints1=="")
@@ -562,10 +568,10 @@ function translateDistance($output, $value4)
 						$x=0;
 				}
 			}
-			echo "The number is: $points1temp <br>";
+			//echo "The number is: $points1temp <br>";
 
 		}
-		*/
+		
 
 		//MALE ***************************************************************************** 
 		if($value2 == "male") //male table
