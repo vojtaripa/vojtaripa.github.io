@@ -2,7 +2,6 @@ version 2
 
 Change LOG:
 ****************************************************************************** 
--Changing front end webpage display to HTML 5 (still needs work)
 -Adding Points page to show point info
 -Allowing user to get between pages as ADMIN in NAV BAR
 -added some more user profile descriptions
@@ -16,4 +15,14 @@ Change LOG:
 -added login and register up top on main page.
 -added Section of page and easy navigation to each. 
 -highlight which filters are being applied. 
--
+
+
+version 3
+
+Change LOG:
+****************************************************************************** 
+-Changing front end webpage display to HTML 5 (still needs work)...
+-removed other wallpaper for now
+-added flashy buttons
+-allowed SLOW results 
+-added lot more CSS and JS files that need to go with it for it to function

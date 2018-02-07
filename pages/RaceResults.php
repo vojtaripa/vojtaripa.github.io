@@ -5,7 +5,7 @@
 require_once('database.php');
 require_once('../map/graphs/Person.php');
 require ('indexPHP.php');
-//require ('javascript_RaceResults.js');
+//require ('javascript_RaceResults.js') (ADDED BELOW);
 
 //echo "Year: $Year <br>";
 //echo "Distance: $Distance <br>";
@@ -16,9 +16,16 @@ require ('indexPHP.php');
 
 <!-- the head section -->
 <head>
+	<!-- FOR ICON IN TAB -->
+	<link rel="Finishline Icon" href="image/finishline.ico">
+	
+	<!-- FIXED HEADERS -->
+	<link href="styles.less" type="text/css" rel="stylesheet/less"/>
+	<script src="less.js" type="text/javascript"></script>
 	
 	<!-- FOR SORTING TABLES!!! -->
 	<script src="sorttable.js"></script> 
+	
 	<!-- INCLUDING FOR ALL JAVASCRIPT! -->
 	<script src="javascript_RaceResults.js"></script> 
 	
@@ -28,6 +35,7 @@ require ('indexPHP.php');
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<style> 
 		h2   {text-shadow: 1px 5px 5px #FF0000; color: white}  
+		p    {font-size: 26px;}
 	</style>
 	
 </head>
@@ -52,7 +60,7 @@ require ('indexPHP.php');
    <h2> Links: </h2>
    
    <a class="button" href="login.php" >Admin</a> <!--indexAdmin.php -->
-   <a class="button" href="../index.php" >View All Users</a>
+   <a class="button" href="../index.php#users" >View All Users</a>
    <a class="button" href="functions.php">Other Functions / Conversions</a>
    <a class="button" href="distance_list.php">List distances</a>     
    <a class="button" href="signup.php" >Sign up for updates</a>
@@ -65,7 +73,17 @@ require ('indexPHP.php');
    <br>
    <hr  >
    <br>
-   <h3><?php echo "Race Results for: <div style='color: yellow;' >". $first_name . " ". $last_name."</div>"; ?> </h3>
+   <h3>
+   <?php 
+   //USER INFO:
+   echo "Race Results for: <div style='color: yellow;' >". $first_name . " ". $last_name."</div>"; 
+   echo "<table><tr>";	    
+   echo "<td><b><u>Age:</u></b></td><td> $myAge</td></tr>";
+   echo "<tr><td><b><u>Gender:</u></b></td><td> $mySex </td></tr>";
+   echo "<tr><td><b><u>Webpage:</u></b></td><td> $myWebsite</td></tr>";
+   echo "<tr><td><b><u>Member Since:</u></b></td><td> $joined</td></tr>";
+   echo "</tr></table>";
+   ?> </h3>
    </center> 
 
  <!--ADMIN --------------------------------------------------------------------------------------------------------------------------->
@@ -103,14 +121,36 @@ require ('indexPHP.php');
  ?>  
    <!-- END TOP BUTTONS -------------------------------------------------------------->
    
-   
+ 
+<!-- ABOUT --------------------------------------------------------------------------->
+<button class="accordion" style="font-size:20px">Description / About</button>
+
+  <?php
+  if($about!=null)
+		echo "<p style='color:white'>
+				$about
+			  </p>";
+   else
+	    echo "<p>NO INFO GIVEN.</p> <br>";
+  ?>
+  
+<!-- Gives distance name!! -->
+<?php
+if($Year==NULL && $Distance==NULL)
+$Limit = " Limiting to 10 Results";
+else
+$Limit = "";
+?>
+<!-- -------------------------------------------------------------------------------------->
+
+ 
    
  
  <!--ALL YEARS buttons --> 
 
  <!--USE $Year as the year to perate on! --> 
 
-<h1>Race Filters: </h1>
+<h1 id="Filters" >Race Filters: </h1>
 <p>You can click on the following buttons to narrow down your results. <br>Years - will show you all the results from a specific year. <br> Distance - will show you all the results from a specific distance. <br> Other - there are other functions and links to pages available here.</p>
 <hr  >
 
@@ -118,34 +158,48 @@ require ('indexPHP.php');
 	<span class="myButtons" style="display: inline;">
 	   <form action="">
 	         		   
-		   <!-- All years -->			   
+		   <!-- All years --------------------------------->			   
 		   <li class="myButtons" style="display: inline;">	
 			
 			<!-- display a list of distances -->
 			<h2 color=black style="display: inline;">Years:</h2>
 		        				
 				<?php 	
-				if($Distance=="") 
-					$Distance= "All"; 
+				if(($Year)== "" || ($Year)== "All")
+				{ 
+						$red = "style='background-color:red;'";
+				}
+				else
+						$red ="";
+				
+				if($Year=="") 
+					$Year= "All"; 
 				else 
-					$Distance=$Distance;
-				echo "<a class='button' href='RaceResults.php?choice=search&user=".urlencode($myusername)."&password=".urlencode($mypassword)."&Year=".urlencode('All')."&Distance=".urlencode($Distance)."'>All</a>"; 		
+					$Year=$Year;
+				echo "<a class='button' "  .$red. "href='RaceResults.php?choice=search&user=".urlencode($myusername)."&password=".urlencode($mypassword)."&Year=".urlencode('All')."&Distance=".urlencode($Distance)."#Filters"."'>All</a>"; 		
 				?>  
 				
 		   </li>
 	   
-	       <!-- All other years -->
+	       <!-- All other years ------------------------------------>
 		  
 			<?php for($StartYear; $StartYear<=$CurrentYear; $StartYear++ ) { ?>		
-			<li style="display: inline;">			
+			<li style="display: inline; " >			
 				<!--<a class="button" href=".?Year=<?php echo "$StartYear"; ?>">   <?php echo "$StartYear"; ?> </a>-->
 				
 				<?php 
-					if($Distance=="") 
-						$Distance= "All"; 
+					if(($Year)== $StartYear)
+					{ 
+						$red = "style='background-color:red;'";
+				    }
+					else
+						$red ="";
+				
+					if($Year=="") 
+						$Year= "All"; 
 					else 
-						$Distance=$Distance;
-					echo "<a class='button' href='RaceResults.php?choice=search&user=".urlencode($myusername)."&password=".urlencode($mypassword)."&Year=".urlencode($StartYear)."&Distance=".urlencode($Distance)."'>$StartYear</a>"; 
+						$Year=$Year;
+					echo "<a class='button' "  .$red. "href='RaceResults.php?choice=search&user=".urlencode($myusername)."&password=".urlencode($mypassword)."&Year=".urlencode($StartYear)."&Distance=".urlencode($Distance)."#Filters"."'>$StartYear</a>"; 
 				?>  
 				
 		   </li<?php }?>>
@@ -157,7 +211,7 @@ require ('indexPHP.php');
 
  
 		
-<!-- BUTTON FOR ALL Distances-->
+<!-- BUTTON FOR ALL Distances------------------------------------------------------------------------------------------------------------------->
 <ul class="myButtons" >           
 	<span class="myButtons" style="display: inline;">
 	<li class="myButtons" style="display: inline;">
@@ -166,11 +220,20 @@ require ('indexPHP.php');
 		
 		<!--<a class="button" href=".?Distance=<?php echo 'All'; ?>"> All <!-- put the word ALL in URL and make button say "All" -->
 		<?php 
-			if($Year=="") 
-					$Year= "All"; 
+				if(($Distance)== "" || ($Distance)== "All")
+				{ 
+						$red = "style='background-color:red;'";
+				}
+				else
+						$red ="";
+				
+			
+			
+			if($Distance=="") 
+					$Distance= "All"; 
 			else 
-					$Year=$Year;
-			echo "<a class='button' href='RaceResults.php?choice=search&user=".urlencode($myusername)."&password=".urlencode($mypassword)."&Year=".urlencode($Year)."&Distance=".urlencode('All')."'> All </a>"; 
+					$Distance=$Distance;
+			echo "<a class='button' "  .$red. "href='RaceResults.php?choice=search&user=".urlencode($myusername)."&password=".urlencode($mypassword)."&Year=".urlencode($Year)."&Distance=".urlencode('All')."#Filters"."'> All </a>"; 
 		?>  
 		<?php  //echo $DistanceName['Distance']; ?>
 		
@@ -181,11 +244,18 @@ require ('indexPHP.php');
 		<li class="myButtons" style="display: inline;">
 						
 			<?php 
-				if($Year=="") 
-					$Year= "All"; 
+				if(($Distance)== $DistanceName['Distance'])
+				{ 
+						$red = "style='background-color:red;'";
+				}
+				else
+						$red ="";
+			
+				if($Distance=="") 
+					$Distance= "All"; 
 				else 
-					$Year=$Year;
-				echo "<a class='button' href='RaceResults.php?choice=search&user=".urlencode($myusername)."&password=".urlencode($mypassword)."&Year=".urlencode($Year)."&Distance=".urlencode($DistanceName['Distance'])."'>". $DistanceName['distName']."</a>"; 
+					$Distance=$Distance;
+				echo "<a class='button' "  .$red. "href='RaceResults.php?choice=search&user=".urlencode($myusername)."&password=".urlencode($mypassword)."&Year=".urlencode($Year)."&Distance=".urlencode($DistanceName['Distance'])."#Filters"."'>". $DistanceName['distName']."</a>"; 
 			?>  
 			
 		</li>
@@ -321,28 +391,45 @@ if($usernameCheck==true)
 ?>	
 <!--END ADMIN ------------------------------------------------------------------------------------------------------------------------> 
 
+<?php 
+//NO Races
+if($totalCount=="0")
+{
+	echo "<h1 style='color: yellow;'> * NO Race Results Found * </h1><br>";
+}
+else
+{
+?>
+
 <h1>You Selected: <?php echo $Name; ?> distance(s) run in <?php if($Year=="%")echo "all years $Limit."; else echo substr("$Year", 0, 4)." year(s) $Limit."; ?></h1> 
 
  <!--Dropdown sections:  -->
+ 
+ <center>
+    <span class="myButtons" style="display: inline;">
+   
+   <h2> What would you like to see?: </h2>
+   
+   <a class="button" href="#results" >Race Results</a>
+   <a class="button" href="#PRs" >Race PRs</a>
+   <a class="button" href="#YearPRs" >Yearly PRs</a>
+   <a class="button" href="#Totals" >Result Totals/ Averages</a>     
+   <a class="button" href="#Goals" >Race Goals</a>
+   <a class="button" href="#Graphs" >Race Graphs</a>
+   <a class="button" href="#Map" >Races On a Map</a>
 
-<button class="accordion" style="font-size:20px">Description / About</button>
+   
+   </span>
+   
+   <br>
+   <hr  >
+</center> 
+ 
+ 
+ 
+ 
 
-  <?php
-  if($about!=null)
-		echo "<p style='color:white'>
-				$about
-			  </p>";
-   else
-	    echo "<p>NO INFO GIVEN.</p> <br>";
-  ?>
-  
-<!-- Gives distance name!! -->
-<?php
-if($Year==NULL && $Distance==NULL)
-$Limit = " Limiting to 10 Results";
-else
-$Limit = "";
-?>
+
          
  
 <h2>Totals and Averages:</h2> 
@@ -357,7 +444,6 @@ $Limit = "";
 			<tr>
 				<th></th>
 				<th>Races Run</th> 			
-				<th>Races Run / Year</th> 
 				<th>Time</th>
 				<th>Distance</th>
 				<th>Pace</th>
@@ -381,7 +467,7 @@ $Limit = "";
 				<!--TOTALS-->
 				<th>Totals:</th>
 				<td><?php echo $totalCount ?></td> 
-				<td><?php echo ($AvgRacesPerYear*$totalCount)  ?></td>
+				
 				<td><?php echo $TotalTime  ?></td> 
 				<td><?php echo $TotalDistance ?></td>
 				<td><?php echo $TotalPace ?></td>
@@ -393,8 +479,8 @@ $Limit = "";
 			<!--AVG-->
 			<tr>
 				<th>Averages:</th>
-				<td><?php if($totalCount==0) echo $totalCount=0; else echo($totalCount/$totalCount); ?></td> 
-				<td><?php echo $AvgRacesPerYear  ?></td>
+				<td><?php if($totalCount==0) echo $totalCount=0; else echo($AvgRacesPerYear." per year"); ?></td> 
+				
 				<td><?php echo $AvgTime  ?></td> 				 
 				<td><?php echo $AvgDistance ?></td> 
 				<td><?php echo $AvgPace ?></td> 
@@ -408,7 +494,7 @@ $Limit = "";
 
 
 
-<h1>Races:</h1>  
+<h1 id="results">Races:</h1>  
 <p>Below are all the races that you have selected.<br>
 You can sort the races by clicking each header, to sort them by that category.<br>
 Races are organized and sorted by date initially, newest to oldest.<br>
@@ -445,11 +531,11 @@ Click the description below for more info! </p>
 				
 				
 <!-- STARTING TABLE OF DATA -->
-	<div style=" height:400px; overflow:auto; display:block;">  
-	   <table id="races" class="scroll sortable" >
+	<!--<div style=" height:600px; overflow:auto; display:block;">  -->
+	   <table id="races" class=" sortable fixed_headers" > <!-- scroll-->
 		  	
 			<!-- MAIN TABLE HEADINGS-->
-			<thead >
+			
 				<tr class="header">
 					<!-- TODO
 						 DOES NOT WORK WHEN PUTTING DELETE RACE AND MODIFY RACE BUTTONS FOR SOME REASON!!!...
@@ -457,10 +543,10 @@ Click the description below for more info! </p>
 						 only want to search tytle / race so only apply search for that!
 					-->
 					
-					<th style="width:120px">Picture                					</th> <!-- DOES NOT EVEN MOVE -->
+					<th style="width:280px">Picture                					</th> <!-- DOES NOT EVEN MOVE -->
 					<th style="width:100px">Count                 &DownArrowUpArrow;</th> <!-- DOES NOT EVEN MOVE -->
 					<th style="width:150px">Date <br>(YYYY-MM-DD) &DownArrowUpArrow;</th> <!--SORTING TABLE BASED ON INPUT --> <!-- WORKS onclick="sortTable(0)" -->
-					<th style="width:250px">Race Name             &DownArrowUpArrow;</th> <!-- WORKS-->
+					<th style="width:360px">Race Name             &DownArrowUpArrow;</th> <!-- WORKS-->
 					<th style="width:150px">Time (HH:MM:SS)       &DownArrowUpArrow;</th> <!-- TIME IS NOT SORTED RIGHT... -->
 					<th style="width:100px">Distance (miles)      &DownArrowUpArrow;</th> <!-- WORKS-->
 					<th style="width:100px">Place (overall)       &DownArrowUpArrow;</th> <!-- DOESNT WORK???-->
@@ -469,7 +555,9 @@ Click the description below for more info! </p>
 					<th style="width:150px">Points (0-1400)       &DownArrowUpArrow;</th> <!-- Also doesnt work right... -->
 					<th style="width:150px">Feel (0-10)           &DownArrowUpArrow;</th> <!-- Also doesnt work right... -->
 					<th style="width:150px">Type of Race          &DownArrowUpArrow;</th> <!-- Also doesnt work right... -->
-					<th style="width:100px">Location             				    </th> <!-- DOES NOT EVEN MOVE -->
+					<th >Location             				    </th> <!-- DOES NOT EVEN MOVE -->
+                    
+					
 
 					<?php
 					if($usernameCheck==true)
@@ -480,11 +568,11 @@ Click the description below for more info! </p>
 					}
 					?>
 				</tr>
-			</thead>
+			
         
 		
 		<!--table body -->
-		 <tbody>                      
+		                    
             <!-- GETS EACH RACE and Race details-->                     
             <?php $i=0; $spot=0; $myCurrentYear = array(""); $totalCount=0; foreach ($race as $race) : $myCurrentYear[$i]=substr($race['Date'], 0, 4); //echo"My Current Year is: $myCurrentYear[$i]"; 
 			$i++;?>
@@ -585,12 +673,57 @@ Click the description below for more info! </p>
             <?php endforeach; ?>
 			
 			
-         </tbody> 	
+         	
 		</table>
- </div>
-
+ <!--</div>-->
+ 
 <hr  >
 <br>
+
+
+
+ 
+ <!--TOTALS---------------------------------------------------------------------------------------->		
+<?php 
+$title = 'Totals: ';
+echo "<br> <h2 id='Totals'> $title </h2> <br>";
+
+?>
+<p>Below are the totals, means, medians, modes, ranges, bests, and worsts of the races you have selected. </p>
+		<table>
+			<tr>
+				<th>DATA </th>
+				<th>Races Run</th> 
+				<th>Time</th>  
+				<th>Distance</th> 
+				<th>Place</th> 
+				<th>Pace</th> 
+				<th >Description</th> 
+			</tr>
+			
+			<?php
+			
+			// PRINT ARRAYS	
+			PrintArray($TOTALS);
+			//PrintArray($AVERAGE);
+			PrintArray($MEAN);
+			PrintArray($MEDIAN);
+			PrintArray($MODE);
+			PrintArray($RANGE);
+			PrintArray($BEST);
+			PrintArray($WORST);			
+					
+ 
+			?>
+
+        </table>
+
+		<!--<h1>All of my Races</h1>-->
+		<br>
+	     <hr  >
+		<br>
+ 
+
 
 		
 <div id="PRs">		
@@ -623,7 +756,7 @@ Click the description below for more info! </p>
 			// TABLE HEADERS
 			echo "<br> <h2> $title </h2> <br>";
 			echo "<p>Here is a list of all of my PRs (Personal Records) for each distance. </p>";
-			echo "<div style=' height:400px; overflow:auto; display:block;'>  ";
+			echo "<div style=' height:600px; overflow:auto; display:block;'>  ";
 			echo "<table id='races' class='scroll sortable' id='Prs' style='border: 4px solid orange; overflow:auto;'><tr class='header' >";
 			echo "<th style='width:120px'>Picture</th>"; 
 			echo "<th style='width:100px'>Distance </th>";
@@ -916,7 +1049,7 @@ Click the description below for more info! </p>
 
 
 
-<div id="GOALs">		
+<div id="Goals">		
 <!--RACE GOALs---------------------------------------------------------------------------------------->	
 <?php
 			$title = "Race Goals: ";
@@ -2013,66 +2146,6 @@ Click the description below for more info! </p>
 <br>
 
 
-
-
-
-
-<!--TOTALS---------------------------------------------------------------------------------------->		
-<?php 
-$title = 'Totals: ';
-echo "<br> <h2> $title </h2> <br>";
-
-?>
-<p>Below are the totals, means, medians, modes, ranges, bests, and worsts of the races you have selected. </p>
-		<table>
-			<tr>
-				<th>DATA </th>
-				<th>Races Run</th> 
-				<th>Time</th>  
-				<th>Distance</th> 
-				<th>Place</th> 
-				<th>Pace</th> 
-				<th >Description</th> 
-			</tr>
-			
-			<?php
-			
-			// PRINT ARRAYS	
-			PrintArray($TOTALS);
-			//PrintArray($AVERAGE);
-			PrintArray($MEAN);
-			PrintArray($MEDIAN);
-			PrintArray($MODE);
-			PrintArray($RANGE);
-			PrintArray($BEST);
-			PrintArray($WORST);			
-					
-					
-			function PrintArray($myarray)
-			{
-				echo "<tr>";
-				$arr_length = count($myarray); 
-				for($i=0; $i < $arr_length ; $i++)
-				{	
-					if($i==0)
-					echo "<td style='background-color:red; color:white'>" .  array_shift($myarray)  . "</td>";	
-					else
-					echo "<td >" .  array_shift($myarray)  . "</td>";
-				}
-				echo "</tr>";
-			}
- 
-			?>
-
-        </table>
-
-		<!--<h1>All of my Races</h1>-->
-		<br>
-	     <hr  >
-		<br>
-
-		
-		
 		
 		
 <?php
@@ -2149,7 +2222,7 @@ foreach($PRdist as $PRdist) // GO THROUGH EVENTS
 
 
 //PRINT BY EVENT:
-echo "<h2>Yearly PRs Table</h2><br>";
+echo "<h2 id='YearPRs'>Yearly PRs Table</h2><br>";
 echo "<p>This table. shows you the same info above in a more concise view, Horizonally you can see the yearly progress, and Vertically you can see the change in events/distances. <br> Red will show a decrease in performance from the previous year, and green will show inprovement! GOLD will be your PR!</p>";
 
 $bestMark=100;
@@ -2240,7 +2313,7 @@ echo "</table></center>";
 
 
 
-		
+<center>		
 <!-- NEW----------------------------------------------------------------->
 <?php
 
@@ -2321,6 +2394,16 @@ echo "</table></center>";
 
 		
 //GRAPHING STUFF**********************************
+echo"<hr>";
+			
+// Places finished: 1st, 2nd, 3rd **********************************************************************************************************************	
+			//PUTTING TITLE ON GRAPH
+			$title = 'My Race Finish Places: ';
+			echo "<center><h1 id='Graphs'>GRAPHS:</h1></center><br>";
+			echo "<p>Below are graphs of race results based on totals of a specific category.<br> 1st graph is: Count of Total Races I Have Run Each Year. <br> 2nd graph is: Count of Race Types: Road Race, XC Race, Track Race, Tri. <br> 3rd Graph is: Count of Each Distance I Have Run (ex. how many times I've run 400m).  </p><br><br>";
+			echo "<br> <h2> $title </h2> <br>";
+			echo "<p>Below is the count of top 3 places and how many of each I finished. <br> 1st, 2nd, 3rd, Other.</p>";
+
 			
 			// Using the php wrapper for google charts
 			function draw_bar_graph($width, $height, $data, $max_value)
@@ -2350,14 +2433,6 @@ echo "</table></center>";
 
 			} // End of draw_bar_graph() function
 
-			
-// Places finished: 1st, 2nd, 3rd **********************************************************************************************************************	
-			//PUTTING TITLE ON GRAPH
-			$title = 'My Race Finish Places: ';
-			echo "<center><h1>GRAPHS:</h1></center><br>";
-			echo "<p>Below are graphs of race results based on totals of a specific category.<br> 1st graph is: Count of Total Races I Have Run Each Year. <br> 2nd graph is: Count of Race Types: Road Race, XC Race, Track Race, Tri. <br> 3rd Graph is: Count of Each Distance I Have Run (ex. how many times I've run 400m).  </p><br><br>";
-			echo "<br> <h2> $title </h2> <br>";
-			echo "<p>Below is the count of top 3 places and how many of each I finished. <br> 1st, 2nd, 3rd, Other.</p>";
 			
 			//GETTING DATA READY AND ADDING THEM TO THE GRAPH:
 			$graphData = array();
@@ -2405,7 +2480,7 @@ echo "</table></center>";
 				 else
 				 {
 					 //Other
-					 $place='OTHER';
+					 $place='4th_and_UP';
 				 }
 				
 				// COUNT IT AND GRAPH IT
@@ -2417,10 +2492,11 @@ echo "</table></center>";
 			} 
 
 			//function draw_bar_graph($width, $height, $data, $max_value)
+			ksort($graphData);
 			draw_bar_graph(960, 240, $graphData, ($totalCount/1.5)); //prints graph
 
 			// Dump the data just so we can see how it is organized
-			//var_dump($graphData);
+			var_dump($graphData);
 			//echo "<br><br> 1st: $graphData[1] <br>2nd:  $graphData[2] <br>3rds: $graphData[3]<br>";
 			
 			// TABLE
@@ -2444,21 +2520,111 @@ echo "</table></center>";
 			echo "</tr>";
 			echo "<tr>";
 			echo "<td>Other</td>";
-			echo "<td>". $graphData["OTHER"] . "</td>";
+			echo "<td>". $graphData["4th_and_UP"] . "</td>";
 			echo "</tr>";
 			echo "</table><br>";
 			
 			
-			
-// Number of Races / Year: **********************************************************************************************************************	
+echo"<hr>";	
+
+// Breakdown of race types: **********************************************************************************************************************		
+
 			//PUTTING TITLE ON GRAPH
-			$title = 'Count of Races I Have Run Each Year: ';
+			$title = 'Count of Race Types: ';
+			
 			echo "<br> <h2> $title </h2> <br>";
+			echo "<p>Below are graphs and count of race results based on race types or categories: (Road, Track, XC, and Tri).<br> The amount of each is graphed and listed below. </p><br><br>";
 			
 			//GETTING DATA READY AND ADDING THEM TO THE GRAPH:
 			$graphData = array();
 			$graphData2 = array(array());
 			//echo $name;
+			
+			//GETTING QUERY OF RACES
+			if($Distance==NULL && $Year==NULL)
+			{
+				$queryrace = "SELECT 'Type' FROM $myusername order by 'Type' DESC LIMIT 10";
+				$raceGraphType = queryRaces($queryrace1, $Distance, $Year);
+			}
+			
+			else if($Distance=='All' or $Year=='All')
+			{
+				$queryrace = "SELECT 'Type' FROM $myusername order by 'Type' DESC";
+				$raceGraphType = queryRaces($queryrace1, $Distance, $Year);
+			}
+
+			else if($Distance==NULL)
+			{
+				$queryrace = "SELECT 'Type' FROM $myusername order by 'Type' DESC";
+				$raceGraphType = queryRaces($queryrace1, $Distance, $Year."%"); 				
+			}
+			// Get races for selected distance. (if index is given)
+			else
+			{
+				$queryrace = "SELECT 'Type' FROM $myusername WHERE (Distance = :Distance AND Date LIKE :Year) order by 'Type' DESC"; 
+				$raceGraphType = queryRaces($queryrace1, $Distance, $Year."%");
+			}
+			
+			//uksort($raceGraphType);
+			//var_dump($raceGraphType);
+			
+
+			// NOW GOING THROUGH EACH RACE AND STRIPPING DATA
+			foreach ($raceGraphType as $raceGraphType)
+			{
+				 
+				 //echo "<td>". $raceGraph['Race']. "</td>";
+				 $name=$raceGraphType['Race'];
+				 $Type=$raceGraphType['Type']; // race count by distance;
+				 //$raceGraph['Race']; // Race count for years;
+				 
+				if(array_key_exists($Type, $graphData))
+					$graphData[$Type]++;       // Yes, increment it
+				else
+					$graphData[$Type] = 1;     // No, set it to one*/ 1
+					
+			} 
+			
+			//function draw_bar_graph($width, $height, $data, $max_value)
+			draw_bar_graph(960, 240, $graphData, ($totalCount/2)); //prints graph
+
+			// TABLE
+			$title2= "My Race Types / Categories: ";
+			echo "<br> <h2> $title2 </h2> <br>";
+			echo "<table style='border: 4px solid orange;'><tr>";
+			echo "<th style='width:100px'> Place Finished </th>";		
+			echo "<th style='width:120px'> Count </th>"; 
+			echo "</tr>";
+			echo "<tr>";
+			echo "<td>Road</td>";
+			echo "<td>$graphData[Road]</td>";
+			echo "</tr>";
+			echo "<tr>";
+			echo "<td>XC</td>";
+			echo "<td>$graphData[XC]</td>";
+			echo "</tr>";
+			echo "<tr>";
+			echo "<td>Track</td>";
+			echo "<td>$graphData[Track]</td>";
+			echo "</tr>";
+			echo "<tr>";
+			echo "<td>Tri</td>";
+			echo "<td>". $graphData['Tri'] . "</td>";
+			echo "</tr>";
+			echo "</table><br>";
+			// Dump the data just so we can see how it is organized
+			//var_dump($graphData);		
+echo"<hr>";		
+// Number of Races / Year: **********************************************************************************************************************	
+			//PUTTING TITLE ON GRAPH
+			$title = 'Count of Races I Have Run Each Year: ';
+			echo "<br> <h2> $title </h2> <br>";
+			echo "<p>Below are graphs and count of race results based on year ran. <br>This ranges from the first race you have done to the most curent race.<br> How many races have you done each year?<br> See below.</p><br><br>";
+			//GETTING DATA READY AND ADDING THEM TO THE GRAPH:
+			$graphData = array();
+			$graphData2 = array(array());
+			//echo $name;			
+			
 			
 			//GETTING QUERY OF RACES
 			if($Distance=='All' or  $Year=='All')
@@ -2485,6 +2651,12 @@ echo "</table></center>";
 				$raceGraphYear = queryRaces($queryrace, $Distance, $Year."%");
 			}
 					
+			//START TABLE
+			echo "<table class='sortable fixed_headers'><tr>";
+			echo "<th>YEAR</th><th>Race Count</th></tr><tr>";
+			$tableYear =10000;
+			$tableCount =1;
+						
 			
 			// NOW GOING THROUGH EACH RACE AND STRIPPING DATA
 			foreach ($raceGraphYear as $raceGraphYear)
@@ -2492,81 +2664,57 @@ echo "</table></center>";
 				 $name=$raceGraphYear['Race'];
 				 $year=substr($raceGraphYear['Date'], 0, 4); // race count by distance;
 				 
+				 //TABLE CONT.. 
+				 if($year<$tableYear)
+				 {
+					 //SECOND ROW ON
+				     if($tableYear!=10000)
+					 {	
+						echo "<td>". $tableCount. "</td>";						
+						echo "</tr><tr>";
+					 }
+					 //FIRST ROW					
+					 echo "<td>". $year ."</td>";
+					 $tableYear=$year;	
+					 $tableCount=1;		 
+				 }
+				 else
+				 {
+					 //echo "<td>". $raceGraph['Race']. "</td>";
+					 $tableCount++;
+				 }
+				 //echo "<td>". $raceGraph['Race']. "</td>";
+				 
+				 
 				if(array_key_exists($year, $graphData))
 					$graphData[$year]++;       // Yes, increment it
 				else
 					$graphData[$year] = 1;     // No, set it to one*/ 1
 					
 			} 
-
+            //FINISH TABLE
+			echo "<td>". $tableCount. "</td>";			
+			echo "</tr><tr>";			
+			echo "</tr></table><br>";
+			
+			
+			//DRAW GRAPH
 			//function draw_bar_graph($width, $height, $data, $max_value)
 			draw_bar_graph(960, 240, $graphData, ($totalCount/3)); //prints graph
 
+			
+			
 			// Dump the data just so we can see how it is organized
 			//var_dump($graphData);
 
 
-// Breakdown of race types: **********************************************************************************************************************		
-
-			//PUTTING TITLE ON GRAPH
-			$title = 'Count of Race Types: ';
-			echo "<br> <h2> $title </h2> <br>";
-			
-			//GETTING DATA READY AND ADDING THEM TO THE GRAPH:
-			$graphData = array();
-			$graphData2 = array(array());
-			//echo $name;
-			
-			//GETTING QUERY OF RACES
-			if($Distance==NULL && $Year==NULL)
-			{
-				$queryrace = "SELECT * FROM $myusername order by Distance DESC LIMIT 10";
-				$raceGraphType = queryRaces($queryrace1, $Distance, $Year);
-			}
-			
-			else if($Distance=='All' or $Year=='All')
-			{
-				$queryrace = "SELECT * FROM $myusername order by Distance DESC";
-				$raceGraphType = queryRaces($queryrace1, $Distance, $Year);
-			}
-
-			else if($Distance==NULL)
-			{
-				$raceGraphType = queryRaces($queryrace1, $Distance, $Year."%"); 				
-			}
-			// Get races for selected distance. (if index is given)
-			else
-			{
-				$queryrace = "SELECT * FROM $myusername WHERE (Distance = :Distance AND Date LIKE :Year) order by Distance DESC"; 
-				$raceGraphType = queryRaces($queryrace1, $Distance, $Year."%");
-			}
-			
-			// NOW GOING THROUGH EACH RACE AND STRIPPING DATA
-			foreach ($raceGraphType as $raceGraphType)
-			{
-				 $name=$raceGraphType['Race'];
-				 $Type=$raceGraphType['Type']; // race count by distance;
-				 //$raceGraph['Race']; // Race count for years;
-				 
-				if(array_key_exists($Type, $graphData))
-					$graphData[$Type]++;       // Yes, increment it
-				else
-					$graphData[$Type] = 1;     // No, set it to one*/ 1
-					
-			} 
-
-			//function draw_bar_graph($width, $height, $data, $max_value)
-			draw_bar_graph(960, 240, $graphData, ($totalCount/2)); //prints graph
-
-			// Dump the data just so we can see how it is organized
-			//var_dump($graphData);		
-			
+echo "<hr>";			
 // DISTANCE: **********************************************************************************************************************			
 			
 			//PUTTING TITLE ON GRAPH
 			$title = 'Count of Each Distance I Have Run: ';
 			echo "<br> <h2> $title </h2> <br>";
-			
+			echo "<p>Below are graphs and count of race results based on distance type, Ranges is from 100m to Marathon.<br> How many times have you run each race distance?<br> ex. How many 10K's have you races?<br>See below. </p><br><br>";
 			//GETTING DATA READY AND ADDING THEM TO THE GRAPH:
 			$graphData = array();
 			$graphData2 = array(array());
@@ -2597,11 +2745,51 @@ echo "</table></center>";
 				$raceGraph = queryRaces($queryrace, $Distance, $Year."%");
 			}
 			
+
+			
+			echo "<table class='sortable fixed_headers'><tr>";
+			echo "<th>Dist Name</th><th>DISTANCE</th><th>Count</th></tr><tr>";
+			$tableDist =0;
+			$tableCount =1;
 			// NOW GOING THROUGH EACH RACE AND STRIPPING DATA
 			foreach ($raceGraph as $raceGraph)
 			{
+				 	//GET DISTANCE NAME:
+					$Get_Dist_Query = 'SELECT distName FROM MyDistances WHERE Distance=' . $raceGraph['Distance'];
+					$DistanceNameQuery=queryRaces($Get_Dist_Query,"","");
+					$Distance_Name = $DistanceNameQuery[0][0];
+					//var_dump($DistanceNameQuery);
+					
+					
+				 if($raceGraph['Distance']>$tableDist)
+				 {
+					
+					
+					
+					 //SECOND ROW ON
+				     if($tableDist!=0)
+					 {						
+						echo "<td>". $tableCount. "</td>";
+						echo "</tr><tr>";
+					 }
+					 //FIRST ROW
+					echo "<td>$Distance_Name</td>";
+					 echo "<td>". $raceGraph['Distance'] ."</td>";
+					 $tableDist=$raceGraph['Distance'];	
+					 $tableCount=1;
+					 
+				 }
+				 else
+				 {
+					 //echo "<td>". $raceGraph['Race']. "</td>";
+					 $tableCount++;
+				 }
+				 //echo "<td>". $raceGraph['Race']. "</td>";
+				 
 				 $name=$raceGraph['Race'];
 				 $distance=$raceGraph['Distance']; // race count by distance;
+				 
+					 
 				 $raceGraph['Race']; // Race count for years;
 				 
 				if(array_key_exists($distance, $graphData))
@@ -2609,14 +2797,18 @@ echo "</table></center>";
 				else
 					$graphData[$distance] = 1;     // No, set it to one*/ 1
 					
-			} 
-
+			}
+			echo "<td>". $tableCount. "</td>";			
+			echo "</tr><tr>";			
+			echo "</tr></table><br>";
 			//function draw_bar_graph($width, $height, $data, $max_value)
 			draw_bar_graph(960, 240, $graphData, ($totalCount/4)); //prints graph
 
 			// Dump the data just so we can see how it is organized
 			//var_dump($graphData);
+			
 
+			
 ?>		
 <hr  >
 <br>
@@ -2675,7 +2867,7 @@ Read more at: https://www.w3schools.com/graphics/google_maps_basic.asp
 	
  <!-- TABLE FOR MAP RACES 
   <table width='800px' border='1' cellspacing='0' cellpadding='0'><tr><th width='50px'>Race Name</th><th width='50px'>Location</th></tr> -->	
-	
+</center>
 	
 <?php		//Getting races and plotting on map
 			foreach ($raceMap as $raceMap):
@@ -2706,7 +2898,7 @@ Read more at: https://www.w3schools.com/graphics/google_maps_basic.asp
 		<?=$MAP_OBJECT->getMapJS();?>
 </head>
 		<body>
-		<H1>My Races on the MAP</H1>
+		<H1 id="Map" >My Races on the MAP</H1>
 		<p>Using Google Maps, I have mapped each race on a map based on its geographical location. </p>
 		<?=$MAP_OBJECT->printOnLoad();?>
 		<?=$MAP_OBJECT->printMap();?>
@@ -2719,15 +2911,17 @@ Read more at: https://www.w3schools.com/graphics/google_maps_basic.asp
 
 		
 <br>	
-
-		
+<?php
+}
+?>
+<center>		
 </section>
 <ul class="myButtons">
-	<span class="myButtons" style="display: inline;">
-		<a class="myButtons" onclick="topFunction()" id="myBtn" title="Go to top">Top</a>
+	<span class="myButtons" style="display: inline; text-align:center;">
+		<a class="Button" onclick="topFunction()" id="myBtn" title="Go to top">Top</a>
 	</span>
 </ul>
-	
+</center>	
 
 <br>
 <br>

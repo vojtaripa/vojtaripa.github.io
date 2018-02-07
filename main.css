@@ -1,4 +1,111 @@
 
+@import url('https://fonts.googleapis.com/css?family=Yantramanav:100');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400');
+
+html, body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	width: 100%;
+    background-color:#000022;
+}	
+.intro{
+	background-size:     cover;                      /* <------ */
+    background-position: center center;              /* optional, center the image */
+	background: url(../long_desert_road_black_and_white-wallpaper-2560x1440.jpg);
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	height: 100%;
+	width: 100%;
+	margin: auto;
+	display: table;
+	top: 0;
+	background-size: cover;
+}
+.intro .inner {
+	display: table-cell;
+	vertical-align: middle;
+	width: 100%;
+	max-width:none;	
+}
+.content{
+	max-width: 600px;
+	margin: 0 auto;
+	text-align: center;
+	padding-bottom: 28%;
+	
+}	
+.content h1{
+	
+	font-family: 'Yantramanav', sans-serif;
+	font-size: 800%;
+	font-weight: 500;
+	color: #F7C531;
+	line-height: 70%;	
+}	
+.btn{
+	font-family: 'Montserrat', sans-serif;
+	font-size:135%;
+	font-weight: 400;
+	color: #F7C531;
+	text-transform: uppercase;
+	text-decoration: none;
+	border: solid #F7C531;
+	padding: 10px 20px;
+	border-radius: 9px;
+	transition: all .5s;
+}
+
+
+.btn:hover{
+	color: #CBDFD6;
+	border: solid #CBDFD6 2px;
+}
+/*--- Media Queries --*/
+@media screen and (max-width: 900px) {
+
+}
+@media screen and (max-width: 768px) {
+
+}
+@media screen and (max-width: 480px) {
+	
+}
+/* GLOW */
+
+@-webkit-keyframes glowing {
+  0% { background-color: #000000; -webkit-box-shadow: 0 0 3px #000000; }
+  50% { background-color: #F7C531; -webkit-box-shadow: 0 0 40px #F7C531; }
+  100% { background-color: #000000; -webkit-box-shadow: 0 0 3px #000000; }
+}
+
+@-moz-keyframes glowing {
+  0% { background-color: #000000; -moz-box-shadow: 0 0 3px #000000; }
+  50% { background-color: #F7C531; -moz-box-shadow: 0 0 40px #F7C531; }
+  100% { background-color: #000000; -moz-box-shadow: 0 0 3px #000000; }
+}
+
+@-o-keyframes glowing {
+  0% { background-color: #000000; box-shadow: 0 0 3px #000000; }
+  50% { background-color: #F7C531; box-shadow: 0 0 40px #F7C531; }
+  100% { background-color: #000000; box-shadow: 0 0 3px #000000; }
+}
+
+@keyframes glowing {
+  0% { background-color: #000000; box-shadow: 0 0 3px #000000; }
+  50% { background-color: #F7C531; box-shadow: 0 0 40px #F7C531; }
+  100% { background-color: #000000; box-shadow: 0 0 3px #000000; }
+}
+
+.btn {
+  -webkit-animation: glowing 1500ms infinite;
+  -moz-animation: glowing 1500ms infinite;
+  -o-animation: glowing 1500ms infinite;
+  animation: glowing 1500ms infinite;
+}
+
+
+/* OLD ********************8*************************************************************** */
 main
 {
 	background:hsla(0,0%,0%,0.9); /*Makes Background Transparent: http://hslpicker.com/*/
@@ -284,12 +391,12 @@ tbody td:last-child, thead th:last-child {
 H1 {
    font-family: 'Times New Roman';
    font-size: 36px;
-   background: black;
+   /*background: black;*/
    color: white;
    text-align: center;
 }
 
-body {
+.main body {
 
         margin-top: 0;
 

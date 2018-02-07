@@ -43,12 +43,17 @@ if($myusername=="")
 $user_query = "SELECT * FROM users WHERE username='".$myusername."'";
 $user_query_Array=queryRaces($user_query,"","");
 
+//GET USER INFO:
 foreach($user_query_Array as $user):
 {
 	$first_name = $user['first_name'];
 	$last_name  = $user['last_name'];
 	$userimage  = $user['Picture'];
 	$about      = $user['about'];
+	$myAge      = $user['age'];
+	$mySex      = $user['sex'];
+	$myWebsite  = $user['webpage'];
+	$joined     = $user['Date_Added'];
 }
 endforeach;
 
@@ -277,13 +282,13 @@ function queryRaces($queryrace, $Distance, $Year)
 	
 	//$statement3->bindValue(':Year', $Year);
 	$statement3->execute();
-	$myrace = $statement3->fetchAll();
+	$myraces = $statement3->fetchAll();
 	//$race=$myrace;
 	//echo $Distance;
 	
 	$statement3->closeCursor();
 	//echo "not NULL";
-	return $myrace;
+	return $myraces;
 } 
 
 $raceMap=0;
@@ -906,6 +911,22 @@ END PHP STARTING HTMLS
 
 ****************************************************************************** ****************************************************************************** ****************************************************************************** 
 ****************************************************************************** ************************************************************************************************************************************************************ */
+
+//FOR TOTALS:
+function PrintArray($myarray)
+{
+	echo "<tr>";
+	$arr_length = count($myarray); 
+	for($i=0; $i < $arr_length ; $i++)
+	{	
+		if($i==0)
+		echo "<td style='background-color:#E6594D; color:white'>" .  array_shift($myarray)  . "</td>";	
+		else
+		echo "<td >" .  array_shift($myarray)  . "</td>";
+	}
+	echo "</tr>";
+}
+
 
 
 
