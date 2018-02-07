@@ -95,7 +95,7 @@ $Date = filter_input(INPUT_POST, 'Date');
 $Date = trim($Date," \t\n\r\0\x0B");
 
 $Race = filter_input(INPUT_POST, 'Race'); //, FILTER_VALIDATE_INT
-$Race=trim($Race," \t\n\r\0\x0B");
+$Race=substr($Race, 2,-1);
 
 $Time = filter_input(INPUT_POST, 'Time');
 //$Time= substr($Time, 2,-1); // makes seconds the last 2 chars
@@ -117,32 +117,32 @@ $MyDistance=trim($MyDistance, " \t\n\r\0\x0B");
 //echo "*".$MyDistance."*";
 
 $Place = filter_input(INPUT_POST, 'Place', FILTER_VALIDATE_INT);
-$Place = trim($Place," \t\n\r\0\x0B");
+//$Place=substr($Place, 2,0);
 
 //DONT NEED PACE IT WILL RE-Calculate
 /*$Pace = filter_input(INPUT_POST, 'Pace');
 $Pace=substr($Pace, 2,-1); */
 
 $Location =	filter_input(INPUT_POST, 'Location');
-$Location= trim($Location," \t\n\r\0\x0B");
+$Location=substr($Location, 2);
 
 $Type = filter_input(INPUT_POST, 'Type');
 $Type=trim($Type, " \t\n\r\0\x0B");
 
 $Picture = filter_input(INPUT_POST, 'Picture');	
-$Picture = trim($Picture," \t\n\r\0\x0B");
+$Picture=substr($Picture, 2);	
 //echo "*$Picture*<br>";			
 
 $LinkToResults = filter_input(INPUT_POST, 'LinkToResults');				
-$LinkToResults = trim($LinkToResults ," \t\n\r\0\x0B");
+$LinkToResults = substr($LinkToResults, 2,-1);
 //echo "*".$MyDistance."*<br>";
 
 $LinkToActivity	= filter_input(INPUT_POST, 'LinkToActivity');	
-$LinkToActivity = trim($LinkToActivity ," \t\n\r\0\x0B");
+$LinkToActivity=substr($LinkToActivity, 2,-1);
 //echo "*".$LinkToResults."*<br>";
 
 $shoes = filter_input(INPUT_POST, 'shoes');		
-$shoes=trim($shoes ," \t\n\r\0\x0B");
+$shoes=substr($shoes, 2);
 
 $feel = filter_input(INPUT_POST, 'Feel');		
 $feel = trim($feel, " \t\n\r\0\x0B");

@@ -67,7 +67,6 @@
    <a class="button" href="../index.php" >View All Users</a>
    <a class="button" href="functions.php">Other Functions / Conversions</a>
    <a class="button" href="distance_list.php">List distances</a>     
-   <a class="button" href="points.php">Points</a>     
    <a class="button" href="signup.php" >Sign up for updates</a>
    
    <a class="button" href="http://vojta.users.sonic.net/blog/"> Vojta's Main Page </a>
@@ -94,7 +93,7 @@
 	
 	<center>
             <form action="process_login.php" method="post" id="login_form" class="aligned" >
-                <input class="button" type="hidden" name="action" value="login">
+                <input type="hidden" name="action" value="login">
 
                <table>
                 <tr>
@@ -114,7 +113,7 @@
 				</table>
 				<br><br>
                 <label>&nbsp;</label>
-                <input class="button" type="submit" value="Login">
+                <input type="submit" value="Login">
 				<br><br>
             </form>			
 			
@@ -133,7 +132,7 @@
 	
   </div>
   <div class="bottomleft">
-    <center><p>&copy; <?php echo date("Y"); ?> Vojta Ripa, Inc.</p></center>
+    <p>&copy; <?php echo date("Y"); ?> Vojta Ripa, Inc.</p>
   </div>
 </div>
 

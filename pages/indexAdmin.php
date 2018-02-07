@@ -1,118 +1,395 @@
 <?php
-//RaceResults.php
-//(used to be index.php)
 
+//echo "<h1>VOJTA IS MARRIED TO HILLARY RIPA!</h1>";
+//*********
+//LOGIN:
+//*********
+//vojtaripa
+//Runfa$t1
+
+//STOPPING THE PAGE FROM LOADING IF SOMEONE URL HACKS IT
+/*
+if(!(isset($username) && isset($password)))
+{
+	include("../login2.php");
+	exit();
+}
+
+else if (isset($username) && isset($password)) 
+{
+			require_once('database.php');
+			//finds which user is logged on:
+			$queryuser = 'SELECT * FROM users  WHERE username = :username ORDER BY idusers DESC limit 1'; 
+			$statement5 = $db->prepare($queryuser);
+			$statement5->bindValue(':username', $username);
+			$statement5->execute();
+			$theuser = $statement5->fetchAll();
+			$statement5->closeCursor();
+			
+			$theusername = $theuser['0']['username'];
+			$thepassword =	$theuser['0']['password'];
+			
+			//IF USERNAME AND PASSWORD ARE NOT RIGHT
+			if($username!=$theusername || $password!=$thepassword)
+			{
+				echo "SORRY INVALID LOGIN";
+				//include("login2.php");				
+				exit();
+			}
+} 
+//ELSE PROCEED.
+else{}
+*/
+//INCLUDES:
 require_once('database.php');
 require_once('../map/graphs/Person.php');
 require ('indexPHP.php');
-//require ('javascript_RaceResults.js');
-
-//echo "Year: $Year <br>";
-//echo "Distance: $Distance <br>";
 ?>
 
+
+<!-- HTML --------------------------------------------------------------------------------------------------------------------------->
 <!DOCTYPE html>
 <html>
 
 <!-- the head section -->
 <head>
-	
-	<!-- FOR SORTING TABLES!!! -->
-	<script src="sorttable.js"></script> 
-	<!-- INCLUDING FOR ALL JAVASCRIPT! -->
-	<script src="javascript_RaceResults.js"></script> 
-	
-	
-    <title>Here Are All My Race Results</title>
+	<script src="sorttable.js"></script> <!-- FOR SORTING TABLES!!! -->
+    <title>Here Are All My Race Results: ADMIN</title>
     <link rel="stylesheet" type="text/css" href="../main.css" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<style> 
 		h2   {text-shadow: 1px 5px 5px #FF0000; color: white}  
 	</style>
+
+	<!-- JAVASCRIPT -->
+	</style>
+	
+	<script>
+        
+		//GETS SECONDS AND CONVERTS BACK TO TIME FORMAT
+		function SecondsToTime(inputTime) 
+		{	
+			//echo nl2br("Seconds are now: $Seconds \n");
+			var CaryOver=0, Hours=0, Minutes=0, Seconds=0;
+			//var inputTime=3000;
+			
+			if(inputTime>=(60*60))
+			{
+				CaryOver=inputTime%(60*60);
+				Hours=Math.floor(inputTime/(60*60));
+				inputTime=CaryOver;
+				//echo nl2br("Seconds are now: CarryOver \n");
+				
+			}
+
+			if(inputTime>=60)
+			{
+				CaryOver=inputTime%60; //Remainder
+				Minutes=Math.floor(inputTime/60);
+				inputTime=CaryOver;
+				//echo nl2br("Minutes are now: CarryOver \n");
+				
+			}
+			else{}
+			
+			Seconds=Math.floor(inputTime);
+			
+			//NOW Correct the FORMAT
+			if(Hours<10)
+			{Hours="0" + Hours;}	
+			if(Minutes<10)
+			{Minutes="0" + Minutes;}
+			if(Seconds<10)
+			{Seconds="0" + Seconds;}
+			else{}
+			
+			return (Hours + ":" + Minutes + ":" + Seconds);
+		}
+		
+		function TimeH(inputTime) 
+		{	
+			//echo nl2br("Seconds are now: $Seconds \n"); 00:00:00
+			var Hours=0;
+			
+			Hours = inputTime.substring(2, 0);
+
+			return Hours;
+		}
+		function TimeM(inputTime) 
+		{	
+			//echo nl2br("Seconds are now: $Seconds \n");
+			var  Minutes=0;
+			
+			Minutes= inputTime.substring(5, 3);
+
+			return Minutes;
+		}
+		function TimeS(inputTime) 
+		{	
+			//echo nl2br("Seconds are now: $Seconds \n");
+			var Seconds=0;
+			
+			Seconds = inputTime.substring(8, 6);
+						
+			return Seconds;
+		}
+		
+		// MY LIVE PACE CALCULATOR:
+		//LINK: https://www.daniweb.com/programming/web-development/threads/305789/javascript-calculate-time-between-times
+		function RecalculateElapsedTime (SpecificDist, desiredPR) 
+		{
+            //Gets distance
+			var distance = document.getElementById (SpecificDist);
+			var distVal= distance.value;
+			
+            //Initializes name if 4 changing fields		
+			var hour   = "starttimehour";
+			var minute = "starttimemin";
+			var second = "starttimesec";
+			var mypace = "elapsed";
+			
+			//Just adding distance to make ID name unique
+			var hour   = hour.concat(SpecificDist);
+			var minute = minute.concat(SpecificDist);
+			var second = second.concat(SpecificDist);
+			var mypace = mypace.concat(SpecificDist);
+			
+			//finds that element in this page
+			var startHSelect = document.getElementById (hour);
+            var startMSelect = document.getElementById (minute);
+			var startSSelect = document.getElementById (second);					
+			
+			// convert string values to integers
+			var startH = parseInt (startHSelect.value);
+			var startM = parseInt (startMSelect.value);
+			var startS = parseInt (startSSelect.value);	
+			
+			// create Date objects from start and end
+			var start = new Date ();	// the current date and time, in local time.
+			  var end = new Date ();
+
+			//setting stand and end date (formatting) so we can use getTime() function
+			start.setHours (startH, startM, startS);
+			  end.setHours (00,     00,         00);
+			
+			//Now setting result AKA elapsed time
+			var elapsedInS = start.getTime () - end.getTime ();
+			
+			//Gets total amount of sec.
+			var totalSec = (elapsedInS / (1000*distVal));
+			
+			//uses function to convert sec to time again.
+			var pace = SecondsToTime (totalSec);
+			
+			//Gets value of result field
+			var elapsedSpan = document.getElementById (mypace);
+							  
+			
+			//changes the value of the result field
+			elapsedSpan.value = "" + (pace); //seconds //(elapsedInS / (1000*distVal) )   //.innerHTML
+			//Feel ();
+			//SelectTime($Times,$Timem,$Timeh); // this is PHP.. bleh..
+			/*var testing = "time";
+			var test = document.getElementById (testing.concat(SpecificDist));
+			test.value = "" + (x);*/
+						
+        }
+		
+		//FIND THE DIFFERENCE BETWEEN TIMES / PACES
+		function TimeDiff (SpecificDist, InputTime)
+		{
+			//Time I will get from the function at INPUTTIME, USERTIME will vary and ill have to get it from the input BOX.
+			//Then I need to convert them to seconds, do subtraction, then convert them back? OR I can use use the PHP built in function?
+			//Then copy the same for pace. 
+            //document.write(InputTime, SpecificDist);
+			//input are getting here!
+			
+			var testing = "time";		
+			
+			//Initializes name if 4 changing fields		
+			var hour   = "starttimehour";
+			var minute = "starttimemin";
+			var second = "starttimesec";		
+			
+			//Just adding distance to make ID name unique
+			var hour   =   hour.concat(SpecificDist);
+			var minute = minute.concat(SpecificDist);
+			var second = second.concat(SpecificDist);
+			
+			
+			//finds that element in this page
+			var startHSelect = document.getElementById (hour);
+            var startMSelect = document.getElementById (minute);
+			var startSSelect = document.getElementById (second);					
+			
+			// convert string values to integers
+			var startH = parseInt (startHSelect.value);
+			var startM = parseInt (startMSelect.value);
+			var startS = parseInt (startSSelect.value);	
+			
+			//Getting array of 3 values, H, M, S
+			//InputTime=TimeParse("00:01:01"); //TimeParse(InputTime)
+					
+			var H = InputTime.substring(2, 0);
+			var M = InputTime.substring(5, 3);
+			var S = InputTime.substring(8, 6);
+			
+			// create Date objects from start and end
+			var start = new Date ();	// the current date and time, in local time.
+			var   end = new Date ();
+
+			//setting stand and end date (formatting) so we can use getTime() function
+			start.setHours (startH, startM, startS); //00,00,49
+			  end.setHours (H, M, S); //InputTime
+			
+			//Now setting result AKA elapsed time
+			var elapsedInS =  end.getTime () - start.getTime ();
+			elapsedInS = Math.abs(elapsedInS)
+			
+			//uses function to convert sec to time again.
+			var totalSec = (elapsedInS / (1000));
+			var time = SecondsToTime (totalSec); //totalSec
+			
+			
+			//Gets value of result field
+			var test = document.getElementById (testing.concat(SpecificDist));
+	        //changes the value of the result field
+			test.value = time;//"TIME: " + time + "INPUTTIME: " + H+":"+M+":"+S +"Start: " + startH+":"+ startM+":"+startS;	
+			return time;
+		}
+				
+		//FIND THE DIFFERENCE BETWEEN TIMES / PACES
+		function PaceDifference (SpecificDist, InputTime)
+		{
+			//Time I will get from the function at INPUTTIME, USERTIME will vary and ill have to get it from the input BOX.
+			//Then I need to convert them to seconds, do subtraction, then convert them back? OR I can use use the PHP built in function?
+			//Then copy the same for pace. 
+            //document.write(InputTime, SpecificDist);
+			//input are getting here!
+			
+			//InputTime is not PACE
+			
+			var distance = document.getElementById (SpecificDist);
+			var distVal= distance.value;
+			
+			var testing = "pace";		
+			
+			//Initializes name if 4 changing fields		
+			var hour   = "starttimehour";
+			var minute = "starttimemin";
+			var second = "starttimesec";		
+			
+			//Just adding distance to make ID name unique
+			var hour   =   hour.concat(SpecificDist);
+			var minute = minute.concat(SpecificDist);
+			var second = second.concat(SpecificDist);
+			
+			
+			//finds that element in this page
+			var startHSelect = document.getElementById (hour);
+            var startMSelect = document.getElementById (minute);
+			var startSSelect = document.getElementById (second);					
+			
+			// convert string values to integers
+			var startH = parseInt (startHSelect.value);
+			var startM = parseInt (startMSelect.value);
+			var startS = parseInt (startSSelect.value);	
+			
+						
+			//NOW I NEED TO GET PACE (first)
+						// create Date objects from start and end
+			var start = new Date ();	// the current date and time, in local time.
+			  var end = new Date ();
+
+			//setting stand and end date (formatting) so we can use getTime() function
+			start.setHours (startH, startM, startS);
+			  end.setHours (00,     00,         00);
+			
+			//Now setting result AKA elapsed time
+			var elapsedInS = start.getTime () - end.getTime ();
+			
+			//Gets total amount of sec.
+			var totalSec = (elapsedInS / (distVal*1000)); //*1000
+			//NOW I HAVE total seconds of pace
+			
+			//uses function to convert sec to time again.
+			
+			//NOT RELAVENT ONLY FOR TESTING
+			var paceTEST = SecondsToTime (totalSec);
+			
+			var paceH = paceTEST.substring(2, 0);
+			var paceM = paceTEST.substring(5, 3);
+			var paceS = paceTEST.substring(8, 6);
+						
+			
+			// NOW I CAN SUBTRACT PACE calculated and pace given.
+			// create Date objects from start and end
+			var startPACE = new Date ();	// the current date and time, in local time.
+			var   endPACE = new Date ();
+
+	
+			//Getting array of 3 values, H, M, S of PACE coming in as InputTime
+			//InputTime=TimeParse("00:01:01"); //TimeParse(InputTime)
+					
+			var H = InputTime.substring(2, 0);
+			var M = InputTime.substring(5, 3);
+			var S = InputTime.substring(8, 6);
+			
+			//setting stand and end date (formatting) so we can use getTime() function
+			startPACE.setHours (paceH, paceM, paceS); //00,00,49
+			  endPACE.setHours (H, M, S); //InputTime
+			
+			//Now setting result AKA elapsed time
+			var elapsedInSPACE =  endPACE.getTime () - startPACE.getTime();  // REPLACED!!!!! startPACE.getTime ()
+			elapsedInSPACE = Math.abs(elapsedInSPACE)
+			
+			//uses function to convert sec to time again.
+			var totalSecPACE = (elapsedInSPACE/1000 ); // /1000
+			var paceX = SecondsToTime (totalSecPACE); //totalSec			
+			
+			//Gets value of result field
+			var test = document.getElementById (testing.concat(SpecificDist));
+	        //changes the value of the result field
+			test.value =  paceX;//endPACE.getTime () +"-"+ startPACE.getTime (); //paceX; //H+":"+M+":"+S;//paceX; //WORKS:paceTEST; ////	
+			return paceX;
+		}
+		
+		//RUN IT WHEN VALUES CHANGE
+        function Init () 
+		{
+			//Run pace calculator
+			RecalculateElapsedTime ();
+			//Run time difference function
+			TimeDiff ();
+			//Run pace difference function
+			PaceDifference ();
+        }
+    </script>
 	
 </head>
 
 <!-- the body section -->
 <body onload="Init ()">
-	
-
 
 
 <main>
+   
 
-   
-   <!-- <h3>Welcome: <?php echo $theuser['0']['username']; ?></h3> -->
-   
-   
-<!-- TOP BUTTONS -->  
    <center>
-      
-   <span class="myButtons" style="display: inline;">
+   <h3>Welcome: <?php echo $theuser['0']['username']; echo $username; ?></h3> 
    
-   <h2> Links: </h2>
+   <!--<h3>Welcome: Vojta Ripa </h3>-->
+   <h2> * LOGGED IN AS ADMIN * </h2><span class="myButtons" style="display: inline;"><a class="button" href="../index.php" >Regular View</a>
+   <a class="button" href="../users.php" >View All Users</a></span><br><br>
    
-   <a class="button" href="login.php" >Admin</a> <!--indexAdmin.php -->
-   <a class="button" href="../index.php" >View All Users</a>
-   <a class="button" href="functions.php">Other Functions / Conversions</a>
-   <a class="button" href="distance_list.php">List distances</a>     
-   <a class="button" href="signup.php" >Sign up for updates</a>
+   <img src="../css/finishMe.jpg" alt="finish" align="center"></center> <br>
    
-   <a class="button" href="http://vojta.users.sonic.net/blog/"> Vojta's Main Page </a>
-   <a class="button" href="about.html">Vojta's Bio</a>
-   
-   </span>
-   
-   <br>
-   <hr  >
-   <br>
-   <h3><?php echo "Race Results for: <div style='color: yellow;' >". $first_name . " ". $last_name."</div>"; ?> </h3>
-   </center> 
-
- <!--ADMIN --------------------------------------------------------------------------------------------------------------------------->
-				<?php
-					if($usernameCheck==true)
-					{
-						echo"
-						<center><h2> * LOGGED IN AS ADMIN * </h2><span class='myButtons' style='display: inline;'><a class='button' href='RaceResults.php?choice=search&user=".urlencode($myusername)."&Year=".urlencode('All')."&Distance=".urlencode('All')."' >Regular View</a></center>";
-					}
-				?>	
-<!--END ADMIN ------------------------------------------------------------------------------------------------------------------------>
-  
-  
-  
-<!--PICTURE --> 
-<?php  
-//PICTURE:	
-	
-	//if picture exists, use picture
-	if($userimage!=Null)
-	{
-		$userimage= "../image/racePics/".$myusername. "/" . $userimage;
-	} 
-	//else use default
-	else
-	{
-		$userimage="../image/racePics/default.jpg";
-	}
-   
-   //NOW ADDING IMAGE IN:
-   if($myusername=="vojtaripa")
-		echo "<center><img src='../css/finishMe.jpg' alt='finish' align='center'></center> <br>";
-   else
-	    echo "<center><img src='$userimage' alt='$first_name' align='center'></center> <br>";
- ?>  
    <!-- END TOP BUTTONS -------------------------------------------------------------->
-   
-   
-   
+	
  
  <!--ALL YEARS buttons --> 
 
  <!--USE $Year as the year to perate on! --> 
-
-<h1>Race Filters: </h1>
-<p>You can click on the following buttons to narrow down your results. <br>Years - will show you all the results from a specific year. <br> Distance - will show you all the results from a specific distance. <br> Other - there are other functions and links to pages available here.</p>
-<hr  >
 
 <ul class="myButtons">
 	<span class="myButtons" style="display: inline;">
@@ -123,31 +400,15 @@ require ('indexPHP.php');
 			
 			<!-- display a list of distances -->
 			<h2 color=black style="display: inline;">Years:</h2>
-		        				
-				<?php 	
-				if($Distance=="") 
-					$Distance= "All"; 
-				else 
-					$Distance=$Distance;
-				echo "<a class='button' href='RaceResults.php?choice=search&user=".urlencode($myusername)."&password=".urlencode($mypassword)."&Year=".urlencode('All')."&Distance=".urlencode($Distance)."'>All</a>"; 		
-				?>  
-				
+		   
+				<a class="button" href="indexAdmin.php?Year=<?php echo "All"; ?>">  All </a> <!--<?php echo "ALL"; ?> -->
 		   </li>
 	   
 	       <!-- All other years -->
 		  
 			<?php for($StartYear; $StartYear<=$CurrentYear; $StartYear++ ) { ?>		
 			<li style="display: inline;">			
-				<!--<a class="button" href=".?Year=<?php echo "$StartYear"; ?>">   <?php echo "$StartYear"; ?> </a>-->
-				
-				<?php 
-					if($Distance=="") 
-						$Distance= "All"; 
-					else 
-						$Distance=$Distance;
-					echo "<a class='button' href='RaceResults.php?choice=search&user=".urlencode($myusername)."&password=".urlencode($mypassword)."&Year=".urlencode($StartYear)."&Distance=".urlencode($Distance)."'>$StartYear</a>"; 
-				?>  
-				
+				<a class="button" href="indexAdmin.php?Year=<?php echo "$StartYear"; ?>">   <?php echo "$StartYear"; ?> </a>
 		   </li<?php }?>>
 	  </form>	   
 	</span>	
@@ -164,30 +425,15 @@ require ('indexPHP.php');
 	     <!-- display a list of distances -->
         <h2 color=black; style="display: inline;" > Distances: </h2>
 		
-		<!--<a class="button" href=".?Distance=<?php echo 'All'; ?>"> All <!-- put the word ALL in URL and make button say "All" -->
-		<?php 
-			if($Year=="") 
-					$Year= "All"; 
-			else 
-					$Year=$Year;
-			echo "<a class='button' href='RaceResults.php?choice=search&user=".urlencode($myusername)."&password=".urlencode($mypassword)."&Year=".urlencode($Year)."&Distance=".urlencode('All')."'> All </a>"; 
-		?>  
-		<?php  //echo $DistanceName['Distance']; ?>
-		
+		<a class="button" href="indexAdmin.php?Distance=<?php echo 'All'; ?>"> All <!-- put the word ALL in URL and make button say "All" -->
+		<?php echo $DistanceName['Distance']; ?></a>
 	</li>
 
 <!-- BUTTONS FOR REST OF DISTANCE NAMES -->
 	<?php foreach ($DistanceName as $DistanceName) : ?>
 		<li class="myButtons" style="display: inline;">
-						
-			<?php 
-				if($Year=="") 
-					$Year= "All"; 
-				else 
-					$Year=$Year;
-				echo "<a class='button' href='RaceResults.php?choice=search&user=".urlencode($myusername)."&password=".urlencode($mypassword)."&Year=".urlencode($Year)."&Distance=".urlencode($DistanceName['Distance'])."'>". $DistanceName['distName']."</a>"; 
-			?>  
-			
+			<a  class="button" href="indexAdmin.php?Distance=<?php echo $DistanceName['Distance']; ?>">  
+			<?php echo $DistanceName['distName']; ?> </a>
 		</li>
     <?php endforeach; ?> 
 	</span>
@@ -195,44 +441,23 @@ require ('indexPHP.php');
 <section>
 	
 
-	
-	
-	
 <!-- BUTTONS FOR other queries -->
 
 <ul class="myButtons">
 	<span class="myButtons" style="display: inline;">
 	 
 		<li class="myButtons" style="display: inline;">
-			<h2 color=black; style="display: inline;">Other: </h2>
+			<h2 color=black; style="display: inline;">Other Queries: </h2>
 			
-				<!--ADMIN --------------------------------------------------------------------------------------------------------------------------->
-				<?php
-					if($usernameCheck==true)
-					{
-						echo"
-						<form action='add_race_form.php' method='post' id='add_race_form' enctype='multipart/form-data'>
-						<input type='hidden' name='username' value='".$myusername."' >
-						<input type='hidden' name='password' value='".$mypassword."' > 
-						<input style='background-color:red' class='button' type='submit' value='Add Race'> 
-						</form><br>
-						"; //<a style='background-color:red' class='button' href='add_race_form.php'>Add NEW Race</a>
-						
-
-					}
-				?>	
-			    <!--END ADMIN ------------------------------------------------------------------------------------------------------------------------>
-				
 			<a class="button" href="#PRs">Race PRs </a>
 			
 			<?php // ?>
 			
-			<a  class="button" href=<?php echo "resultquery.php?user=select+*+FROM+$myusername+where+Place=1"?> >  Races Won </a>
+			<a  class="button" href="resultquery.php?user=select+*+FROM+MyRaceResults+where+Place=1">  Races Won </a>
 			<?php // ?>
 			
-			<a  class="button" href=<?php echo "resultquery.php?user=select+COUNT(DISTINCT+Date)+FROM+$myusername" ?> >  Amount of days run a race</a> <!-- SELECT COUNT(DISTINCT Date) FROM $myusername where Date like %2017% -->
+			<a  class="button" href="resultquery.php?user=select+COUNT(DISTINCT+Date)+FROM+MyRaceResults">  Amount of races run each year </a> <!-- SELECT COUNT(DISTINCT Date) FROM MyRaceResults where Date like %2017% -->
 			<?php // ?>
-				
 			
 		</li>
     
@@ -240,102 +465,84 @@ require ('indexPHP.php');
 </ul>
 
 
+<ul class="myButtons">
+	<span class="myButtons" style="display: inline;">
+	
+	<li class="myButtons" style="display: inline;">
+			<h2 color=black; style="display: inline;">Pages: </h2>
+	<!-- BUTTONS / LINKS----------------------------------------------------------------->
+			
+			<p style="display: inline;"><a class="button" href="add_race_form.php">Add race</a></p>
+			<p style="display: inline;"><a class="button" href="distance_list.php">List distances</a></p>     
+			<p style="display: inline;"><a class="button" href="signup.php" >Sign up for updates</a></p>
+			<p style="display: inline;"><a class="button" href="#" class="not-active">Watch Youtube videos about running</a></p><!--pages/youtube.php-->
+			<p style="display: inline;"><a class="button" href="#" class="not-active">Show races on Map</a></p><!--pages/youtube.php -->
+			<p style="display: inline;"><a class="button" href="#" class="not-active"><b>Distance Match-up</b></a></p> <!-- pages/youtube.php--> 
+			
+		</li>
+    
+	</span>
+</ul>		
+
+<ul class="myButtons">
+	<span class="myButtons" style="display: inline;">
+	
+	<li class="myButtons" style="display: inline;">
+			
+	<!-- BUTTONS / LINKS----------------------------------------------------------------->
+			
+			<p style="display: inline;"><a class="button" href="about.html">Bio</a></p>
+			<p style="display: inline;"><a class="button" href="future.html">Future Race Bucketlist</a></p>     
+			<p style="display: inline;"><a class="button" href="assignPoints.php">Assign Points</a></p>
+			<p style="display: inline;"><a class="button" href="functions.php">Other Functions / Conversions</a></p>			
+	</li>
+    
+	</span>
+</ul>	
+
 <hr  >
-
-
-<?php
-if($myusername=='vojtaripa' && $mypassword=='aa729258764c01f0436786c83fd1c6ff17efcfaf')
-{
-	echo
-	"<ul class='myButtons'>
-		<span class='myButtons' style='display: inline;'>
-		
-		<li class='myButtons' style='display: inline;'>
-				<h2 color=black; style='display: inline;'>Extra Pages: </h2>
-		<!-- BUTTONS / LINKS----------------------------------------------------------------->
-				
-				<p style='display: inline;'><a class='button' href='#' class='not-active'>Watch Youtube videos about running</a></p><!--pages/youtube.php-->
-				<p style='display: inline;'><a class='button' href='#' class='not-active'>Show races on Map</a></p>
-				<p style='display: inline;'><a class='button' href='#' class='not-active'><b>Distance Match-up</b></a></p> <!-- pages/youtube.php--> 
-				<p style='display: inline;'><a class='button' href='future.html'>Future Race Bucketlist</a></p> 
-				<p style='display: inline;'><a class='button' href='assignPoints.php'>Assign Points</a></p>
-			</li>
-		
-		</span>
-	</ul><hr  >";	
-}	
-?>	
-
-
 <!------------------------------------------------------------------->	
 	
-<!-- Query Races: --><br>
-
-<!--ADMIN --------------------------------------------------------------------------------------------------------------------------->
-<?php
-if($usernameCheck==true)
-{
-	echo"
-			
-		<h1>Query:</h1>
-		<p>Please enter query for results you are looking for: <br>Query is SQL based see below for examples.</p>
+<!-- Query Races: -->
+<h2>Please enter query for results you are looking for:</h2> <br> 
+<!--<input type="text" id="myInput" placeholder="Enter your query... "> -->
+<!--<a  class="button" href=".?Query=">  My Query </a> -->
 
 
+<form name="input" action="resultquery.php" method="get">
+	<input type="text" id="query" name="user" size="210" maxlength="500" placeholder="Enter your query...">
+	<input class="button" type="submit" value="Submit Query">
 
-		<form name='input' action='resultquery.php' method='get'>
-			<input type='text' id='query' name='user' size='210' maxlength='500' placeholder='Enter your query...'>
-			<input class='button' type='submit' value='Submit Query'>
+	<tr>
+		   <td align = right>
+			  <input class="button" type=reset value="Clear">
+		   </td>
+	</tr>
 
-			<tr>
-				   <td align = right>
-					  <input class='button' type=reset value='Clear'>
-				   </td>
-			</tr>
+</form>
 
-		</form>
-
-			<button class='accordion' style='font-size:20px' onclick='accordion()'>Examples: </button>
-			<div class='panel'>	 
-				<u><b>In English:</b></u><br><br>
-				 
-				Get all distances where I have run faster than a 6:00/mi but only 30 results <br><br>
-				 
-				<u><b>Type this in SQL: </b></u><br><br>
-							  
-				SELECT * <br>
-				FROM <username> <br>
-				WHERE Pace<'6:00' LIMIT 0, 30 ; <br>	
-				<br>
-				<br>
-				<u><b>Other examples:</b></u><br><br>
-				<u><b>In English:</b></u><br><br>
-				select * FROM <username> order by Date DESC <br>
-				select * FROM <username> where (Time=(select MIN(Time) from $myusername where (Distance=13.1 AND (select * from $myusername where Date LIKE 2015%))))<br>
-				select * FROM <username> where Place=1 order by Place DESC || This gets all races I have won! <br>
-				select * FROM <username> where Type=Track order by Date DESC || This gets all Track Races I ran <br>
-			</div>
-		<hr  >	
-
-";
-}
-?>	
-<!--END ADMIN ------------------------------------------------------------------------------------------------------------------------> 
-
-<h1>You Selected: <?php echo $Name; ?> distance(s) run in <?php if($Year=="%")echo "all years $Limit."; else echo substr("$Year", 0, 4)." year(s) $Limit."; ?></h1> 
-
- <!--Dropdown sections:  -->
-
-<button class="accordion" style="font-size:20px">Description / About</button>
-
-  <?php
-  if($about!=null)
-		echo "<p style='color:white'>
-				$about
-			  </p>";
-   else
-	    echo "<p>NO INFO GIVEN.</p> <br>";
-  ?>
-  
+	<button class="accordion" style="font-size:20px">Examples: </button>
+	<div class="panel">	 
+		<u><b>In English:</b></u><br><br>
+		 
+		Get all distances where I have run faster than a 6:00/mi but only 30 results <br><br>
+		 
+		<u><b>Type this in SQL: </b></u><br><br>
+					  
+		SELECT * <br>
+		FROM MyRaceResults <br>
+		WHERE Pace<"6:00" LIMIT 0, 30 ; <br>	
+		<br>
+		<br>
+		<u><b>Other examples:</b></u><br><br>
+		<u><b>In English:</b></u><br><br>
+		select * FROM MyRaceResults order by Date DESC <br>
+		select * FROM MyRaceResults where (Time=(select MIN(Time) from MyRaceResults where (Distance=13.1 AND (select * from MyRaceResults where Date LIKE 2015%))))<br>
+		select * FROM MyRaceResults where Place=1 order by Place DESC || This gets all races I have won! <br>
+		select * FROM MyRaceResults where Type=Track order by Date DESC || This gets all Track Races I ran <br>
+	</div>
+	
+       
 <!-- Gives distance name!! -->
 <?php
 if($Year==NULL && $Distance==NULL)
@@ -343,10 +550,9 @@ $Limit = " Limiting to 10 Results";
 else
 $Limit = "";
 ?>
-         
+        <h1>You Selected: <?php echo $Name; ?> distance run in <?php if($Year=="%")echo "all years $Limit."; else echo substr("$Year", 0, 4)." year $Limit."; ?></h1>  
  
-<h2>Totals and Averages:</h2> 
-<p>Here are the total and averages of the races you have selected.</p>
+<h2>Totals:</h2> 
 <!-- STARTING TABLE OF TOTALS-->
 <table>
 			<tr>
@@ -393,7 +599,7 @@ $Limit = "";
 			<!--AVG-->
 			<tr>
 				<th>Averages:</th>
-				<td><?php if($totalCount==0) echo $totalCount=0; else echo($totalCount/$totalCount); ?></td> 
+				<td><?php echo ($totalCount/$totalCount) ?></td> 
 				<td><?php echo $AvgRacesPerYear  ?></td>
 				<td><?php echo $AvgTime  ?></td> 				 
 				<td><?php echo $AvgDistance ?></td> 
@@ -403,19 +609,61 @@ $Limit = "";
 				<td><?php echo $AvgPlace ?></td> 
 			</tr>
 			<!-- END-->
-</table>			
-<hr  >
+</table>				
 
+<h2>Races:</h2>  
 
+<!--Dropdown sections:  -->
+<button class="accordion" style="font-size:20px">Description / About</button>
+<div class="panel">
+  <p>
+  Why did I make this and spent so much time on it? <br><br>
+  I throught I would be a fun project, both to test myself in programming and website knowledge, <br>
+  but also have a meaningful way of doing it with something important to me, and thats running and racing. <br>
+  This site might just end up being for me, but maybe my friends and family will find it fun, cool, interesting as well! <br>
+  I may even use it for job purposes and show my next boss when they ask me about projects I made and proof of my knowledge, skill and education<br><br>
+  
+  I have run a lot of races over the start of my running career, I thought I would be a fun idea to compile them and total them, study them, and analyze them. <br>
+  Timeline: <br>
+  ( 2004 - 2008) The results listed start in my highschool days <br>
+  ( 2009 - 2010) Then goes through my SRJC races. <br>
+  ( 2011)         After that I was unattached. <br>
+  ( 2012 - 2013) CSU Stanislaus XC and Track. <br>
+  ( 2013 - Present...) Post collegent career. 
+  <br>
+  <br>
+  Here are the various ways you can view my results: <br>
+  <ul>
+   <li> You can sort each one by clicking the headers of each column. (descending or ascending)</li>
+   <li> By clicking the buttons above, you can filter by just the distance or the year that you want.</li>
+   <li> You can search all the results by the name of the race by typing in the search box. </li>
+   <li> Or you can put in a custom query in the box to display the exact races that you want. </li>
+   
+  </ul>
+  <br>You can sort each one by clicking the headers of each column or by clicking the buttons you can just get the distance
+  or the year that you want. </p>
+</div> 
 
-<h1>Races:</h1>  
-<p>Below are all the races that you have selected.<br>
-You can sort the races by clicking each header, to sort them by that category.<br>
-Races are organized and sorted by date initially, newest to oldest.<br>
-Click the description below for more info! </p>
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
 
+for (i = 0; i < acc.length; i++) {
+    acc[i].onclick = function(){
+        /* Toggle between adding and removing the "active" class,
+        to highlight the button that controls the panel */
+        this.classList.toggle("active");
 
-<br>
+        /* Toggle between hiding and showing the active panel */
+        var panel = this.nextElementSibling;
+        if (panel.style.display === "block") {
+            panel.style.display = "none";
+        } else {
+            panel.style.display = "block";
+        }
+    }
+}
+</script>
 
 <!-- SEARCH -->
 
@@ -424,28 +672,9 @@ Click the description below for more info! </p>
 <br>
 <br>
 
-				<!--ADMIN --------------------------------------------------------------------------------------------------------------------------->
-				<?php
-					if($usernameCheck==true)
-					{
-						echo"
-						<h1 style='background-color: yellow; color:black;'>*
-						<form action='add_race_form.php' method='post' id='add_race_form' enctype='multipart/form-data'>
-						<input type='hidden' name='username' value='".$myusername."' >
-						<input type='hidden' name='password' value='".$mypassword."' > 
-						<input style='background-color:red' class='button' type='submit' value='Add Race'> 
-						</form>
-						*</h1>
-						
-						";
-					}
-				?>	
-			    <!--END ADMIN ------------------------------------------------------------------------------------------------------------------------>
 
-				
-				
 <!-- STARTING TABLE OF DATA -->
-	<div style=" height:400px; overflow:auto; display:block;">  
+	<div style="height:400px; overflow:auto; display:block;">  
 	   <table id="races" class="scroll sortable" >
 		  	
 			<!-- MAIN TABLE HEADINGS-->
@@ -467,18 +696,10 @@ Click the description below for more info! </p>
 					<th style="width:150px">Pace (min/mi)         &DownArrowUpArrow;</th> <!-- Also doesnt work right... -->
 					<th style="width:150px">MPH (mi/hr)           &DownArrowUpArrow;</th> <!-- Also doesnt work right... -->
 					<th style="width:150px">Points (0-1400)       &DownArrowUpArrow;</th> <!-- Also doesnt work right... -->
-					<th style="width:150px">Feel (0-10)           &DownArrowUpArrow;</th> <!-- Also doesnt work right... -->
 					<th style="width:150px">Type of Race          &DownArrowUpArrow;</th> <!-- Also doesnt work right... -->
 					<th style="width:100px">Location             				    </th> <!-- DOES NOT EVEN MOVE -->
-
-					<?php
-					if($usernameCheck==true)
-					{
-						echo"
-						<th>DELETE?</th>
-						<th>MODIFY?</th>";
-					}
-					?>
+					<th>DELETE?</th>
+					<th>MODIFY?</th>
 				</tr>
 			</thead>
         
@@ -493,13 +714,13 @@ Click the description below for more info! </p>
 				<?php 
 				 if($i==1 )
 				 { ?>
-					 <tr id="hidethis" ><th  colspan="13" style="font-size:24px;background-color:#696969;"><?php echo substr($race['Date'], 0, 4); $spot=$i;?></th>
+					 <tr id="hidethis" ><th  colspan="14" style="font-size:24px;background-color:#696969;"><?php echo substr($race['Date'], 0, 4); $spot=$i;?></th>
 					 <td style="display:none;" ></td><td style="display:none;" ></td><td style="display:none;" ></td><td style="display:none;" ></td></tr>
 				 <?php }
 
 			     elseif(substr($race['Date'], 0, 4) != $myCurrentYear[($spot-1)]) 
 				 { ?>
-					 <tr id="hidethis" ><th  colspan="13" style="font-size:24px;background-color:#696969;"><?php echo substr($race['Date'], 0, 4); $spot=$i;?></th>
+					 <tr id="hidethis" ><th  colspan="14" style="font-size:24px;background-color:#696969;"><?php echo substr($race['Date'], 0, 4); $spot=$i;?></th>
 					 <td style="display:none;" ></td><td style="display:none;" ></td><td style="display:none;" ></td><td style="display:none;" ></td></tr>
 				 <?php } 
 				 else
@@ -511,7 +732,7 @@ Click the description below for more info! </p>
 				//if picture exists, use picture
 				if($race['Picture']!=Null)
 				{
-					$picture= "../image/racePics/".$myusername. "/" . $race['Picture'];
+					$picture= "../image/racePics/" . $race['Picture'];
 				} 
 				//else use default
 				else
@@ -533,54 +754,41 @@ Click the description below for more info! </p>
 				<td style="width:150px">  <?php echo $race['Pace'];               			     ?> </td>
 				<td style="width:150px">  <?php echo round(array_shift($MPHarray),1);         	 ?> </td>
 				<td style="width:150px">  <?php echo $race['Points'];               			 ?> </td>
-				<td style="width:150px">  <?php echo $race['Feel'];                				 ?> </td>
 				<td style="width:150px">  <?php echo $race['Type'];                				 ?> </td>
 				<td style="width:100px">  <?php echo $race['Location'];                        	 ?> </td>
 				
-				<!--ADMIN --------------------------------------------------------------------------------------------------------------------------->
-				<?php
-					if($usernameCheck==true)
-					{
-						echo"
-						<!-- DELETE NEED TO CHANGE!!!-->
-						<td><form action='delete_race.php' method='post'>
-							<input type='hidden' name='Index'       value='". $race['Index'] ."'>
-							<input type='hidden' name='Race' 	    value='  ". $race['Race']."  '>
-							
-							<input type='hidden' name='username' value='".$myusername."' >
-						    <input type='hidden' name='password' value='".$mypassword."' > 
-							<input type='submit'                    value='Delete' id='buttons' ><!--disabled-->
-						</form></td>
-						
-					   					
+				<!-- DELETE NEED TO CHANGE!!!-->
+				<td><form action="delete_race.php" method="post">
+                    <input type="hidden" name="Index" value="<?php echo $race['Index']; ?>">
+					<input type="hidden" name="Race" 	value="  <?php echo $race['Race']; ?> ">
+                    <input type="submit" value="Delete" id="buttons" ><!--disabled-->
+                </form></td>
+				
 			
-						<!-- MODIFY NEED TO CHANGE!!!-->
-						<td><form action='modify_race_form.php' method='post'>
-						<input type='hidden' name='Index'           value='". $race['Index'] ."           '>
-								
-						<input type='hidden' name='Date' 	 		value='  ". $race['Date']."           '>
-						<input type='hidden' name='Race' 	 		value='  ". $race['Race']."           '>
-						<input type='hidden' name='Time' 	 		value='  ". $race['Time']."           '>
-						<input type='hidden' name='Distance' 		value='  ". $race['Distance']."       '>
-						<input type='hidden' name='Place' 	 		value='  ". $race['Place']."          '>
-						<input type='hidden' name='Pace' 	 		value='  ". $race['Pace']."           '>
-						<input type='hidden' name='Type' 	 		value='  ". $race['Type']."           '>
-						<input type='hidden' name='Location' 		value='  ". $race['Location']."       '>
-						<!-- INCLUDE OTHERS!!! -->
-						<input type='hidden' name='LinkToResults'   value='  ". $race['LinkToResults']."  '>
-						<input type='hidden' name='LinkToActivity' 	value='  ". $race['LinkToActivity']." '>
-						<input type='hidden' name='shoes' 	        value='  ". $race['shoes']."          '>
-						<input type='hidden' name='Notes' 	        value='  ". $race['Notes']."          '>
-						<input type='hidden' name='Feel' 	        value='  ". $race['Feel']."           '>
-						<input type='hidden' name='Picture' 	    value='  ". $picture."                '>
-						
-						<input type='hidden' name='username'        value='".$myusername."				  '>
-						<input type='hidden' name='password'        value='".$mypassword."			      '> 						
-						<input type='submit' value='Modify' id='buttons'>
-						</form></td>";
-					}
-				?>	
-			    <!--END ADMIN ------------------------------------------------------------------------------------------------------------------------>
+	
+				<!-- MODIFY NEED TO CHANGE!!!-->
+				<td><form action="modify_race_form.php" method="post">
+				   <input type="hidden" name="Index" value="<?php echo $race['Index']; ?>">
+				   		
+				   <input type="hidden" name="Date" 	value="  <?php echo $race['Date'];                 			    ?> ">
+				   <input type="hidden" name="Race" 	value="  <?php echo $race['Race'];                              ?> ">
+				   <input type="hidden" name="Time" 	value="  <?php echo $race['Time'];                              ?> ">
+				   <input type="hidden" name="Distance" value="  <?php echo $race['Distance'];             			    ?> ">
+				   <input type="hidden" name="Place" 	value="  <?php echo $race['Place'];                			    ?> ">
+				   <input type="hidden" name="Pace" 	value="  <?php echo $race['Pace'];               			     ?>">
+				   <input type="hidden" name="Type" 	value="  <?php echo $race['Type'];                				 ?>">
+				   <input type="hidden" name="Location" value="  <?php echo $race['Location'];                        	 ?>">
+				   <!-- INCLUDE OTHERS!!! -->
+				   <input type="hidden" name="LinkToResults"    value="  <?php echo $race['LinkToResults'];               ?> ">
+				   <input type="hidden" name="LinkToActivity" 	value="  <?php echo $race['LinkToActivity'];              ?> ">
+				   <input type="hidden" name="shoes" 	        value="  <?php echo $race['shoes'];               	      ?>">
+				   <input type="hidden" name="Notes" 	        value="  <?php echo $race['Notes'];                		  ?>">
+				   <input type="hidden" name="Picture" 	        value="  <?php echo $picture;                        	  ?>">
+					
+                   <input type="submit" value="Modify" id="buttons">
+                </form></td>
+
+		
             </tr>					
             <?php endforeach; ?>
 			
@@ -589,15 +797,90 @@ Click the description below for more info! </p>
 		</table>
  </div>
 
-<hr  >
-<br>
 
-		
+
+<!-- NEW NEW even better search -->
+<script>
+function myFunction() 
+{
+  // Declare variables 
+  var input, filter, table, tr, td, i, year, th; //variables
+ 
+ input = document.getElementById("myInput"); //gets value
+  filter = input.value.toUpperCase(); // what im searching for in uppercase
+ 
+ table = document.getElementById("races"); //which table? races table
+  tr = table.getElementsByTagName("tr"); //gets each row.
+  
+  //year = document.getElementById("year"); 
+  //th = year.getElementsByTagName("th");
+  
+  //year2 = document.getElementById("year2"); 
+  //th2 = year.getElementsByTagName("th");
+  //th[0].innerHTML="";
+  //th[0].style.display ="";
+  
+  //year = tr.getElementById("year");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) 
+  {
+    td = tr[i].getElementsByTagName("td")[3]; //NEEDS TO BE THE COLUMN NUMBER OF WHAT YOU WANT TO SEARCH!!!
+    	
+	if (td) 
+	{
+	  if (td.innerHTML.toUpperCase().indexOf(filter) > -1) 
+	  {
+        tr[i].style.display = "";
+      } 
+	  else 
+	  {
+        tr[i].style.display = "none";
+      }
+    } 
+  }
+  
+  //for headers
+  /*for (i = 0; i < 10; i++) 
+  {
+		th[i].innerHTML="";    // gets rid of text
+		th2[i].innerHTML="";    // gets rid of text
+		//th[i].style.display =""; // gets rid of actual object
+  }*/
+}
+</script>
+
+
+<script>
+//Hide Rows
+function toggle() 
+{
+var input, filter, table, tr, td, i, year, th; //variables
+ 
+ table = document.getElementById("races"); //which table? races table
+  tr = table.getElementsByTagName("tr"); //gets each row.
+
+ for (i = 0; i < tr.length; i++) 
+  {
+	 if( document.getElementById("hidethis").style.display=='none' )
+	 {
+	   document.getElementById("hidethis").style.display = '';
+	 }
+	 else
+	 {
+	   document.getElementById("hidethis").style.display = 'none';
+	 }
+  }
+}
+</script>
+	
+
+	
 <div id="PRs">		
 <!--RACE PRs---------------------------------------------------------------------------------------->	
 <?php
-			$myPRs=array();
-			
+$myPRs=array();
+
 			if($Distance==NULL && ($Year==NULL or $Year=="%"))
 			{
 				$title = "Race PRs / Fastest Times:";
@@ -622,9 +905,8 @@ Click the description below for more info! </p>
 			}
 			// TABLE HEADERS
 			echo "<br> <h2> $title </h2> <br>";
-			echo "<p>Here is a list of all of my PRs (Personal Records) for each distance. </p>";
 			echo "<div style=' height:400px; overflow:auto; display:block;'>  ";
-			echo "<table id='races' class='scroll sortable' id='Prs' style='border: 4px solid orange; overflow:auto;'><tr class='header' >";
+			echo "<table id='races' class='scroll sortable' id='Prs' style='border: 4px solid orange;'><tr class='header' >";
 			echo "<th style='width:120px'>Picture</th>"; 
 			echo "<th style='width:100px'>Distance </th>";
 			echo "<th style='width:150px'>Time </th>";
@@ -634,8 +916,8 @@ Click the description below for more info! </p>
 			echo "<th style='width:250px'>Race Name </th>";
 			echo "<th style='width:100px'>Place </th>";	
 			echo "<th style='width:150px'>MPH (mi/hr) </th>";
-			echo "<th style='width:250px'>Points (0-1400)</th>";
-			echo "<th style='width:250px'>Feel (0-10)</th>";
+			echo "<th style='width:150px'>Points (0-1400)</th>";
+			echo "<th style='width:150px'>Feel (0-10)</th>";
 			echo "<th style='width:150px'>Type of Race</th>"; 
 			echo "<th style='width:100px'>Location </th>";
 			echo "<th style='width:100px'>Link to Results</th>";
@@ -643,7 +925,7 @@ Click the description below for more info! </p>
 			
 
 	//1.  MEANING ALL RACES (need forloop of distances)
-	if($Distance=='All' or $Year=='All' or $Distance=!'' or $Year=!'')
+	if($Distance=='All' or $Year=='All' )
 	{
 		//var_dump($AllDistances);
 		foreach($AllDistances as $AllDistances)
@@ -651,9 +933,9 @@ Click the description below for more info! </p>
 			$DistancePR = $AllDistances['Distance']; //Making distance one of 10 preset values: .5  1 2  3.1  6  6.2 10  13.1  26.2
 			
 			//distance not found in this year specified.
-			$queryraceX = "select * from ". $myusername." where (Distance=$DistancePR)"; // order by index?  Distance
+			$queryraceX = "select * from MyRaceResults where (Distance=$DistancePR)"; // order by index?  Distance
 			//$Year=substr($Year, 0, 4);
-			$distanceCheck = queryRaces($queryraceX, $DistancePR, ""); //$Year
+			$distanceCheck = queryRaces($queryraceX, $DistancePR, $Year);
 			
 			$countDistance=0;
 			foreach($distanceCheck as $distanceCheck)
@@ -664,7 +946,7 @@ Click the description below for more info! </p>
 			//echo "MY COUNT: $countDistance";
 			
 			
-			$queryrace = "select * FROM $myusername where (Time=(select MIN(Time) from $myusername where Distance=$DistancePR) ) AND Distance=$DistancePR LIMIT 1"; // order by index? 
+			$queryrace = "select * FROM MyRaceResults where (Time=(select MIN(Time) from MyRaceResults where Distance=$DistancePR) ) AND Distance=$DistancePR LIMIT 1"; // order by index? 
 			$PRrace = queryRaces($queryrace, $DistancePR, $Year);
 			
 			foreach ($PRrace as $PRrace)
@@ -674,7 +956,7 @@ Click the description below for more info! </p>
 						//if picture exists, use picture
 						if($PRrace['Picture']!=Null)
 						{
-							$picture= "../image/racePics/".$myusername. "/".$PRrace['Picture'];
+							$picture= "../image/racePics/" . $PRrace['Picture'];
 						} 
 						//else use default
 						else
@@ -682,7 +964,7 @@ Click the description below for more info! </p>
 							$picture="../image/racePics/default.jpg";
 						}
 						echo "<tr>";					
-						echo "<td > <img height='70px' src='$picture' alt='$picture' ></td>";
+						echo "<td > <img height='70px' src=$picture alt=$picture ></td>";
 						echo "<td style='width:100px'>" .  $AllDistances['distName']  . "</td>";
 						echo "<td style='width:150px'>" .  $PRrace['Time']  	. "</td>";
 						echo "<td style='width:100px'>" .  $countDistance   	. " times</td>";
@@ -691,8 +973,8 @@ Click the description below for more info! </p>
 						echo "<td style='width:250px'>" .  $PRrace['Race'] 		. "</td>";
 						echo "<td style='width:100px'>" .  $PRrace['Place']     . "</td>";	
 					    echo "<td style='width:150px'>"  . round(PaceToMPH($PRrace['Pace'], $printArray),1) . "</td>";
-						echo "<td style='width:250px'>"  . $PRrace['Points']             . "</td>";
-						echo "<td style='width:250px'>"  .  $PRrace['Feel']               . "</td>";
+						echo "<td style='width:150px'>"  . $PRrace['Points']             . "</td>";
+						echo "<td style='width:150px'>"  .  $PRrace['Feel']               . "</td>";
 						echo "<td style='width:150px'>" .  $PRrace['Type']      . "</td>";
 						echo "<td style='width:100px'>" .  $PRrace['Location']  . "</td>";
 						echo "<td style='width:100px'>" .  $PRrace['LinkToResults']  . "</td>";						
@@ -714,9 +996,9 @@ Click the description below for more info! </p>
 			$DistancePR = $AllDistances['Distance']; //Making distance one of 10 preset values: .5  1 2  3.1  6  6.2 10  13.1  26.2
 			
 			//distance not found in this year specified.
-			$queryraceX = "select * from $myusername where (Distance=$DistancePR)"; // order by index?  Distance
+			$queryraceX = "select * from MyRaceResults where (Distance=$DistancePR)"; // order by index?  Distance
 			//$Year=substr($Year, 0, 4);
-			$distanceCheck = queryRaces($queryraceX, $DistancePR, "");//$Year
+			$distanceCheck = queryRaces($queryraceX, $DistancePR, $Year);
 			
 			$countDistance=0;
 			foreach($distanceCheck as $distanceCheck)
@@ -727,8 +1009,8 @@ Click the description below for more info! </p>
 			//echo "MY COUNT: $countDistance";
 			
 			
-			$queryrace = "select * FROM $myusername where ((Time=(select MIN(Time) from $myusername where Distance=$DistancePR LIMIT 10)) AND Distance=$DistancePR) LIMIT 1"; // order by index? 
-			$PRrace = queryRaces($queryrace, $DistancePR, ""); //$Year
+			$queryrace = "select * FROM MyRaceResults where ((Time=(select MIN(Time) from MyRaceResults where Distance=$DistancePR LIMIT 10)) AND Distance=$DistancePR) LIMIT 1"; // order by index? 
+			$PRrace = queryRaces($queryrace, $DistancePR, $Year);
 			
 			foreach ($PRrace as $PRrace)
 			{
@@ -737,7 +1019,7 @@ Click the description below for more info! </p>
 						//if picture exists, use picture
 						if($PRrace['Picture']!=Null)
 						{
-							$picture= "../image/racePics/".$myusername. "/".$PRrace['Picture'];
+							$picture= "../image/racePics/" . $PRrace['Picture'];
 						} 
 						//else use default
 						else
@@ -745,7 +1027,7 @@ Click the description below for more info! </p>
 							$picture="../image/racePics/default.jpg";
 						}
 						echo "<tr>";					
-						echo "<td > <img height='70px' src='$picture' alt='$picture' ></td>";
+						echo "<td > <img height='70px' src=$picture alt=$picture ></td>";
 						echo "<td style='width:100px'>" .  $AllDistances['distName']  . "</td>";
 						echo "<td style='width:150px'>" .  $PRrace['Time']  	. "</td>";
 						echo "<td style='width:100px'>" .  $countDistance   	. " times</td>";
@@ -754,8 +1036,8 @@ Click the description below for more info! </p>
 						echo "<td style='width:250px'>" .  $PRrace['Race'] 		. "</td>";
 						echo "<td style='width:100px'>" .  $PRrace['Place']     . "</td>";	
 						echo "<td style='width:150px'>"  . round(PaceToMPH($PRrace['Pace'], $printArray),1) . "</td>";
-						echo "<td style='width:250px'>"  . $PRrace['Points']              . "</td>";
-						echo "<td style='width:250px'>" .   $PRrace['Feel']                . "</td>";
+						echo "<td style='width:150px'>"  . $PRrace['Points']              . "</td>";
+						echo "<td style='width:150px'>" .   $PRrace['Feel']                . "</td>";
 						echo "<td style='width:150px'>" .  $PRrace['Type']      . "</td>";
 						echo "<td style='width:100px'>" .  $PRrace['Location']  . "</td>";		
 						echo "<td style='width:100px'>" .  $PRrace['LinkToResults']  . "</td>";	
@@ -776,9 +1058,9 @@ Click the description below for more info! </p>
 			$DistancePR = $AllDistances['Distance'];
 			
 			//distance not found in this year specified.
-			$queryraceX = "select * from $myusername where (Distance=$DistancePR) AND (Date LIKE '". $Year . "%')"; // order by index? 
+			$queryraceX = "select * from MyRaceResults where (Distance=$DistancePR) AND (Date LIKE '". $Year . "%')"; // order by index? 
 			//$Year=substr($Year, 0, 4);
-			$distanceCheck = queryRaces($queryraceX, $DistancePR, ""); //$Year
+			$distanceCheck = queryRaces($queryraceX, $DistancePR, $Year);
 			
 			$countDistance=0;
 			foreach($distanceCheck as $distanceCheck)
@@ -797,9 +1079,9 @@ Click the description below for more info! </p>
 			
 			else
 			{
-				$queryrace = "select * FROM $myusername where ((Time=(select MIN(Time) from $myusername where ((Distance=$DistancePR) AND (Date LIKE '". $Year . "%')))) AND Distance=$DistancePR AND (Date LIKE '". $Year . "%')) LIMIT 1"; // order by index? 
+				$queryrace = "select * FROM MyRaceResults where ((Time=(select MIN(Time) from MyRaceResults where ((Distance=$DistancePR) AND (Date LIKE '". $Year . "%')))) AND Distance=$DistancePR AND (Date LIKE '". $Year . "%')) LIMIT 1"; // order by index? 
 				//$Year=substr($Year, 0, 4); Distance
-				$PRrace = queryRaces($queryrace, $DistancePR, ""); //$Year
+				$PRrace = queryRaces($queryrace, $DistancePR, $Year);
 				
 				foreach ($PRrace as $PRrace)
 				{
@@ -808,7 +1090,7 @@ Click the description below for more info! </p>
 							//if picture exists, use picture
 							if($PRrace['Picture']!=Null)
 							{
-								$picture= "../image/racePics/".$myusername. "/". $PRrace['Picture'];
+								$picture= "../image/racePics/" . $PRrace['Picture'];
 							} 
 							//else use default
 							else
@@ -816,7 +1098,7 @@ Click the description below for more info! </p>
 								$picture="../image/racePics/default.jpg";
 							}
 						    echo "<tr>";					
-						    echo "<td > <img height='70px' src='$picture' alt='$picture' ></td>";
+						    echo "<td > <img height='70px' src=$picture alt=$picture ></td>";
 						    echo "<td style='width:100px'>" .  $AllDistances['distName']  . "</td>";
 						    echo "<td style='width:150px'>" .  $PRrace['Time']  	. "</td>";
 							echo "<td style='width:100px'>" .  $countDistance    	. " times</td>";
@@ -825,8 +1107,8 @@ Click the description below for more info! </p>
 						    echo "<td style='width:250px'>" .  $PRrace['Race'] 		. "</td>";
 						    echo "<td style='width:100px'>" .  $PRrace['Place']     . "</td>";	
 							echo "<td style='width:150px'>"  . round(PaceToMPH($PRrace['Pace'], $printArray),1) . "</td>";
-							echo "<td style='width:250px'>"  . $PRrace['Points']              . "</td>";
-							echo "<td style='width:250px'>"  .  $PRrace['Feel']                . "</td>";
+							echo "<td style='width:150px'>"  . $PRrace['Points']              . "</td>";
+							echo "<td style='width:150px'>"  .  $PRrace['Feel']                . "</td>";
 						    echo "<td style='width:150px'>" .  $PRrace['Type']      . "</td>";
 						    echo "<td style='width:100px'>" .  $PRrace['Location']  . "</td>";	
 							echo "<td style='width:100px'>" .  $PRrace['LinkToResults']  . "</td>";								
@@ -843,9 +1125,9 @@ Click the description below for more info! </p>
 	else if ($Year==NULL or $Year=="%")
 	{
 		//distance not found in this year specified.
-		$queryraceX = "select * from $myusername where (Distance=$Distance)"; // order by index? 
+		$queryraceX = "select * from MyRaceResults where (Distance=$Distance)"; // order by index? 
 		//$Year=substr($Year, 0, 4);
-		$distanceCheck = queryRaces($queryraceX, $Distance, ""); //$Year
+		$distanceCheck = queryRaces($queryraceX, $Distance, $Year);
 		
 		$countDistance=0;
 		foreach($distanceCheck as $distanceCheck)
@@ -856,7 +1138,7 @@ Click the description below for more info! </p>
 		//echo "MY COUNT: $countDistance";
 		
 		
-		$queryrace = "select * FROM $myusername where ((Time=(select MIN(Time) from $myusername where Distance=$Distance)) AND Distance=$Distance) LIMIT 1";  
+		$queryrace = "select * FROM MyRaceResults where ((Time=(select MIN(Time) from MyRaceResults where Distance=$Distance)) AND Distance=$Distance) LIMIT 1";  
 		$PRrace = queryRaces($queryrace, $Distance, $Year."%");
 		
 		// NOW GOING THROUGH EACH RACE AND STRIPPING DATA
@@ -867,7 +1149,7 @@ Click the description below for more info! </p>
 					//if picture exists, use picture
 					if($PRrace['Picture']!=Null)
 					{
-						$picture= "../image/racePics/".$myusername. "/". $PRrace['Picture'];
+						$picture= "../image/racePics/" . $PRrace['Picture'];
 					} 
 					//else use default
 					else
@@ -875,7 +1157,7 @@ Click the description below for more info! </p>
 						$picture="../image/racePics/default.jpg";
 					}
 					echo "<tr>";					
-					echo "<td > <img height='70px' src='$picture' alt='$picture' ></td>";
+					echo "<td > <img height='70px' src=$picture alt=$picture ></td>";
 					echo "<td style='width:100px'>" .  $PRrace['Distance']      . "</td>";
 					echo "<td style='width:150px'>" .  $PRrace['Time']  	. "</td>";
 					echo "<td style='width:100px'>" .  $countDistance   	. " times</td>";
@@ -884,8 +1166,8 @@ Click the description below for more info! </p>
 					echo "<td style='width:250px'>" .  $PRrace['Race'] 		. "</td>";
 					echo "<td style='width:100px'>" .  $PRrace['Place']     . "</td>";
 					echo "<td style='width:150px'>"  . round(PaceToMPH($PRrace['Pace'], $printArray),1) . "</td>";
-					echo "<td style='width:250px'>"  . $PRrace['Points']              . "</td>";
-					echo "<td style='width:250px'>" .   $PRrace['Feel']                . "</td>";
+					echo "<td style='width:150px'>"  . $PRrace['Points']              . "</td>";
+					echo "<td style='width:150px'>" .   $PRrace['Feel']                . "</td>";
 					echo "<td style='width:150px'>" .  $PRrace['Type']      . "</td>";
 					echo "<td style='width:100px'>" .  $PRrace['Location']  . "</td>";
 					echo "<td style='width:100px'>" .  $PRrace['LinkToResults']  . "</td>";						
@@ -900,12 +1182,15 @@ Click the description below for more info! </p>
 			
 	}
     echo "</table></div>";
-   
+
 ?>
 
-</div>		
-<hr  >
-<br><br><br>
+</div>	
+<br><br>
+
+
+
+
 
 
 
@@ -919,10 +1204,10 @@ Click the description below for more info! </p>
 <div id="GOALs">		
 <!--RACE GOALs---------------------------------------------------------------------------------------->	
 <?php
-			$title = "Race Goals: ";
+			$title = "Race Goals, based on fastest times:";
 			// TABLE HEADERS
 			echo "<br> <h2> $title </h2> <br>";
-			echo "<p>Below are my race goals based on fastest times that I have run. As you can see, first row is my fastest mark at a specific distance, the second row has my goal time and third row shows what I need to do to get there (how much time I need to nock-off.)</p>";
+			
 			/*echo "<th style='width:100px'> </th>";
 			echo "<th style='width:100px'>Distance </th>";
 			echo "<th style='width:150px'>Time </th>";
@@ -943,7 +1228,7 @@ Click the description below for more info! </p>
 			$DistancePR = $PRDistances['Distance']; //Making distance one of 10 preset values: .5  1 2  3.1  6  6.2 10  13.1  26.2
 			
 			//distance not found in this year specified.
-			$queryraceX = "select * from $myusername where (Distance=$DistancePR)"; // order by index?  Distance
+			$queryraceX = "select * from MyRaceResults where (Distance=$DistancePR)"; // order by index?  Distance
 			//$Year=substr($Year, 0, 4);
 			$distanceCheck = queryRaces($queryraceX, $DistancePR, $Year);
 			
@@ -956,7 +1241,7 @@ Click the description below for more info! </p>
 			//echo "MY COUNT: $countDistance";
 			
 			
-			$queryrace = "select * FROM $myusername where (Time=(select MIN(Time) from $myusername where Distance=$DistancePR) ) AND Distance=$DistancePR LIMIT 1"; // order by index? 
+			$queryrace = "select * FROM MyRaceResults where (Time=(select MIN(Time) from MyRaceResults where Distance=$DistancePR) ) AND Distance=$DistancePR LIMIT 1"; // order by index? 
 			$PRrace = queryRaces($queryrace, $DistancePR, $Year);
 			
 			foreach ($PRrace as $PRrace)
@@ -1207,7 +1492,7 @@ Click the description below for more info! </p>
 			$DistancePR = $PRDistances['Distance']; //Making distance one of 10 preset values: .5  1 2  3.1  6  6.2 10  13.1  26.2
 			
 			//distance not found in this year specified.
-			$queryraceX = "select * from $myusername where (Distance=$DistancePR)"; // order by index?  Distance
+			$queryraceX = "select * from MyRaceResults where (Distance=$DistancePR)"; // order by index?  Distance
 			//$Year=substr($Year, 0, 4);
 			$distanceCheck = queryRaces($queryraceX, $DistancePR, $Year);
 			
@@ -1220,7 +1505,7 @@ Click the description below for more info! </p>
 			//echo "MY COUNT: $countDistance";
 			
 			
-			$queryrace = "select * FROM $myusername where (Time=(select MIN(Time) from $myusername where Distance=$DistancePR) ) AND Distance=$DistancePR LIMIT 1"; // order by index? 
+			$queryrace = "select * FROM MyRaceResults where (Time=(select MIN(Time) from MyRaceResults where Distance=$DistancePR) ) AND Distance=$DistancePR LIMIT 1"; // order by index? 
 			$PRrace = queryRaces($queryrace, $DistancePR, $Year);
 		
 			foreach ($PRrace as $PRrace)
@@ -1473,7 +1758,7 @@ Click the description below for more info! </p>
 			$DistancePR = $PRDistances['Distance'];
 			
 			//distance not found in this year specified.
-			$queryraceX = "select * from $myusername where (Distance=$DistancePR) AND (Date LIKE '". $Year . "%')"; // order by index? 
+			$queryraceX = "select * from MyRaceResults where (Distance=$DistancePR) AND (Date LIKE '". $Year . "%')"; // order by index? 
 			//$Year=substr($Year, 0, 4);
 			$distanceCheck = queryRaces($queryraceX, $DistancePR, $Year);
 			
@@ -1494,7 +1779,7 @@ Click the description below for more info! </p>
 			
 			else
 			{
-				$queryrace = "select * FROM $myusername where ((Time=(select MIN(Time) from $myusername where ((Distance=$DistancePR) AND (Date LIKE '". $Year . "%')))) AND Distance=$DistancePR AND (Date LIKE '". $Year . "%')) LIMIT 1"; // order by index? 
+				$queryrace = "select * FROM MyRaceResults where ((Time=(select MIN(Time) from MyRaceResults where ((Distance=$DistancePR) AND (Date LIKE '". $Year . "%')))) AND Distance=$DistancePR AND (Date LIKE '". $Year . "%')) LIMIT 1"; // order by index? 
 				//$Year=substr($Year, 0, 4); Distance
 				$PRrace = queryRaces($queryrace, $DistancePR, $Year);
 				
@@ -1745,7 +2030,7 @@ Click the description below for more info! </p>
 	else if ($Year==NULL or $Year=="%")
 	{
 		//distance not found in this year specified.
-		$queryraceX = "select * from $myusername where (Distance=$Distance)"; // order by index? 
+		$queryraceX = "select * from MyRaceResults where (Distance=$Distance)"; // order by index? 
 		//$Year=substr($Year, 0, 4);
 		$distanceCheck = queryRaces($queryraceX, $Distance, $Year);
 		
@@ -1758,7 +2043,7 @@ Click the description below for more info! </p>
 		//echo "MY COUNT: $countDistance";
 		
 		
-		$queryrace = "select * FROM $myusername where ((Time=(select MIN(Time) from $myusername where Distance=$Distance)) AND Distance=$Distance) LIMIT 1";  
+		$queryrace = "select * FROM MyRaceResults where ((Time=(select MIN(Time) from MyRaceResults where Distance=$Distance)) AND Distance=$Distance) LIMIT 1";  
 		$PRrace = queryRaces($queryrace, $Distance, $Year."%");
 		$Goalrace = $PRrace;
 		
@@ -2009,21 +2294,19 @@ Click the description below for more info! </p>
 ?>
 
 </div>	
-<hr  >
-<br>
 
 
 
 
 
 
+	
 <!--TOTALS---------------------------------------------------------------------------------------->		
 <?php 
 $title = 'Totals: ';
 echo "<br> <h2> $title </h2> <br>";
 
 ?>
-<p>Below are the totals, means, medians, modes, ranges, bests, and worsts of the races you have selected. </p>
 		<table>
 			<tr>
 				<th>DATA </th>
@@ -2068,26 +2351,17 @@ echo "<br> <h2> $title </h2> <br>";
 
 		<!--<h1>All of my Races</h1>-->
 		<br>
-	     <hr  >
-		<br>
-
-		
-		
-		
-		
+	
+	
+	
 <?php
+
 // PRS PER YEAR: ****************************************************************************** 
-
-
-
-
 array_multisort($event,$year,$mark);
 
 
 //PRINT BY EVENT:
 echo "<h2>Yearly PRs and Progress</h2><br>";
-echo "<p>Tables below will show you per Event, your best mark per year in that event. <br>Its easy to track your progress in these events as well as know when you hit your PR and what it was!</p>";
-
 $bestMark=100;
 $index=1000;
 $blahCount=0;
@@ -2149,9 +2423,7 @@ foreach($PRdist as $PRdist) // GO THROUGH EVENTS
 
 
 //PRINT BY EVENT:
-echo "<h2>Yearly PRs Table</h2><br>";
-echo "<p>This table. shows you the same info above in a more concise view, Horizonally you can see the yearly progress, and Vertically you can see the change in events/distances. <br> Red will show a decrease in performance from the previous year, and green will show inprovement! GOLD will be your PR!</p>";
-
+echo "<h2>Yearly PRs and Progress</h2><br>";
 $bestMark=100;
 $index=1000;
 $blahCount=0;
@@ -2230,17 +2502,12 @@ echo "</table></center>";
 
 //echo "<br>$blah";
 ?>	
-<hr>
-<br>
-<br>
-		
-		
-		
-		
-
-
-
-		
+	
+	
+	
+	
+	
+	
 <!-- NEW----------------------------------------------------------------->
 <?php
 
@@ -2264,7 +2531,7 @@ echo "</table></center>";
         }
 		
 		//query i want
-		$result = mysql_query('SELECT * FROM $myusername'); //"1.00"
+		$result = mysql_query('SELECT * FROM MyRaceResults'); //"1.00"
 		//echo "My distance is: $Distance";
 		
 		// all tables headings
@@ -2354,10 +2621,7 @@ echo "</table></center>";
 // Places finished: 1st, 2nd, 3rd **********************************************************************************************************************	
 			//PUTTING TITLE ON GRAPH
 			$title = 'My Race Finish Places: ';
-			echo "<center><h1>GRAPHS:</h1></center><br>";
-			echo "<p>Below are graphs of race results based on totals of a specific category.<br> 1st graph is: Count of Total Races I Have Run Each Year. <br> 2nd graph is: Count of Race Types: Road Race, XC Race, Track Race, Tri. <br> 3rd Graph is: Count of Each Distance I Have Run (ex. how many times I've run 400m).  </p><br><br>";
 			echo "<br> <h2> $title </h2> <br>";
-			echo "<p>Below is the count of top 3 places and how many of each I finished. <br> 1st, 2nd, 3rd, Other.</p>";
 			
 			//GETTING DATA READY AND ADDING THEM TO THE GRAPH:
 			$graphData = array();
@@ -2367,24 +2631,24 @@ echo "</table></center>";
 			//GETTING QUERY OF RACES
 			if($Distance=='All' or $Year=='All')
 			{
-				$queryrace = "SELECT * FROM $myusername order by Place ASC";
+				$queryrace = 'SELECT * FROM MyRaceResults order by Place ASC';
 				$raceGraphYear = queryRaces($queryrace1, $Distance, $Year);
 			}
 			else if($Distance==NULL && $Year==NULL)
 			{
-				$queryrace = "SELECT * FROM $myusername order by Place ASC LIMIT 10";
+				$queryrace = 'SELECT * FROM MyRaceResults order by Place ASC LIMIT 10';
 				$raceGraphYear = queryRaces($queryrace1, $Distance, $Year);
 			}		
 
 			else if($Distance==NULL)
 			{
-				$queryrace = "SELECT * FROM $myusername WHERE (Date LIKE :Year) order by Place ASC";
+				$queryrace = 'SELECT * FROM MyRaceResults WHERE (Date LIKE :Year) order by Place ASC';
 				$raceGraphYear = queryRaces($queryrace, $Distance, $Year."%"); 				
 			}
 			// Get races for selected distance. (if index is given)
 			else
 			{
-				$queryrace = "SELECT * FROM $myusername WHERE (Distance = :Distance AND Date LIKE :Year) order by Place ASC"; 
+				$queryrace = 'SELECT * FROM MyRaceResults WHERE (Distance = :Distance AND Date LIKE :Year) order by Place ASC'; 
 				$raceGraphYear = queryRaces($queryrace, $Distance, $Year."%");
 			}
 					
@@ -2420,7 +2684,7 @@ echo "</table></center>";
 			draw_bar_graph(960, 240, $graphData, ($totalCount/1.5)); //prints graph
 
 			// Dump the data just so we can see how it is organized
-			//var_dump($graphData);
+			var_dump($graphData);
 			//echo "<br><br> 1st: $graphData[1] <br>2nd:  $graphData[2] <br>3rds: $graphData[3]<br>";
 			
 			// TABLE
@@ -2463,25 +2727,25 @@ echo "</table></center>";
 			//GETTING QUERY OF RACES
 			if($Distance=='All' or  $Year=='All')
 			{
-				$queryrace = "SELECT * FROM $myusername order by Date ASC";
+				$queryrace = 'SELECT * FROM MyRaceResults order by Date ASC';
 				$raceGraphYear = queryRaces($queryrace1, $Distance, $Year);
 			}
 			
 			else if($Distance==NULL && $Year==NULL)
 			{
-				$queryrace = "SELECT * FROM $myusername order by Date ASC LIMIT 10";
+				$queryrace = 'SELECT * FROM MyRaceResults order by Date ASC LIMIT 10';
 				$raceGraphYear = queryRaces($queryrace1, $Distance, $Year);
 			}
 
 			else if($Distance==NULL)
 			{
-				$queryrace = "SELECT * FROM $myusername WHERE (Date LIKE :Year) order by Date ASC";
+				$queryrace = 'SELECT * FROM MyRaceResults WHERE (Date LIKE :Year) order by Date ASC';
 				$raceGraphYear = queryRaces($queryrace, $Distance, $Year."%"); 				
 			}
 			// Get races for selected distance. (if index is given)
 			else
 			{
-				$queryrace = "SELECT * FROM $myusername WHERE (Distance = :Distance AND Date LIKE :Year) order by Date ASC"; 
+				$queryrace = 'SELECT * FROM MyRaceResults WHERE (Distance = :Distance AND Date LIKE :Year) order by Date ASC'; 
 				$raceGraphYear = queryRaces($queryrace, $Distance, $Year."%");
 			}
 					
@@ -2503,7 +2767,7 @@ echo "</table></center>";
 			draw_bar_graph(960, 240, $graphData, ($totalCount/3)); //prints graph
 
 			// Dump the data just so we can see how it is organized
-			//var_dump($graphData);
+			var_dump($graphData);
 
 
 // Breakdown of race types: **********************************************************************************************************************		
@@ -2520,13 +2784,13 @@ echo "</table></center>";
 			//GETTING QUERY OF RACES
 			if($Distance==NULL && $Year==NULL)
 			{
-				$queryrace = "SELECT * FROM $myusername order by Distance DESC LIMIT 10";
+				$queryrace = 'SELECT * FROM MyRaceResults order by Distance DESC LIMIT 10';
 				$raceGraphType = queryRaces($queryrace1, $Distance, $Year);
 			}
 			
 			else if($Distance=='All' or $Year=='All')
 			{
-				$queryrace = "SELECT * FROM $myusername order by Distance DESC";
+				$queryrace = 'SELECT * FROM MyRaceResults order by Distance DESC';
 				$raceGraphType = queryRaces($queryrace1, $Distance, $Year);
 			}
 
@@ -2537,7 +2801,7 @@ echo "</table></center>";
 			// Get races for selected distance. (if index is given)
 			else
 			{
-				$queryrace = "SELECT * FROM $myusername WHERE (Distance = :Distance AND Date LIKE :Year) order by Distance DESC"; 
+				$queryrace = 'SELECT * FROM MyRaceResults WHERE (Distance = :Distance AND Date LIKE :Year) order by Distance DESC'; 
 				$raceGraphType = queryRaces($queryrace1, $Distance, $Year."%");
 			}
 			
@@ -2559,7 +2823,7 @@ echo "</table></center>";
 			draw_bar_graph(960, 240, $graphData, ($totalCount/2)); //prints graph
 
 			// Dump the data just so we can see how it is organized
-			//var_dump($graphData);		
+			var_dump($graphData);		
 			
 // DISTANCE: **********************************************************************************************************************			
 			
@@ -2575,25 +2839,25 @@ echo "</table></center>";
 			//GETTING QUERY OF RACES
 			if($Distance==NULL && $Year==NULL)
 			{
-				$queryrace = "SELECT * FROM $myusername order by Distance ASC LIMIT 10";
+				$queryrace = 'SELECT * FROM MyRaceResults order by Distance ASC LIMIT 10';
 				$raceGraph = queryRaces($queryrace, $Distance, $Year);
 			}
 			
 			else if($Distance=='All' or $Year=='All')
 			{
-				$queryrace = "SELECT * FROM $myusername order by Distance ASC";
+				$queryrace = 'SELECT * FROM MyRaceResults order by Distance ASC';
 				$raceGraph = queryRaces($queryrace, $Distance, $Year);
 			}
 			
 			else if($Distance==NULL)
 			{
-				$queryrace = "SELECT * FROM $myusername WHERE (Date LIKE :Year) order by Distance ASC";  
+				$queryrace = 'SELECT * FROM MyRaceResults WHERE (Date LIKE :Year) order by Distance ASC';  
 				$raceGraph = queryRaces($queryrace, $Distance, $Year."%"); 				
 			}
 			// Get races for selected distance. (if index is given)
 			else
 			{
-				$queryrace = "SELECT * FROM $myusername WHERE (Distance = :Distance AND Date LIKE :Year) order by Distance ASC"; 
+				$queryrace = 'SELECT * FROM MyRaceResults WHERE (Distance = :Distance AND Date LIKE :Year) order by Distance ASC'; 
 				$raceGraph = queryRaces($queryrace, $Distance, $Year."%");
 			}
 			
@@ -2615,17 +2879,16 @@ echo "</table></center>";
 			draw_bar_graph(960, 240, $graphData, ($totalCount/4)); //prints graph
 
 			// Dump the data just so we can see how it is organized
-			//var_dump($graphData);
+			var_dump($graphData);
 
 ?>		
-<hr  >
-<br>
-<br>
+
 
 <!-- ****************************************************************************** ******************************************************************************           -->
 <!-- ****************************************************************************** ******************************************************************************           -->
 <!-- MAP  will have to get a API key later-->
 
+<h2> MAP </h2>
 
 <!--
 OTHER M A P:
@@ -2707,7 +2970,6 @@ Read more at: https://www.w3schools.com/graphics/google_maps_basic.asp
 </head>
 		<body>
 		<H1>My Races on the MAP</H1>
-		<p>Using Google Maps, I have mapped each race on a map based on its geographical location. </p>
 		<?=$MAP_OBJECT->printOnLoad();?>
 		<?=$MAP_OBJECT->printMap();?>
 		<?=$MAP_OBJECT->printSidebar();?>
@@ -2716,38 +2978,56 @@ Read more at: https://www.w3schools.com/graphics/google_maps_basic.asp
 		<br><br> 
 <!-- END MAPS ----------------------------------------------------------------------------------------------------------------------------------------------------->
 
-
-		
 <br>	
 
-		
-</section>
 <ul class="myButtons">
 	<span class="myButtons" style="display: inline;">
 		<a class="myButtons" onclick="topFunction()" id="myBtn" title="Go to top">Top</a>
 	</span>
 </ul>
 	
+<script>
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
 
-<br>
-<br>
-<!-- begin wwww.htmlcommentbox.com -->
- <h1>Comments: </h1>
- <div style="color:white;" id="HCB_comment_box"><a href="http://www.htmlcommentbox.com">Comment Form</a> is loading comments...</div>
- <link rel="stylesheet" type="text/css" href="//www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0" />
- <script type="text/javascript" id="hcb"> /*<!--*/ if(!window.hcb_user){hcb_user={};} (function(){var s=document.createElement("script"), l=hcb_user.PAGE || (""+window.location).replace(/'/g,"%27"), h="//www.htmlcommentbox.com";s.setAttribute("type","text/javascript");s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&mod=%241%24wq1rdBcg%24DnRxkqNQmUnhoputqLMl10"+"&opts=16862&num=10&ts=1499300164544");if (typeof s!="undefined") document.getElementsByTagName("head")[0].appendChild(s);})(); /*-->*/ </script>
-<!-- end www.htmlcommentbox.com -->
+function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        document.getElementById("myBtn").style.display = "block";
+    } else {
+        document.getElementById("myBtn").style.display = "none";
+    }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+</script>
+		
+		
+</section>
+
 	
 </main>
 <footer>
-<center>
-    <p>&copy; <?php echo date("Y"); ?> Vojta Ripa, Inc. 	
-	
-			<div id="sfcxppf9yed89xa3ybnbdp1jrgxgycgaqfb"></div>
-		<script type="text/javascript" src="https://counter6.freecounter.ovh/private/counter.js?c=xppf9yed89xa3ybnbdp1jrgxgycgaqfb&down=async" async></script>
-		<br><a href="https://www.freecounterstat.com">free counter for websites</a><noscript><a href="https://www.freecounterstat.com" title="free counter for websites"><img src="https://counter6.freecounter.ovh/private/freecounterstat.php?c=xppf9yed89xa3ybnbdp1jrgxgycgaqfb" border="0" title="free counter for websites" alt="free counter for websites"></a></noscript>
-	</p>
-</center>
+    <p>&copy; <?php echo date("Y"); ?> Vojta Ripa, Inc.</p>
 </footer>
 </body>
+
+<?php
+$username="vojtaripa";
+// TO GET IN AS ADMIN AGAIN ***********************************************************************************  
+$queryuser = 'SELECT * FROM users  WHERE username = :username ORDER BY idusers DESC limit 1'; 
+$statement5 = $db->prepare($queryuser);
+$statement5->bindValue(':username', $username);
+$statement5->execute();
+$theuser = $statement5->fetchAll();
+$statement5->closeCursor();
+
+$username = $theuser['0']['username'];
+$password =	$theuser['0']['password'];
+echo "Username: $username";
+echo "Password: $password";
+?>
 </html>

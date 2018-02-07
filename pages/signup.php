@@ -24,7 +24,6 @@
    <a class="button" href="../index.php" >View All Users</a>
    <a class="button" href="functions.php">Other Functions / Conversions</a>
    <a class="button" href="distance_list.php">List distances</a>     
-   <a class="button" href="points.php">Points</a>
    <a class="button" href="signup.php" style="background-color:red;" >Sign up for updates</a>
    
    <a class="button" href="http://vojta.users.sonic.net/blog/"> Vojta's Main Page </a>
