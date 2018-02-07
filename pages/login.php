@@ -66,7 +66,7 @@
 		<script> 
 		$(function(){
 		  $("#header").load("header.html"); 
-		  $("#footer").load("footer.html"); 
+		  $("#footer").load("footer.php"); 
 		});
 		</script> 
    </head>
@@ -103,13 +103,13 @@
 
                
                 <div class="6u 12u$(xsmall)">
-					<label>Username        :</label>
+					<label><i class="icon fa fa-user"></i> Username        :</label>
 					<input type="text" class="text" name="myusername" placeholder="username">
 					<br>
 				</div>
 				
 				<div class="6u 12u$(xsmall)">
-					<label>Password        :</label>
+					<label><i class="icon fa fa-key"></i> Password        :</label>
 					<input type="password" class="text" name="password1" placeholder="password">
 					<br>
 				</div>

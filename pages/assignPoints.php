@@ -82,7 +82,7 @@ echo "<br/>";
 		<script> 
 		$(function(){
 		  $("#header").load("header.html"); 
-		  $("#footer").load("footer.html"); 
+		  $("#footer").load("footer.php"); 
 		});
 		</script> 
 <!-- END LINKS / PERL BASESCRIPTS.Please -->

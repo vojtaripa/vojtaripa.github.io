@@ -29,7 +29,22 @@ Change LOG:
 -allowed SLOW results 
 -added lot more CSS and JS files that need to go with it for it to function
 
+version 4
+****************************************************************************** 
 
+-Lots more visual changes.
+-fixed some tables and formatting
+-added YEARS and DISTANCES as options instead of having a bunch of buttons
+-fixed my javascript file
+-got rid of black lighting behind labels..
+-highlight selected pages
+-all pages use external pages, HEADER and FOOTER for links and ect.
+-fixed geocoding
+-added lots of icons
+-got side menue working on all pages
+-moved some of my styles over
+-updated future races and made login changes there
+-added custom distance instead of preselected distances.
 
 
 FUTURE CHANGES:
@@ -45,8 +60,14 @@ FUTURE CHANGES:
  -DirectAthletics
  -Athelinks
  
-- Fix my javascript file.
-- slight changes on formatting..
-- redo sign up form and make it more tow down 
+-add graphs and use my graphing thing (just need a table)
+-make more of a sigle sign on login.
+-functions page not fully converted.
+-query selected specific user DB.. 
+-email template to user (pretty) images, ect.
+-picture galary for user?
+-updated diagram of my webpage navigation.
+-if user puts bad info, will they always see what they did wrong? (might be tough to figure out and see..)
+-color boarder red or green if input is valid or invalid. 
+
 - get rid of confusion stuff.
-- make icons fo my website

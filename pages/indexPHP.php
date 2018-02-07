@@ -701,7 +701,7 @@ else
 $TotalPace="$PaceTotalH:$PaceTotalM:$PaceTotalS"; // need to get total before average.
 
 //my totals array
-$TOTALS  = array("TOTALS", $totalCount, $TotalTime, $TotalDistance, $TotalPlace, $TotalPace, "Total of all values." );
+$TOTALS  = array("TOTALS", "Total of all values.", $totalCount, $TotalTime, $TotalDistance, $TotalPlace, $TotalPace );
 
 
 
@@ -747,17 +747,17 @@ array_push($printArray,"AVG. PACE: ","correctTime(0,0,(((($PaceTotalH)*60*60)+((
 
 
 //my average array
-$AVERAGE = array("AVERAGE", $AvgCount, $AvgTime, $AvgDistance, $AvgPlace, $AvgPace );
+$AVERAGE = array("AVERAGE", "The average of each value.", $AvgCount, $AvgTime, $AvgDistance, $AvgPlace, $AvgPace );
 
 
 
 
 //MEAN is the average.
 
-$MEAN    = array("MEAN" , mmmr($RaceRunArray, 'mean'), $AvgTime, mmmr($DistanceArray, 'mean'), round(mmmr($PlaceArray, 'mean'),2), $AvgPace, "The average of each value.");
+$MEAN    = array("MEAN", "The average of each value." , mmmr($RaceRunArray, 'mean'), $AvgTime, mmmr($DistanceArray, 'mean'), round(mmmr($PlaceArray, 'mean'),2), $AvgPace);
 
 //MEDIAN
-$MEDIAN  = array("MEDIAN" , mmmr($RaceRunArray, 'median'), mmmr($TimeArray, 'median'), mmmr($DistanceArray, 'median'), mmmr($PlaceArray, 'median'), mmmr($PaceArray, 'median'), "The middle of all the values, after sorting them.");
+$MEDIAN  = array("MEDIAN", "The middle of all the values, after sorting them." , mmmr($RaceRunArray, 'median'), mmmr($TimeArray, 'median'), mmmr($DistanceArray, 'median'), mmmr($PlaceArray, 'median'), mmmr($PaceArray, 'median'));
 /*var_dump($RaceRunArray);
 echo"<br>";
 var_dump(mmmr($RaceRunArray, 'median'));
@@ -772,19 +772,19 @@ echo"<br>";
 var_dump($PlaceArray);*/
 
 //MODE
-$MODE    = array("MODE" , mmmr($RaceRunArray, 'mode'), mmmr($TimeArray, 'mode'), mmmr($DistanceArray, 'mode'), mmmr($PlaceArray, 'mode'), mmmr($PaceArray, 'mode'), "The most occured value.");
+$MODE    = array("MODE", "The most occured value." , mmmr($RaceRunArray, 'mode'), mmmr($TimeArray, 'mode'), mmmr($DistanceArray, 'mode'), mmmr($PlaceArray, 'mode'), mmmr($PaceArray, 'mode'));
 
 //RANGE
 $RangeTime= SecondsToTime(TimeToSeconds((mmmr($TimeArray, 'worst')),$printArray) - TimeToSeconds((mmmr($TimeArray, 'best')),$printArray),$printArray);
 $RangePace= SecondsToTime(TimeToSeconds((mmmr($PaceArray, 'worst')),$printArray) - TimeToSeconds((mmmr($PaceArray, 'best')),$printArray),$printArray); 
 
-$RANGE   = array("RANGE" , mmmr($RaceRunArray, 'range'), $RangeTime , mmmr($DistanceArray, 'range'), mmmr($PlaceArray, 'range'), $RangePace, "The range of value beween the largest and smallest.");
+$RANGE   = array("RANGE", "The range of value beween the largest and smallest." , mmmr($RaceRunArray, 'range'), $RangeTime , mmmr($DistanceArray, 'range'), mmmr($PlaceArray, 'range'), $RangePace);
 
 //BEST (create functions)
-$BEST    = array("BEST" , mmmr($RaceRunArray, 'best'), mmmr($TimeArray, 'best'), mmmr($DistanceArray, 'best'), mmmr($PlaceArray, 'best'), mmmr($PaceArray, 'best'), "The best / lowest value.");
+$BEST    = array("BEST" , "The best / lowest value.", mmmr($RaceRunArray, 'best'), mmmr($TimeArray, 'best'), mmmr($DistanceArray, 'best'), mmmr($PlaceArray, 'best'), mmmr($PaceArray, 'best'));
 
 //WORST (create functions)
-$WORST   = array("WORST" , mmmr($RaceRunArray, 'worst'), mmmr($TimeArray, 'worst'), mmmr($DistanceArray, 'worst'), mmmr($PlaceArray, 'worst'), mmmr($PaceArray, 'worst'), "The worst / highest value.");
+$WORST   = array("WORST" , "The worst / highest value.", mmmr($RaceRunArray, 'worst'), mmmr($TimeArray, 'worst'), mmmr($DistanceArray, 'worst'), mmmr($PlaceArray, 'worst'), mmmr($PaceArray, 'worst'));
 
 
 // Pace to MPH conversion

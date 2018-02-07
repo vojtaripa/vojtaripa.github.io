@@ -1,4 +1,5 @@
-	
+
+								
 	<script>
 									var url = window.location.href.split("/"); //replace string with location.href
 									
@@ -19,6 +20,22 @@
 
 										  }
 									  }
+									  
+									  //****************************************************************************** 
+									  //Made by Vojta: if results page is displayed, extra options appear to help navigate through page!
+									  //window.alert(currentPage);
+									  						  
+									  
+									  if(RegExp("RaceResults.php").test(currentPage) || RegExp("process_login.php").test(currentPage))
+									  {
+										//window.alert("Im in!");
+										$("#RaceResultsOnly").show("");
+									  }
+									  else
+									  {
+										$("#RaceResultsOnly").hide();
+									  }
+									  
 				</script>
 				
 				<script src="../assets/js/main.js"></script> 
@@ -51,17 +68,18 @@
 								<a href="about.html"><i class="icon fa-user"></i> About Author</a>&nbsp; 
 								<a class="noline" href="#">&nbsp; 	&nbsp;	|	&nbsp;	&nbsp;</a>
 								<a href="create_account.php"><i class="icon fa-user-plus"></i> Sign Up</a>&nbsp; 
-								<a href="login.php"><i class="icon fa-sign-in"></i> Log In</a>
+													
 								
+								<a href='login.php'><i class='icon fa-sign-in'></i> Log In / Out</a>
+								
+									
 												
 								
 								<li class="special">
 									<a href="#menu" class="menuToggle"><span>Menu</span></a>
 									<div id="menu">
 										<ul>
-											<?php
-											if($myusername!=NULL)
-											{ ?>
+											<div id="RaceResultsOnly">
 												
 												<label style="color:#696969;">Page Navigation:</label>      <li><a class='scrolly button ' href='#results' ><i class='icon fa-road'></i>  Race Results</a></li>
 																					 <li><a class='scrolly button ' href='#Filters' ><i class='icon fa-filter'></i>  Filters</a></li>
@@ -72,9 +90,7 @@
 																					 <li><a class='scrolly button ' href='#Goals' ><i class='icon fa-book'></i>  Race Goals</a></li>
 																					 <li><a class='scrolly button ' href='#Graphs' ><i class='icon fa-bar-chart'></i>  Race Graphs</a></li>
 																					 <li><a class='scrolly button ' href='#Map' ><i class='icon fa-map'></i>  Races On a Map</a></li>
-											<?php
-											}
-											?>
+											</div>
 											
 											</br>
 											<label style="color:#696969;">Nomal Links:</label>

@@ -4,6 +4,9 @@
 
 // ORANGE/ RED button "class:special" color: #E6594D
 
+//other Icons: http://glyphicons.com/ (sonic uses these)
+
+
 require_once('database.php');
 require_once('../map/graphs/Person.php');
 require ('indexPHP.php');
@@ -76,42 +79,32 @@ require ('indexPHP.php');
 							<?php 
 								   //USER INFO:
 								   echo "<p>Race Results for: </p><h2>". $first_name . " ". $last_name."</h2>"; 
-							 ?>
+							 
+									//ADMIN --------------------------------------------------------------------------------------------------------------------------->
+									
+										if($usernameCheck==true)
+										{
+											echo"
+											<center><p style='color:#E6594D'> * LOGGED IN AS ADMIN * </p><span class='myButtons' style='display: inline;'><a class='button' href='RaceResults.php?choice=search&user=".urlencode($myusername)."&Year=".urlencode('All')."&Distance=".urlencode('All')."' >Regular View</a></center>";
+										}
+									?>	
+								<!--END ADMIN ------------------------------------------------------------------------------------------------------------------------>
 							
 						</header>
 						
 <!-- SECTIONS -->
 <!-- **************************************************************************************************************************************************************** -->
 					
-					<!--PAGE OPTIONS: -->
+					<!--PAGE OPTIONS: 
 					<section class="wrapper style2">
 						<div class="inner">	
-								<!-- <h3>Welcome: <?php echo $theuser['0']['username']; ?></h3> -->
+								
 					 
-								<center>
-								<span class="myButtons" style="display: inline;">
-								   
-								   <h2 > What would you like to see?</h2>
-								   
-								   <a class="scrolly 4u button special" href="#results" ><i class="icon fa-road"></i>  Race Results</a>
-								   <a class="scrolly 4u button " href="#Filters" ><i class="icon fa-filter"></i>  Filters</a>
-								   <a class="scrolly 4u button " href="#user" ><i class="icon fa-user-circle"></i>  User Info</a>
-								   <a class="scrolly 4u button special" href="#PRs" ><i class="icon fa-trophy"></i>  Race PRs</a>
-								   <a class="scrolly 4u button special" href="#YearPRs" ><i class="icon fa-trophy"></i>  Yearly PRs</a>
-								   <a class="scrolly 4u button " href="#Totals" ><i class="icon fa-plus"></i>  Result Totals/ Averages</a>     
-								   <a class="scrolly 4u button " href="#Goals" ><i class="icon fa-book"></i>  Race Goals</a>
-								   <a class="scrolly 4u button special" href="#Graphs" ><i class="icon fa-bar-chart"></i>  Race Graphs</a>
-								   </br>
-								   <a class="scrolly 4u button special" href="#Map" ><i class="icon fa-map"></i>  Races On a Map</a>
 
-						
-								   
-								   </span>
-								   </center>
 										<br>
 									<hr>
 							</div>
-					</section>
+					</section>-->
 						
 						
 					<!--USER -->
@@ -155,30 +148,26 @@ require ('indexPHP.php');
 								   ?> </h3>
 								  
 
-								 <!--ADMIN --------------------------------------------------------------------------------------------------------------------------->
-												<?php
-													if($usernameCheck==true)
-													{
-														echo"
-														<center><h2> * LOGGED IN AS ADMIN * </h2><span class='myButtons' style='display: inline;'><a class='button' href='RaceResults.php?choice=search&user=".urlencode($myusername)."&Year=".urlencode('All')."&Distance=".urlencode('All')."' >Regular View</a></center>";
-													}
-												?>	
-								<!--END ADMIN ------------------------------------------------------------------------------------------------------------------------>
+						
 								  
 								   
 								 
 								<!-- ABOUT --------------------------------------------------------------------------->
-								<center><button class="accordion special" style="font-size:20px" onclick="accordion()">About <?php echo $first_name . " ". $last_name; ?></button></center>
+								<center><button class="accordion special" style="font-size:20px" onclick="accordion()"> About <?php echo $first_name . " ". $last_name; ?></button>
 									<div class="panel">
 									  <?php
 									  if($about!=null)
-											echo "<p style='color:black'>
+									  {
+											echo "<p style='color:black; text-align:left; float:left;'>
 													$about
 												  </p>";
+									  }
 									   else
+									   {
 											echo "<p>NO INFO GIVEN.</p> <br>";
+									   }
 									  ?>
-									</div>
+									</div></center>
 									<br>
 									
 								</div>
@@ -211,154 +200,208 @@ require ('indexPHP.php');
 								<br>   
 								<br>
 								<br>
-								 
-
-								<h2 id="Filters" >Filter Races Using the Following:</h2>
-
-								<button class="accordion" style="font-size:20px" onclick="accordion()">What are filters?</button>
-								<div class="panel">
-								<p>You can click on the following buttons to narrow down your results. <br>Years - will show you all the results from a specific year. <br> Distance - will show you all the results from a specific distance. <br> Other - there are other functions and links to pages available here.</p>
-								</div>
-								<br>
-								<br>
-								<!--Dropdown sections:  -->
-									 
-								<h2><u>You Selected:</u> <b><?php echo $Name; ?> distance(s) run in <?php if($Year=="%")echo "all years $Limit."; else echo substr("$Year", 0, 4)." year(s) $Limit."; ?></b></h2> 
+								 <h2 id="Filters" ><u>You Selected:</u> <b style="color:#E6594D"><?php echo $Name; ?></b> distance(s) run in <b style="color:#E6594D"><?php if($Year=="%")echo "all </b> years $Limit."; else echo substr("$Year", 0, 4)."</b> year(s) $Limit."; ?></b></h2> 
 
 								
-								<ul class="myButtons">
-									<span class="myButtons" style="display: inline;">
-									   <form action="">
-													   
-										   <!-- All years --------------------------------->			   
-										   <li class="myButtons" style="display: inline;">	
-											
-											<!-- display a list of distances -->
-											<h2 style="display: inline; ">Years:</h2>
-																
-												<?php 	
-												if(($Year)== "" || ($Year)== "All")
+								<br>
+								<br>
+								
+								<center><h3>Filters</h3></center>
+								<!--Dropdown sections:  -->
+								<span class="myButtons" style="display: inline;">
+
+
+								
+								<h2 class="4u" style="display: inline;" > User: </h2>
+								<select class='4u' id='distance'>
+									<!-- BUTTONS FOR REST OF DISTANCE NAMES -->
+									
+									
+									<?php 
+									//GET ALL USERS:
+									$all_user_query = "SELECT * FROM users";
+									$all_user_query_Array=queryRaces($all_user_query,"","");
+
+									//GET USER INFO:
+									foreach($all_user_query_Array as $user): ?>
+										
+														
+											<?php 
+												if(($myusername)== $user['username'])
 												{ 
 														$red = "special'";
+														$selected = "selected";
 												}
 												else
+												{	
 														$red ="'";
-												
-												if($Year=="") 
-													$Year= "All"; 
+														$selected = "";
+												}
+											
+												if($user['username']=="") 
+													$user= "All"; 
 												else 
-													$Year=$Year;
-												echo "<a class='button "  .$red. "href='RaceResults.php?choice=search&user=".urlencode($myusername)."&password=".urlencode($mypassword)."&Year=".urlencode('All')."&Distance=".urlencode($Distance)."#Filters"."'>All</a>"; 		
-												?>  
-												
-										   </li>
-									   
-										   <!-- All other years ------------------------------------>
-										  
-											<?php for($StartYear; $StartYear<=$CurrentYear; $StartYear++ ) { ?>		
-											<li style="display: inline; " >			
-												<!--<a class="button" href=".?Year=<?php echo "$StartYear"; ?>">   <?php echo "$StartYear"; ?> </a>-->
-												
-												<?php 
-													if(($Year)== $StartYear)
+													$user=$user;
+												echo "<option style='color:black;' value='RaceResults.php?choice=search&user=".urlencode($user['username'])."&password=".urlencode($mypassword)."&Year=".urlencode($Year)."&Distance=".urlencode($Distance)."#Filters"."' $selected >". $user['username'] ."</option>"; 
+											?>  
+											
+										
+									<?php endforeach; ?> 
+								</select>
+								
+
+								
+								
+									   													   
+										   <!-- All years --------------------------------->			   
+										   											
+											<!-- display a list of distances -->
+											<h2 class="4u" style="display: inline; ">Years:</h2>
+											<select class='4u' id='year'>				
+													<?php 	
+													if(($Year)== "" || ($Year)== "All")
 													{ 
-														$red = "special'";
+															$red = "special'";
+															$selected = "selected";
 													}
 													else
-														$red ="'";
-												
+													{	
+															$red ="'";
+															$selected = "";
+													}
 													if($Year=="") 
 														$Year= "All"; 
 													else 
 														$Year=$Year;
-													echo "<a class='button "  .$red. "href='RaceResults.php?choice=search&user=".urlencode($myusername)."&password=".urlencode($mypassword)."&Year=".urlencode($StartYear)."&Distance=".urlencode($Distance)."#Filters"."'>$StartYear</a>"; 
-												?>  
+													echo "<option style='color:black;' value='RaceResults.php?choice=search&user=".urlencode($myusername)."&password=".urlencode($mypassword)."&Year=".urlencode('All')."&Distance=".urlencode($Distance)."#Filters"."' $selected>All</option>"; 		
+													?>  
+											
+										   
+									   
+										   <!-- All other years ------------------------------------>
+									
+											<?php for($StartYear; $StartYear<=$CurrentYear; $StartYear++ ) { ?>		
+													
+												<!--<a class="button" href=".?Year=<?php echo "$StartYear"; ?>">   <?php echo "$StartYear"; ?> </a>-->
 												
-										   </li<?php }?>>
-									  </form>	   
-									</span>	
-								</ul>      
+													<?php 
+														if(($Year)== $StartYear)
+														{ 
+															$red = "special'";
+															$selected = "selected";
+														}
+														else
+														{	
+																$red ="'";
+																$selected = "";
+														}
+													
+														if($Year=="") 
+															$Year= "All"; 
+														else 
+															$Year=$Year;
+														
+														echo "<option style='color:black;' value='RaceResults.php?choice=search&user=".urlencode($myusername)."&password=".urlencode($mypassword)."&Year=".urlencode($StartYear)."&Distance=".urlencode($Distance)."#Filters"."' $selected >$StartYear</option>"; 
+													}
+													?>  
+												
+										
+										   </select>
+									  	   
+							  
 
 								 
 
 								 
 										
 								<!-- BUTTON FOR ALL Distances------------------------------------------------------------------------------------------------------------------->
-								<ul class="myButtons" >           
-									<span class="myButtons" style="display: inline;">
-									<li class="myButtons" style="display: inline;">
-										 <!-- display a list of distances -->
-										<h2  style="display: inline;" > Distances: </h2>
+								         
+									
+									
+								 <!-- display a list of distances -->
+								<h2 class="4u" style="display: inline;" > Distances: </h2>
+								<select class='4u' id='distance'>
+										
 										
 										<!--<a class="button" href=".?Distance=<?php echo 'All'; ?>"> All <!-- put the word ALL in URL and make button say "All" -->
 										<?php 
 												if(($Distance)== "" || ($Distance)== "All")
 												{ 
 														$red = "special'";
+														$selected = "selected";
 												}
 												else
+												{	
 														$red ="'";
-												
+														$selected = "";
+												}
 											
 											
 											if($Distance=="") 
 													$Distance= "All"; 
 											else 
 													$Distance=$Distance;
-											echo "<a class='button "  .$red. "href='RaceResults.php?choice=search&user=".urlencode($myusername)."&password=".urlencode($mypassword)."&Year=".urlencode($Year)."&Distance=".urlencode('All')."#Filters"."'> All </a>"; 
+											echo "<option style='color:black;' value='RaceResults.php?choice=search&user=".urlencode($myusername)."&password=".urlencode($mypassword)."&Year=".urlencode($Year)."&Distance=".urlencode('All')."#Filters"."' $selected > All</option>"; 
 										?>  
 										<?php  //echo $DistanceName['Distance']; ?>
 										
-									</li>
+									
 
-								<!-- BUTTONS FOR REST OF DISTANCE NAMES -->
+									<!-- BUTTONS FOR REST OF DISTANCE NAMES -->
 									<?php foreach ($DistanceName as $DistanceName) : ?>
-										<li class="myButtons" style="display: inline;">
+										
 														
 											<?php 
 												if(($Distance)== $DistanceName['Distance'])
 												{ 
 														$red = "special'";
+														$selected = "selected";
 												}
 												else
+												{	
 														$red ="'";
+														$selected = "";
+												}
 											
 												if($Distance=="") 
 													$Distance= "All"; 
 												else 
 													$Distance=$Distance;
-												echo "<a class='button "  .$red. "href='RaceResults.php?choice=search&user=".urlencode($myusername)."&password=".urlencode($mypassword)."&Year=".urlencode($Year)."&Distance=".urlencode($DistanceName['Distance'])."#Filters"."'>". $DistanceName['distName']."</a>"; 
+												echo "<option style='color:black;' value='RaceResults.php?choice=search&user=".urlencode($myusername)."&password=".urlencode($mypassword)."&Year=".urlencode($Year)."&Distance=".urlencode($DistanceName['Distance'])."#Filters"."' $selected >". $DistanceName['distName'] ."</option>"; 
 											?>  
 											
-										</li>
+										
 									<?php endforeach; ?> 
-									</span>
-									</ul>
-						
+								</select>
+								</span>
+								
+								<script type="text/javascript">
+									 var urlmenu = document.getElementById( 'year' );
+									 urlmenu.onchange = function() {
+										  window.location.href =(  this.options[ this.selectedIndex ].value );
+									 };
+									 
+									 var urlmenu = document.getElementById( 'distance' );
+									 urlmenu.onchange = function() {
+										  window.location.href =(  this.options[ this.selectedIndex ].value );
+									 };
+								</script>
+								
+								
+								<br>
+							
+
+								
 								<!-- BUTTONS FOR other queries -->
 
-								<ul class="myButtons">
-									<span class="myButtons" style="display: inline;">
+								
+									
 									 
-										<li class="myButtons" style="display: inline;">
+										
 											<h2 style="display: inline; ">Other: </h2>
+											<br>
 											
-												<!--ADMIN --------------------------------------------------------------------------------------------------------------------------->
-												<?php
-													if($usernameCheck==true)
-													{
-														echo"
-														<form action='add_race_form.php' method='post' id='add_race_form' enctype='multipart/form-data'>
-														<input type='hidden' name='username' value='".$myusername."' >
-														<input type='hidden' name='password' value='".$mypassword."' > 
-														<input style='background-color:#E6594D' class='button' type='submit' value='Add Race'> 
-														</form><br>
-														"; //<a style='background-color:red' class='button' href='add_race_form.php'>Add NEW Race</a>
-														
-
-													}
-												?>	
-												<!--END ADMIN ------------------------------------------------------------------------------------------------------------------------>
+												
 												
 											<a class="button" href="#PRs">Race PRs </a>
 											
@@ -368,14 +411,12 @@ require ('indexPHP.php');
 											<?php // ?>
 											
 											<a  class="button" href=<?php echo "resultquery.php?user=select+COUNT(DISTINCT+Date)+FROM+$myusername" ?> >  Amount of days run a race</a> <!-- SELECT COUNT(DISTINCT Date) FROM $myusername where Date like %2017% -->
+											<br>
 											<?php // ?>
 												
-											
-										</li>
+										
 									
-									</span>
-								</ul>
-
+								
 
 
 
@@ -383,11 +424,8 @@ require ('indexPHP.php');
 								if($myusername=='vojtaripa' && $mypassword=='aa729258764c01f0436786c83fd1c6ff17efcfaf')
 								{
 									echo
-									"<ul class='myButtons'>
-										<span class='myButtons' style='display: inline;'>
-										
-										<li class='myButtons' style='display: inline;'>
-												<h2 color=black; style='display: inline;'>Extra Pages: </h2>
+									"
+												<h2 color=black; style='display: inline;'>Extra Pages: </h2><br>
 										<!-- BUTTONS / LINKS----------------------------------------------------------------->
 												
 												<p style='display: inline;'><a class='button' href='#' class='not-active'>Watch Youtube videos about running</a></p><!--pages/youtube.php-->
@@ -395,15 +433,62 @@ require ('indexPHP.php');
 												<p style='display: inline;'><a class='button' href='#' class='not-active'><b>Distance Match-up</b></a></p> <!-- pages/youtube.php--> 
 												<p style='display: inline;'><a class='button' href='future.php'>Future Race Bucketlist</a></p> 
 												<p style='display: inline;'><a class='button' href='assignPoints.php'>Assign Points</a></p>
-											</li>
-										
-										</span>
-									</ul><hr  >";	
+												<p style='display: inline;'><a class='button special' href='filtering.php' disabled><i class='icon fa-bar-chart'></i>  More Graphs </a></p>
+												<p style='display: inline;'><a class='button' href='emailME.php'>Email Vojta</a></p>
+											<hr  >";	
 								}	
 								?>	
 
 
 						  </br>
+						  
+
+								<center><button class="accordion" style="font-size:20px" onclick="accordion()">What are filters?</button>
+								<div class="panel">
+								<p>You can click on the following buttons to narrow down your results. <br>Years - will show you all the results from a specific year. <br> Distance - will show you all the results from a specific distance. <br> Other - there are other functions and links to pages available here.</p>
+								</div></center>
+								
+						  <hr><br>
+						  <!-- ---------------------------------------------------------------------------------------------------------------------------------------------------------------->
+						  
+						  
+						  								<center>
+								<span class="myButtons" style="display: inline;">
+								   
+								   <h2 > What would you like to see?</h2>
+								   
+								   <a class="scrolly 4u button special" href="#results" ><i class="icon fa-road"></i>  Race Results</a>
+								   <a class="scrolly 4u button " href="#Filters" ><i class="icon fa-filter"></i>  Filters</a>
+								   <a class="scrolly 4u button " href="#user" ><i class="icon fa-user-circle"></i>  User Info</a>
+								   <a class="scrolly 4u button special" href="#PRs" ><i class="icon fa-trophy"></i>  Race PRs</a>
+								   <a class="scrolly 4u button special" href="#YearPRs" ><i class="icon fa-trophy"></i>  Yearly PRs</a>
+								   <a class="scrolly 4u button " href="#Totals" ><i class="icon fa-plus"></i>  Result Totals/ Averages</a>     
+								   <a class="scrolly 4u button " href="#Goals" ><i class="icon fa-book"></i>  Race Goals</a>
+								   <a class="scrolly 4u button special" href="#Graphs" ><i class="icon fa-bar-chart"></i>  Race Graphs</a>
+								   </br>
+								   <a class="scrolly 4u button special" href="#Map" ><i class="icon fa-map"></i>  Races On a Map</a>
+								   
+								   <!--ADMIN --------------------------------------------------------------------------------------------------------------------------->
+												<?php
+													$disabled = "disabled";
+													if($usernameCheck==true)
+													{
+														//echo""; //<a style='background-color:red' class='button' href='add_race_form.php'>Add NEW Race</a>
+														$disabled= "";
+
+													}
+												?>	
+												<!--END ADMIN ------------------------------------------------------------------------------------------------------------------------>
+									<form action='add_race_form.php' method='post' id='add_race_form' enctype='multipart/form-data'>
+														<input type='hidden' name='username' value='<?php echo $myusername;  ?>' >
+														<input type='hidden' name='password' value='<?php echo $mypassword ; ?>' > 
+														<input  class='button 4u' type='submit' value='Add Race' <?php echo "$disabled";?>> <!--style='background-color:#E6594D'-->
+														</form><br>
+						
+								   
+								   </span>
+								   </center>
+						  
 						</div>
 					</section>	
 						
@@ -441,7 +526,7 @@ require ('indexPHP.php');
 
 
 										<form name='input' action='resultquery.php' method='get'>
-											<input type='text' id='query' name='user' size='210' maxlength='500' placeholder='Enter your query...'>
+											<input type='text' id='query' name='user' size='210' maxlength='500' value='select * from $myusername'>
 											<input class='button' type='submit' value='Submit Query'>
 
 											<tr>
@@ -769,12 +854,13 @@ require ('indexPHP.php');
 										<table>
 											<tr>
 												<th>DATA FILTER</th>
+												<th>Description</th> 
 												<th>Races Run</th> 
 												<th>Time</th>  
 												<th>Distance</th> 
 												<th>Place</th> 
 												<th>Pace</th> 
-												<th >Description</th> 
+												
 											</tr>
 											
 											<?php
@@ -3081,7 +3167,7 @@ require ('indexPHP.php');
 								
 								
 								<!-- Ill be using the PR Table to send to this graph -->
-								<a class="scrolly fit button special" href="filtering.php" disabled><i class="icon fa-bar-chart"></i>  More Graphs </a>
+								<a class="sbutton special" href="filtering.php" disabled><i class="icon fa-bar-chart"></i>  More Graphs </a>
                                 
 
 								<?php

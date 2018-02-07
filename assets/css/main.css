@@ -1690,7 +1690,7 @@
 		margin: 0 0 1em 0;
 	}
 
-	input[type="text"],
+	
 	input[type="password"],
 	input[type="email"],
 	input[type="date"],
@@ -1709,6 +1709,23 @@
 		padding: 0 1em;
 		text-decoration: none;
 		width: 100%;
+	}
+	
+	input[type="text"]
+	{
+		-moz-appearance: none;
+		-webkit-appearance: none;
+		-ms-appearance: none;
+		appearance: none;
+		background: rgba(144, 144, 144, 0.25);
+		border-radius: 3px;
+		border: none;
+		color: inherit;
+		
+		outline: 0;
+		padding: 0 1em;
+		text-decoration: none;
+		
 	}
 
 		input[type="text"]:invalid,
@@ -3941,6 +3958,12 @@ div.panel {
 /* END SEARCH */
 
 
+.block {
+	display:inline-block;
+}
+.small{
+	width:300px;
+}
 
 /* TODO LIST */
 

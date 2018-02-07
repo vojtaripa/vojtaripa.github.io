@@ -106,6 +106,7 @@ echo"Username: $myusername, Password: $mypassword<br>";
 //MY NEW FIELDS:
 
 $Index = filter_input(INPUT_POST, 'Index', FILTER_VALIDATE_INT);
+$Index += 1;
 
 $Date = filter_input(INPUT_POST, 'Date');
 
@@ -715,7 +716,7 @@ else
     
     //$query = 'INSERT INTO $myusername( Index,	Date, Race, Time, Distance, Place, Pace, Location, Type, Picture, LinkToResults, LinkToActivity, shoes, Notes) VALUES ( :Index, :Date, :Race, :Time, :Distance, :Place, :Pace, :Location, :Type, :Picture, :LinkToResults, :LinkToActivity, :shoes, :Notes )';
 	$query = "INSERT INTO `$myusername`(`Index`, `Date`, `Race`, `Time`, `Distance`, `Place`, `Pace`, `Location`, `Type`, `Picture`, `LinkToResults`, `LinkToActivity`, `shoes`, `Notes`, `Points`, `Modified`, `DateAdded`, `Feel`) VALUES ( '" . $Index . "','" . $Date . "','" . $Race . "','" . $Time . "','" . $Distance . "','" . $Place . "','" . $Pace . "','" . $Location . "','" . $Type . "','" . $filename . "','" . $LinkToResults . "','" . $LinkToActivity . "','" . $shoes . "','" . $Notes . "','" . $Points . "','" . $Modified . "','" . $DateAdded . "','" . $Feel ."')";
-	//echo "Query: $query<br><br>";
+	echo "<br><br>Query: $query<br><br>";
 	
     $statement = $db->prepare($query);
     /*

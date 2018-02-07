@@ -42,9 +42,9 @@ barMargin:      number. Creates space around bars in bar chart (added to both si
 ?>
 
 	
-	<!--<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+	<!--<meta http-equiv="content-type" content="text/html;charset=UTF-8" />-->
 	<title>Charting subsets of table data - Visualize</title>
-	<link href="graph/css/basic.css" type="text/css" rel="stylesheet" />  DONT NEED TABLE STYLE..-->
+	<!--<link href="graph/css/basic.css" type="text/css" rel="stylesheet" />  DONT NEED TABLE STYLE..-->
 	
 	<script type="text/javascript" src="graph/_shared/EnhanceJS/enhance.js"></script>
 	

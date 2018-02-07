@@ -17,7 +17,7 @@
 	<script> 
 	$(function(){
 	  $("#header").load("header.html"); 
-	  $("#footer").load("footer.html"); 
+	  $("#footer").load("footer.php"); 
 	});
 	</script> 
    </head>
@@ -51,12 +51,17 @@
          <h1 style='background-color:#E6594D; color:white;  line-height: 32px;  padding-left: 5px;'><u><b>STEP 1:</b></u></br> Please fill in the following: </br>( follow format shown. )</h1>
           
 			
+			
+			
+
 			<!--IMAGE--------------------------------------------------------------------------------------->
             <div class="6u 12u$">
-			<h4>Select your profile picture</h4>
+			<label><i class="icon fa fa-file-image-o" aria-hidden="true"></i> Select your profile picture <i>(optional)</i>: </label>
 			</div>
 			
             <form action="addLogin.php" method="post" id="login_form" enctype="multipart/form-data">
+			  
+			  
 			  
                
 			   <!--IMAGE-->
@@ -108,9 +113,12 @@
                   }
                </style>
                
+			   
+			   
+			   
 			   <center>
                   <div class="upload">
-                     <label class="upload" for="image_uploads" style="color:white">Choose images to upload (PNG, JPG)</label>
+                     <label class="upload" for="image_uploads" style="color:white">Choose images to upload (PNG, JPG) </label>
                      <input class="upload" type="file" id="image_uploads" name="image_uploads" accept=".jpg, .jpeg, .png" multiple>
                   </div>
                   <div class="preview upload">
@@ -213,58 +221,61 @@
                <!--<h3> Fill in the following, please follow format shown. </h3> 	-->
                
                   <div class="6u 12u$(xsmall)">
-                     <label><b style="color:red;font-size:25px;">*</b>Username        :</label>
-                     <input type="text" class="text" name="myusername" placeholder="username" required>
+                     <label><i class="icon fa fa-user"></i> <b style="color:red;font-size:25px;"> *</b>Choose Username        :</label>
+                     <input type="text" class="text" name="myusername" pattern=".{6,}" placeholder="username" title="Must be at least 6 characters" required>
                      </br>
                  </div>
+				 <br>
                 
 				 <div class="6u 12u$(xsmall)">
                      
-                        <label><b style="color:red;font-size:25px;">*</b>Password   (Min. 6 characters):</label>
+                        <label><i class="icon fa fa-key"></i> <b style="color:red;font-size:25px;">*</b>Create Password   (Min. 6 characters):</label>
                      
-                     <input type="password" pattern=".{6,}" class="text" name="password1" placeholder="password" required>
+                     <input type="password" pattern=".{6,}" class="text" name="password1" placeholder="password" title="Must be at least 6 characters" required>
                      </br>
                  </div>
 				  
                   <div class="6u 12u$(xsmall)">
                      
-                        <label><b style="color:red;font-size:25px;">*</b>Re-type password:</label>
+                        <label><i class="icon fa fa-key"></i> <b style="color:red;font-size:25px;"> *</b>Re-type password:</label>
                      
-                     <input type="password" pattern=".{6,}" class="text" name="password2" placeholder="password" required>
+                     <input type="password" pattern=".{6,}" class="text" name="password2" placeholder="password" title="Must be at least 6 characters" required>
                      </br>
                   </div>
                   
 				  <div class="6u 12u$(xsmall)">
                      
-                        <label for="verify"><b style="color:red;font-size:25px;">*</b>Human Verification:</label>
+                        <label for="verify"><i class="icon fa fa-android"></i> <b style="color:red;font-size:25px;">*</b>Human Verification:</label>
                      
                      
                         <img src="captcha.php" alt="Verification pass-phrase" />
                         <input type="text" id="verify" name="verify" value="" required placeholder="Enter whats above."/> 
                      
                   </div>
+				  </br></br>
 				  
                   <div class="6u 12u$(xsmall)">
                      
                         <label><b style="color:red;font-size:25px;">*</b>First Name:</label>
                      
-                     <input type="text" class="text" name="first_name" placeholder="Usain" required>
+                     <input type="text" class="text" name="first_name" placeholder="Usain" pattern=".{3,}" title="At Least 3 letters long." required>
                      </br>
                   </div>
+				  <br>
 				  
                   <div class="6u 12u$(xsmall)">
                      
                         <label><b style="color:red;font-size:25px;">*</b>Last Name:</label>
                      
-                     <input type="text" class="text" name="last_name" placeholder="Bolt" required>
+                     <input type="text" class="text" name="last_name" placeholder="Bolt" pattern=".{3,}" title="At Least 3 letters long." required>
                      </br>
                   </div>
-				  
+				  <br>
 				  
 				    				  
 				  
                   <div class="6u 12u$(xsmall)">
-                        <label>Email:</label>
+                        <label><i class="icon fa fa-envelope-o"></i> Email:</label>
                      
                      <input type="email" class="text" name="email" placeholder="devnull@sonic.com">
 					 </br>
@@ -277,30 +288,31 @@
 						<label><b style="color:red;font-size:25px;">*</b>Gender:</label>    
 				  
 						<input type="radio" id="m" name="gender" value='m' checked>
-						<label for="m">Male</label>
+						<label for="m"><i class="icon fa fa-male"></i> Male</label>
 
 						<input type="radio" id="f" name="gender" value='f'>
-						<label for="f">Female</label>
+						<label for="f"><i class="icon fa fa-female"></i> Female</label>
 
 					</div>
-                  
+                  <br>
 				  			  <div class="6u 12u$(xsmall)">   
                         <label><b style="color:red;font-size:25px;">*</b>Age:</label>                  
-                        <input type="text"  pattern="[0-9]{1,2}" min="1" max="99" name="age" placeholder="0" required>
+                        <input type="text"  pattern="[0-9]{1,2}" min="1" max="99" name="age" placeholder="0" title="Numbers between 1-99 only." required>
 					 </br>
                   </div>
-				  
+				  <br>
 
 				  
 				  
                   <div class="6u 12u$(xsmall)">  
-                        <label>Link to your Strava / webpage:</label>
+                        <label><i class="icon fa fa-link"></i> Link to your Strava / webpage:</label>
                        <input type="text" pattern="https?://.+" name="webpage" placeholder="https://www.strava.com"> <!--type webpage -->
                      </br>
                   </div>
+				  <br>
 				  
                   <div class="6u 12u$(xsmall)">
-                      <label>About you / Bio:</label>
+                      <label><i class="icon fa fa-info"></i> About you / Bio:</label>
                       <textarea rows="8" cols="75" name="About" placeholder="About you..."> </textarea>
                      </br>
                   </div>
@@ -310,7 +322,7 @@
  
                <input type="hidden" name="action" value="login">
                
-			   <input class="button" type="submit" value="Sign-up">
+			   <input class="button special" type="submit" value="Sign-up">
                <input class="button" type="reset">
            
 		  </div>

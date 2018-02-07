@@ -234,6 +234,47 @@ $statement2->closeCursor();
 			elapsedSpan.value = "" + (pace); //seconds //(elapsedInS / (1000*distVal) )   //.innerHTML
         }
 		
+		//for input change (not select)
+		function FindPace2 () 
+		{
+            var startHSelect = document.getElementById ("starttimehour");
+            var startMSelect = document.getElementById ("starttimemin");
+			var startSSelect = document.getElementById ("starttimesec");
+						
+			var distance     = document.getElementById ("custDistance");
+			
+			// convert string values to integers
+			var startH = parseInt (startHSelect.value);
+			var startM = parseInt (startMSelect.value);
+			var startS = parseInt (startSSelect.value);
+			
+			var distVal= distance.value;
+			
+			// create Date objects from start and end
+			var start = new Date ();	// the current date and time, in local time.
+			var end = new Date ();
+
+			//setting stand and end date (formatting) so we can use getTime() function
+			start.setHours (startH, startM, startS);
+			end.setHours (00, 00, 00);
+			
+			//Now setting result AKA elapsed time
+			var elapsedInS = start.getTime () - end.getTime ();
+			
+			//Gets total amount of sec.
+			var totalSec = (elapsedInS / (1000*distVal));
+			
+			//uses function to convert sec to time again.
+			var pace = SecondsToTime (totalSec);
+			
+			//Gets value of result field
+			var elapsedSpan = document.getElementById ("elapsed");
+							  
+			
+			//changes the value of the result field
+			elapsedSpan.value = "" + (pace); //seconds //(elapsedInS / (1000*distVal) )   //.innerHTML
+        }
+		
 		function Feel ()
 		{
 			//Gets value of slider field
@@ -259,14 +300,51 @@ $statement2->closeCursor();
 		
     </script>  
 	
+	<!--<script src="//code.jquery.com/jquery-3.2.1.js"></script>  Might need? but then gecode doesnt work.. -->
+		<script>
+		//alert("B4");
+	 $(document).ready(function()
+	{
+		 //IF NORMAL PRESET DISTANCE IS CHANGED.
+		 $('#distance').change(function()
+		 {
+					var $val = $("#distance").val();
+					$("#custDistance").val( $("#distance").val() );
+					//$("#distance").after("<input value='"+$val+"'>")
+		 });		
+		 
+		 //IF CUSTOM Distance is changed.
+		 $('#custDistance').change(function()
+		 {
+					var inputTest = $("#custDistance").val();
+					//alert(inputTest);
+					//$("#distance option['CUSTOM']").attr('selected', 'selected').val( $("#custDistance").val() );
+					
+					
+					// grab what is in the input field and user it to create a new option and user that value and text for it, and also select it.
+					$('<option value="'+ inputTest +'">'+inputTest+'</option>').appendTo('select#distance').attr('selected', 'selected'); 
 	
-	<!--<script src="//code.jquery.com/jquery-1.10.2.js"></script>-->
+		 });
+		 
+		 /*if($("#distance option:selected").text(""))
+					 {
+						 $("#distance option:selected").text("CUSTOM");
+					 } */
+	});
+	
+	 
+	</script>
+	
+	
 	<script> 
 	$(function(){
 	  $("#header").load("header.html"); 
-	  $("#footer").load("footer.html"); 
+	  $("#footer").load("footer.php"); 
 	});
 	</script> 
+	
+	
+
 	
 	
 		
@@ -365,7 +443,7 @@ $statement2->closeCursor();
 		<h4> - Fill in the following, please follow format shown. </h4>     
       </br> </br>
 		<!--IMAGE-->
-		<h3>Select Race Picture</h3>
+		<label><i class="icon fa fa-file-image-o"></i> Select Race Picture (optional):</label>
         <form action="add_race.php" method="post" id="add_race_form" enctype="multipart/form-data">
 			
 			<!--IMAGE-->
@@ -573,30 +651,38 @@ Notes
 
 			 
 			<div class="6u 12u$(xsmall)">
-           <label>Race Name:</label>
+           <label><b style="color:red;font-size:25px;"> *</b> Race Name:</label>
             <input type="text" name="Race" placeholder="Running of the Warriors" required><br>		   
 		   </div>
 			</br></br>
 		   
 		   <div class="6u 12u$(xsmall)">
-			<label>Date of Race:</label>
-            <input type="date" name="Date" value="01/01/2017" required ><br>		   
+			<label><i class="icon fa fa-calendar"></i> <b style="color:red;font-size:25px;"> *</b> Date of Race (mm/dd/yyyy):</label>
+            <input type="date" name="Date" value="01/01/2017" required pattern="^\d{2}\/\d{2}\/\d{4}$"><br>		   
 		   </div>
 		   </br></br>
 		   
-		   <div class="6u 12u$(xsmall)">
-			 <label>Distance:</label>
-             <select id="distance" name="Distance" onchange="FindPace ()" class="selectboxkl">
-				<?php foreach ($Distance as $Distance) : ?>
-					<option value="<?php echo $Distance['Distance']; ?>">
-						<?php echo $Distance['distName']; ?>
-					</option>
-				<?php endforeach; ?>
-            </select></div>
+		   <div class="6u">
+			 <label><i class="icon fa fa-road"></i> <b style="color:red;font-size:25px;"> *</b>Distance (in miles):</label>
+			 
+				 <select id="distance" name="Distance" onchange="FindPace ()" class="selectboxkl block">
+					    
+					<?php foreach ($Distance as $Distance) : ?>
+						<option value="<?php echo $Distance['Distance']; ?>">
+							<?php echo $Distance['distName']; ?>
+						</option>
+					<?php endforeach; ?>
+						
+				</select>
+				<h3 class="block"> - OR - </h3>
+				<input type="text" onchange="FindPace2 ()" name="DistanceCust" id="custDistance" placeholder="Enter custom distance" pattern="^([1-9][0-9]{0,2}(\.\d+)?)$" title="Only distances 1-999 (miles)" class="block small">
+			
+			
+			</div>
 			</br></br>
 			
 			<div class="6u 12u$(xsmall)">
-			<label>Time Run:</label>
+			<label><i class="icon fa fa-clock-o"></i> <b style="color:red;font-size:25px;"> *</b> Time Run:</label>
             </div>
 			
 			<center>
@@ -768,12 +854,12 @@ Notes
 		   
 		   
 		   <div class="6u 12u$(xsmall)">
-            <label>Place Finished:</label>
+            <label><i class="icon fa fa-trophy"></i> <b style="color:red;font-size:25px;"> *</b> Place Finished:</label>
             <input name="Place" placeholder="1" type="text" min="1" max="1000" pattern="[0-9]{1,3}" required ><br>
 		   </div>
 		   
 		   <div class="6u 12u$(xsmall)">		
-			 <label>Location</label>
+			 <label><i class="icon fa fa-map-marker"></i> Location</label>
             <input id="geocomplete" type="text" name="Location" placeholder="Santa Rosa, Ca" required ><br>
 		   </div>
 		   
@@ -789,19 +875,19 @@ Notes
 			</br></br>
 			
 			<div class="6u 12u$(xsmall)">  
-			<label>Add link to your results: </label>
+			<label><i class="icon fa fa-link"></i> Add link to your results: </label>
 			<input type="text" pattern="https?://.+" name="ResultsLink" placeholder="Directathletics.com">
 			</div>
 			</br></br>
 			
 			<div class="6u 12u$(xsmall)">
-			<label>Add link to your activity:</label> <br><a class="button fit special" href="https://www.strava.com/dashboard?feed_type=my_activity">My Strava Activities</a>
+			<label><i class="icon fa fa-link"></i> Add link to your activity:</label> <br><a class="button fit special" href="https://www.strava.com/dashboard?feed_type=my_activity">My Strava Activities</a>
 			<input type="text" pattern="https?://.+" name="ActivityLink" placeholder="strava.activity.com">
 			</div>
 			</br></br>
 			
 			<div class="6u 12u$(xsmall)">
-			<label>Shoe Model/ Brand </label>
+			<label><i class="icon fa fa-info"></i> Shoe Model/ Brand </label>
 			<input type="text" name="Shoes" placeholder="Ex. Nike Lunar Racer">
 			</div>
 			
@@ -812,7 +898,7 @@ Notes
 				
 			   <label>Felt like:</label> <input type="range" name="feel" min="0" max="10" value="0" onchange="Feel ()" id="slider">
 			   <input type="text" name="feeltext" value="0" readonly id="feel"><br>
-			  <pre> 0 (Worst)                          10 (Best) </pre>
+			  <pre><i class="icon fa fa-frown-o"></i> 0 (Worst)                          <i class="icon fa fa-smile-o"></i> 10 (Best) </pre>
 				<br>
 		   </div>
 		   

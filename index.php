@@ -89,7 +89,7 @@
       <script> 
          $(function(){
            //$("#header").load("pages/header.html"); 
-           $("#footer").load("pages/footer.html"); 
+           $("#footer").load("pages/footer.php"); 
          });
       </script> 
    </head>
